@@ -32,7 +32,7 @@ app.post('/Home', function (req, res) {
     res.send("Home View! Welcome " + req.session.displayName);
 })
 app.get('/Home', function (req, res) {
-    res.send(res.profile);
+    res.send("Home View! Welcome " + req.session.displayName);
 })
 app.get("/callback", function (req, res) {
     var data = {
