@@ -78,7 +78,7 @@ app.get('/auth', function (req, res, next) {
                 var options = {
                     url: "https://api.line.me/v2/bot/profile/",
                     headers: {
-                        Authorization: "Bearer {" + token.access_token + "}"
+                        Authorization: "Bearer " + token.access_token
                     },
                     json: true
                 };
