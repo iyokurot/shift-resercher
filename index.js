@@ -56,7 +56,7 @@ app.get('/db', async (req, res) => {
         const client = await pool.connect()
         const result = await client.query('SELECT * FROM user_table where userId=$1', ["sample"]);
         const results = { 'results': (result) ? result.rows : null };
-        res.send(results);
+        res.send(result);
         client.release();
     } catch (err) {
         console.error(err);
