@@ -72,17 +72,27 @@ app.get('/auth', function (req, res, next) {
                 },
                 json: true,
             });
-
-            res.send(token);
+            //ユーザー
+            //res.send(token);
+            req.body.events.forEach(event => {
+                var options = {
+                    url: "https://api.line.me/v2/bot/profile/",
+                    headers: {
+                        Authorization: "Bearer {" + token.access_token + "}"
+                    },
+                    json: true
+                };
+                request.get(options, (req, res, next) => {
+                    res.send(options);
+                });
+            });
 
         });
     } else if (rParams.access_token) {
         // アクセストークン取得後のコールバックでここに来る
         res.send(rParams);
-
     } else {
         // 初回アクセス時はここに来る
-
         const url = 'https://access.line.me/oauth2/v2.1/authorize';
         const sParams = [
             'response_type=code',
