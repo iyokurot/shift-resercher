@@ -104,6 +104,11 @@ app.get('/auth', function (req, res, next) {
             //userId,displayName,pictureUrl
             //res.send(profile.userId);
             //登録済みユーザーか確認
+            req.session.userId = profile.userId;
+            req.session.displayName = profile.displayName;
+            req.session.picture = profile.pictureUrl;
+            res.redirect('/regist');
+            /*
             const usercheck = async (req, res) => {
                 try {
                     const client = await pool.connect();
@@ -134,6 +139,7 @@ app.get('/auth', function (req, res, next) {
                     res.send("Error " + err);
                 }
             }
+            */
 
 
         });
@@ -155,6 +161,30 @@ app.get('/auth', function (req, res, next) {
         // 認証画面へリダイレクト(認可コード取得)
         res.redirect(`${url}?${sParams.join('&')}`);
 
+    }
+})
+
+app.get('/regist', async (req, res) => {
+    const userId = req.session.userId;
+    const displayName = req.session.displayName;
+    const picture = req.session.pictureUrl;
+    try {
+        const client = await pool.connect();
+        const result = await client.query('SELECT * FROM user_table where userId=$1', [userId]);
+        const results = { 'results': (result) ? result.rows : null };
+        //res.render('pages/db', results);
+        if (result.rowCount == 0) {
+            //未登録
+            res.send("未登録");
+        } else {
+            //登録ユーザー
+            req.session.results = results;
+            res.redirect('/Home');
+        }
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
     }
 })
 
