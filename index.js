@@ -3,6 +3,14 @@ const app = express()
 const line_login = require("line-login");
 require("dotenv").config();
 
+const session = require("express-session");
+const session_options = {
+    secret: process.env.LINE_LOGIN_CHANNEL_SECRET,
+    resave: false,
+    saveUninitialized: false
+}
+app.use(session(session_options));
+
 const login = new line_login({
     channel_id: process.env.LINE_LOGIN_CHANNEL_ID,
     channel_secret: process.env.LINE_LOGIN_CHANNEL_SECRET,
