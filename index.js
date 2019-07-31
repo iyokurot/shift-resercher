@@ -88,22 +88,24 @@ app.get('/auth', function (req, res, next) {
             //userId,displayName,pictureUrl
             //res.send(profile.userId);
             //登録済みユーザーか確認
-            try {
-                const client = await pool.connect()
-                const result = await client.query('SELECT FROM user_table where userId=' + profile.userId);
-                const results = { 'results': (result) ? result.rows : null };
-                //res.render('pages/db', results);
-                req.session.userId = profile.userId;
-                req.session.displayName = profile.displayName;
-                req.session.picture = profile.pictureUrl;
-                req.session.results = results;
-                res.redirect('/Home');
+            const usercheck = async () => {
+                try {
+                    const client = await pool.connect()
+                    const result = await client.query('SELECT FROM user_table where userId=' + profile.userId);
+                    const results = { 'results': (result) ? result.rows : null };
+                    //res.render('pages/db', results);
+                    req.session.userId = profile.userId;
+                    req.session.displayName = profile.displayName;
+                    req.session.picture = profile.pictureUrl;
+                    req.session.results = results;
+                    res.redirect('/Home');
 
 
-                client.release();
-            } catch (err) {
-                console.error(err);
-                res.send("Error " + err);
+                    client.release();
+                } catch (err) {
+                    console.error(err);
+                    res.send("Error " + err);
+                }
             }
 
 
