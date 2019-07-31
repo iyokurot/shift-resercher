@@ -135,7 +135,7 @@ app.get('/auth', function (req, res, next) {
 app.get('/regist', async (req, res) => {
     const userId = req.session.userId;
     const displayName = req.session.displayName;
-    const picture = req.session.pictureUrl;
+    const picture = req.session.picture;
     try {
         const client = await pool.connect();
         const result = await client.query('SELECT * FROM user_table where userId=$1', [userId]);
