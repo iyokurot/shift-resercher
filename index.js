@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const line_login = require("line-login");
+require("dotenv").config();
 
 const login = new line_login({
     channel_id: process.env.LINE_LOGIN_CHANNEL_ID,
