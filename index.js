@@ -170,7 +170,7 @@ app.get('/regist', async (req, res) => {
     const picture = req.session.pictureUrl;
     try {
         const client = await pool.connect();
-        const result = await client.query('SELECT * FROM user_table where userId=$1', [userId]);
+        const result = await client.query('SELECT * FROM user_table where userId=$1', ["sampleId"]);
         const results = { 'results': (result) ? result.rows : null };
         //res.render('pages/db', results);
         if (result.rowCount == 0) {
