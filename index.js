@@ -109,39 +109,6 @@ app.get('/auth', function (req, res, next) {
             req.session.displayName = profile.displayName;
             req.session.picture = profile.pictureUrl;
             res.redirect('/regist');
-            /*
-            const usercheck = async (req, res) => {
-                try {
-                    const client = await pool.connect();
-                    const result = await client.query('SELECT * FROM user_table where userId=$1', [profile.userId]);
-                    const results = { 'results': (result) ? result.rows : null };
-                    //res.render('pages/db', results);
-                    if (result.rowCount == 0) {
-                        //未登録
-                        req.session.userId = profile.userId;
-                        req.session.displayName = profile.displayName;
-                        req.session.picture = profile.pictureUrl;
-                        req.session.results = results;
-                        res.send("未登録");
-                    } else {
-                        //登録ユーザー
-                        req.session.userId = profile.userId;
-                        req.session.displayName = profile.displayName;
-                        req.session.picture = profile.pictureUrl;
-                        req.session.results = results;
-                        res.redirect('/Home');
-                    }
-
-
-
-                    client.release();
-                } catch (err) {
-                    console.error(err);
-                    res.send("Error " + err);
-                }
-            }
-            */
-
 
         });
     } else if (rParams.access_token) {
@@ -171,12 +138,13 @@ app.get('/regist', async (req, res) => {
     const picture = req.session.pictureUrl;
     try {
         const client = await pool.connect();
-        const result = await client.query('SELECT * FROM user_table where userId=$1', ["sampleId"]);
+        const result = await client.query('SELECT * FROM user_table where userId=$1', [userId]);
         const results = { 'results': (result) ? result.rows : null };
         //res.render('pages/db', results);
         if (result.rowCount == 0) {
             //未登録
-            res.send("未登録");
+            //res.send("未登録");
+            res.render("./register.ejs", { user: req.session });
         } else {
             //登録ユーザー
             req.session.results = results;
