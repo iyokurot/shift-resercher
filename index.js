@@ -104,7 +104,7 @@ app.get('/auth', function (req, res, next) {
             //userId,displayName,pictureUrl
             //res.send(profile.userId);
             //登録済みユーザーか確認
-            const usercheck = async () => {
+            const usercheck = async (req, res) => {
                 try {
                     const client = await pool.connect();
                     const result = await client.query('SELECT * FROM user_table where userId=$1', [profile.userId]);
