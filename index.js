@@ -9,6 +9,11 @@ const session = require("express-session");
 
 
 app.set("view engine", "ejs");
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
+}));
 
 app.get('/', (req, res) => {
     //res.send('Hello world')
@@ -24,7 +29,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/Home', function (req, res) {
-    res.send("Home View!" + res.data);
+    res.send("Home View! Welcome " + req.session.displayName);
 })
 app.get('/Home', function (req, res) {
     res.send(res.profile);
@@ -33,12 +38,13 @@ app.get("/callback", function (req, res) {
     var data = {
         name: "name"
     }
-    res.set(data);
+    var name = "testuser";
+    req.session.userName = name;
     res.redirect('/send');
-    //res.redirect('/send');
+
 });
 app.get("/send", function (req, res) {
-    res.send(res);
+    res.send(req.session.userName);
 });
 
 app.get('/auth', function (req, res, next) {
@@ -64,8 +70,9 @@ app.get('/auth', function (req, res, next) {
                 },
                 json: true,
             });
-            //ユーザー
+
             //res.send(token.access_token);
+            //ユーザー
             const profile = yield getProfile({
                 uri: 'https://api.line.me/v2/profile/',
                 headers: {
@@ -74,8 +81,11 @@ app.get('/auth', function (req, res, next) {
                 json: true,
             });
             //userId,displayName,pictureUrl
-            res.set(profile);
+            //res.send(profile.userId);
             //登録済みユーザーか確認
+            req.session.userId = profile.userId;
+            req.session.displayName = profile.displayName;
+            req.session.picture = profile.pictureUrl;
             res.redirect('/Home');
 
         });
