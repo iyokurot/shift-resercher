@@ -6,6 +6,11 @@ const request = require('request');
 require("dotenv").config();
 
 const session = require("express-session");
+const { Pool } = require('pg');
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+});
 
 
 app.set("view engine", "ejs");
@@ -29,10 +34,10 @@ app.get('/', (req, res) => {
 })
 
 app.post('/Home', function (req, res) {
-    res.send("Home View! Welcome " + req.session.displayName);
+    res.send("Home View! ");
 })
 app.get('/Home', function (req, res) {
-    res.send("Home View! Welcome " + req.session.displayName);
+    res.send("Home View! Welcome " + req.session.displayName + req.session.results);
 })
 app.get("/callback", function (req, res) {
     var data = {
@@ -83,10 +88,24 @@ app.get('/auth', function (req, res, next) {
             //userId,displayName,pictureUrl
             //res.send(profile.userId);
             //登録済みユーザーか確認
-            req.session.userId = profile.userId;
-            req.session.displayName = profile.displayName;
-            req.session.picture = profile.pictureUrl;
-            res.redirect('/Home');
+            try {
+                const client = await pool.connect()
+                const result = await client.query('SELECT FROM user_table where userId=' + profile.userId);
+                const results = { 'results': (result) ? result.rows : null };
+                //res.render('pages/db', results);
+                req.session.userId = profile.userId;
+                req.session.displayName = profile.displayName;
+                req.session.picture = profile.pictureUrl;
+                req.session.results = results;
+                res.redirect('/Home');
+
+
+                client.release();
+            } catch (err) {
+                console.error(err);
+                res.send("Error " + err);
+            }
+
 
         });
     } else if (rParams.access_token) {
