@@ -6,18 +6,7 @@ const request = require('request');
 require("dotenv").config();
 
 const session = require("express-session");
-const session_options = {
-    secret: process.env.LINE_LOGIN_CHANNEL_SECRET,
-    resave: false,
-    saveUninitialized: false
-}
-app.use(session(session_options));
 
-const login = new line_login({
-    channel_id: process.env.LINE_LOGIN_CHANNEL_ID,
-    channel_secret: process.env.LINE_LOGIN_CHANNEL_SECRET,
-    callback_url: process.env.LINE_LOGIN_CALLBACK_URL
-});
 
 app.set("view engine", "ejs");
 
@@ -35,19 +24,23 @@ app.get('/', (req, res) => {
 })
 
 app.post('/Home', function (req, res) {
-    res.send("Home View!");
+    res.send("Home View!" + res.data);
 })
-app.get("/callback", login.callback(
-    (req, res, next, token_response) => {
-        // 認証フロー成功時
-        //res.json(token_response);
-        res.send("clear");
-    }, (req, res, next, error) => {
-        // 認証フロー失敗時
-        //res.status(400).json(error);
-        res.send("false");
+app.get('/Home', function (req, res) {
+    res.send(res.profile);
+})
+app.get("/callback", function (req, res) {
+    var data = {
+        item: [
+            { name: "name" }
+        ]
     }
-));
+    res.send(data);
+    res.redirect('/send');
+});
+app.get("/send", function (req, res) {
+    res.send(res);
+});
 
 app.get('/auth', function (req, res, next) {
     const rParams = req.query;
@@ -81,7 +74,10 @@ app.get('/auth', function (req, res, next) {
                 },
                 json: true,
             });
+            //userId,displayName,pictureUrl
             res.send(profile);
+            //登録済みユーザーか確認
+            res.redirect('/Home');
 
         });
     } else if (rParams.access_token) {
