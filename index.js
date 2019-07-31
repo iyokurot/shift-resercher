@@ -31,12 +31,11 @@ app.get('/Home', function (req, res) {
 })
 app.get("/callback", function (req, res) {
     var data = {
-        item: [
-            { name: "name" }
-        ]
+        name: "name"
     }
-    res.send(data);
+    res.set(data);
     res.redirect('/send');
+    //res.redirect('/send');
 });
 app.get("/send", function (req, res) {
     res.send(res);
@@ -75,7 +74,7 @@ app.get('/auth', function (req, res, next) {
                 json: true,
             });
             //userId,displayName,pictureUrl
-            res.send(profile);
+            res.set(profile);
             //登録済みユーザーか確認
             res.redirect('/Home');
 
