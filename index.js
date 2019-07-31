@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const line_login = require("line-login");
+const co = require('co');
 require("dotenv").config();
 
 const session = require("express-session");
@@ -46,6 +47,57 @@ app.get("/callback", login.callback(
         res.send("false");
     }
 ));
+
+app.get('/auth', function (req, res, next) {
+    const rParams = req.query;
+
+    if (rParams.code) {
+        // 認可コード取得のコールバックでここに来る
+        co(function* () {
+            const auth = {
+                code: rParams.code,
+                state: rParams.state,
+            };
+
+            // アクセストークン取得
+            const token = yield getToken({
+                uri: 'https://api.line.me/oauth2/v2.1/token',
+                form: {
+                    grant_type: 'authorization_code',
+                    code: auth.code,
+                    redirect_uri: process.env.LINE_LOGIN_CALLBACK_URL,
+                    client_id: process.env.LINE_LOGIN_CHANNEL_ID,
+                    client_secret: process.env.LINE_LOGIN_CHANNEL_SECRET,
+                },
+                json: true,
+            });
+
+            res.send(token);
+
+        });
+    } else if (rParams.access_token) {
+        // アクセストークン取得後のコールバックでここに来る
+
+        res.send(rParams);
+
+    } else {
+        // 初回アクセス時はここに来る
+
+        const url = 'https://access.line.me/oauth2/v2.1/authorize';
+        const sParams = [
+            'response_type=code',
+            `client_id=${process.env.LINE_LOGIN_CHANNEL_ID}`,
+            `redirect_uri=${process.env.LINE_LOGIN_CALLBACK_URL}`,
+            `state=${RandomMaker()}`,
+            'scope=profile',
+            'nonce=my%20shift-resercher',
+        ];
+
+        // 認証画面へリダイレクト(認可コード取得)
+        res.redirect(`${url}?${sParams.join('&')}`);
+
+    }
+})
 
 app.listen(process.env.PORT || 5000, () => {
     console.log('start')
