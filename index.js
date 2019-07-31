@@ -107,14 +107,25 @@ app.get('/auth', function (req, res, next) {
             const usercheck = async () => {
                 try {
                     const client = await pool.connect();
-                    const result = await client.query('SELECT * FROM user_table where userId=' + profile.userId);
-                    //const results = { 'results': (result) ? result.rows : null };
+                    const result = await client.query('SELECT * FROM user_table where userId=$1', [profile.userId]);
+                    const results = { 'results': (result) ? result.rows : null };
                     //res.render('pages/db', results);
-                    req.session.userId = profile.userId;
-                    req.session.displayName = profile.displayName;
-                    req.session.picture = profile.pictureUrl;
-                    req.session.results = result;
-                    res.redirect('/Home');
+                    if (result.rowCount == 0) {
+                        //未登録
+                        req.session.userId = profile.userId;
+                        req.session.displayName = profile.displayName;
+                        req.session.picture = profile.pictureUrl;
+                        req.session.results = results;
+                        res.send("未登録");
+                    } else {
+                        //登録ユーザー
+                        req.session.userId = profile.userId;
+                        req.session.displayName = profile.displayName;
+                        req.session.picture = profile.pictureUrl;
+                        req.session.results = results;
+                        res.redirect('/Home');
+                    }
+
 
 
                     client.release();
