@@ -74,10 +74,10 @@ app.get('/auth', function (req, res, next) {
             });
             //ユーザー
             //res.send(token);
-            const profile = yield getToken({
+            const profile = yield getProfile({
                 uri: 'https://api.line.me/v2/bot/profile/',
                 headers: {
-                    Authorization: 'Bearer ' + token.access_token
+                    Authorization: 'Bearer {' + token.access_token + '}'
                 },
                 json: true,
             });
@@ -121,6 +121,17 @@ function getToken(params) {
     });
 }
 
+function getProfile(params) {
+    return new Promise((resolve, reject) => {
+        request.get(params, (error, response, body) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(body);
+            }
+        });
+    });
+}
 function LineURLMaker() {
     var url = "https://access.line.me/oauth2/v2.1/authorize" + "?response_type=code" + "&client_id=" +
         process.env.LINE_LOGIN_CHANNEL_ID + "&redirect_uri=" + process.env.LINE_LOGIN_CALLBACK_URL + "&state=" +
