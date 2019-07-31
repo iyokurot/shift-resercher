@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "ejs": "^2.6.2",
+    "express": "^4.17.1",
+    "line-login": "^1.0.14"
   },
   "engines": {
     "node": "v10.15.X",
