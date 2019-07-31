@@ -92,12 +92,12 @@ app.get('/auth', function (req, res, next) {
                 try {
                     const client = await pool.connect()
                     const result = await client.query('SELECT FROM user_table where userId=' + profile.userId);
-                    const results = { 'results': (result) ? result.rows : null };
+                    //const results = { 'results': (result) ? result.rows : null };
                     //res.render('pages/db', results);
                     req.session.userId = profile.userId;
                     req.session.displayName = profile.displayName;
                     req.session.picture = profile.pictureUrl;
-                    req.session.results = results;
+                    req.session.results = result;
                     res.redirect('/Home');
 
 
