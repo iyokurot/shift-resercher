@@ -90,8 +90,8 @@ app.get('/auth', function (req, res, next) {
             //登録済みユーザーか確認
             const usercheck = async () => {
                 try {
-                    const client = await pool.connect()
-                    const result = await client.query('SELECT FROM user_table where userId=' + profile.userId);
+                    const client = await pool.connect();
+                    const result = await client.query('SELECT * FROM user_table where userId=' + profile.userId);
                     //const results = { 'results': (result) ? result.rows : null };
                     //res.render('pages/db', results);
                     req.session.userId = profile.userId;
