@@ -11,9 +11,9 @@
     <%=user.displayName %>
     <%=user.picture %>
     <form method="POST" action="/register">
-        <img src=<%=user.picture%> title="アイコン">
+        <img src=<%=user.picture%> alt="アイコン" width="100" height="100"><br>
         名前
-        <input type=text value=<%=user.displayName %>>
+        <input type=text value=<%=user.displayName %><br>
         早遅
         <button>登録</button>
     </form>
