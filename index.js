@@ -37,7 +37,8 @@ app.post('/Home', function (req, res) {
     res.send("Home View! ");
 })
 app.get('/Home', function (req, res) {
-    res.send("Home View! Welcome " + req.session.displayName + req.session.results);
+    res.send("Home View! Welcome " + req.session.displayName
+        + req.session.results.name);
 })
 app.get("/callback", function (req, res) {
     var data = {
