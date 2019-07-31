@@ -54,7 +54,7 @@ app.get("/send", function (req, res) {
 app.get('/db', async (req, res) => {
     try {
         const client = await pool.connect()
-        const result = await client.query('SELECT * FROM user_table where userId=$1', ["sample"]);
+        const result = await client.query('SELECT * FROM user_table where userId=$1', ["sampleId"]);
         const results = { 'results': (result) ? result.rows : null };
         if (result.rowCount == 0) {
             res.send("no rows");
