@@ -77,7 +77,7 @@ app.get('/auth', function (req, res, next) {
             const profile = yield getProfile({
                 uri: 'https://api.line.me/v2/bot/profile/',
                 headers: {
-                    Authorization: 'Bearer {' + token.access_token + '}'
+                    Authorization: 'Bearer {' + token + '}'
                 },
                 json: true,
             });
