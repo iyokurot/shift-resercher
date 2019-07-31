@@ -38,11 +38,11 @@ app.post('/Home', function (req, res) {
 app.get("/callback", login.callback(
     (req, res, next, token_response) => {
         // 認証フロー成功時
-        res.json(token_response);
+        //res.json(token_response);
         res.send("clear");
     }, (req, res, next, error) => {
         // 認証フロー失敗時
-        res.status(400).json(error);
+        //res.status(400).json(error);
         res.send("false");
     }
 ));
