@@ -73,7 +73,7 @@ app.get('/auth', function (req, res, next) {
                 json: true,
             });
             //ユーザー
-            //res.send(token);
+            res.send(token.access_token);
             const profile = yield getProfile({
                 uri: 'https://api.line.me/v2/bot/profile/',
                 headers: {
@@ -81,7 +81,7 @@ app.get('/auth', function (req, res, next) {
                 },
                 json: true,
             });
-            res.send(profile);
+            //res.send(profile);
 
         });
     } else if (rParams.access_token) {
