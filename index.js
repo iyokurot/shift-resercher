@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const line_login = require("line-login");
 const co = require('co');
+const request = require('request');
 require("dotenv").config();
 
 const session = require("express-session");
@@ -77,7 +78,6 @@ app.get('/auth', function (req, res, next) {
         });
     } else if (rParams.access_token) {
         // アクセストークン取得後のコールバックでここに来る
-
         res.send(rParams);
 
     } else {
@@ -102,6 +102,18 @@ app.get('/auth', function (req, res, next) {
 app.listen(process.env.PORT || 5000, () => {
     console.log('start')
 })
+
+function getToken(params) {
+    return new Promise((resolve, reject) => {
+        request.post(params, (error, response, body) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(body);
+            }
+        });
+    });
+}
 
 function LineURLMaker() {
     var url = "https://access.line.me/oauth2/v2.1/authorize" + "?response_type=code" + "&client_id=" +
