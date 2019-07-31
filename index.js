@@ -74,18 +74,14 @@ app.get('/auth', function (req, res, next) {
             });
             //ユーザー
             //res.send(token);
-            req.body.events.forEach(event => {
-                var options = {
-                    url: "https://api.line.me/v2/bot/profile/",
-                    headers: {
-                        Authorization: "Bearer " + token.access_token
-                    },
-                    json: true
-                };
-                request.get(options, (req, res, next) => {
-                    res.send(options);
-                });
+            const profile = yield getToken({
+                uri: 'https://api.line.me/v2/bot/profile/',
+                headers: {
+                    Authorization: 'Bearer ' + token.access_token
+                },
+                json: true,
             });
+            res.send(profile);
 
         });
     } else if (rParams.access_token) {
