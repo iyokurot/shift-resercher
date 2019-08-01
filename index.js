@@ -11,7 +11,9 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: true
 });
-
+const poollocal = new Pool({
+    connectionString: 'postgres://postgres:kayopile@localhost:5432/shift_reserch_test'
+});
 
 app.set("view engine", "ejs");
 app.use(session({
@@ -55,15 +57,6 @@ app.get("/callback", function (req, res) {
 app.get("/send", function (req, res) {
     res.send(req.session.userName);
 });
-///テストルート終了---------------------------------------
-
-
-app.get('/Home', function (req, res) {
-    res.send("Home View! Welcome "
-        + "Linename" + req.session.displayName
-        + "name" + req.session.username
-        + "worktime" + req.session.worktime);
-})
 app.get('/db', async (req, res) => {
     try {
         const client = await pool.connect()
@@ -80,6 +73,30 @@ app.get('/db', async (req, res) => {
         res.send("Error " + err);
     }
 })
+app.get('/dblocal', async (req, res) => {
+    try {
+        const client = await poollocal.connect()
+        const result = await client.query('SELECT * FROM user_table where userId=$1', ["sampleId"]);
+        const results = { 'results': (result) ? result.rows : null };
+        if (result.rowCount == 0) {
+            res.send("no rows");
+        } else {
+            res.send(results.results[0].name);
+        }
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+///テストルート終了---------------------------------------
+app.get('/Home', function (req, res) {
+    res.send("Home View! Welcome "
+        + "Linename" + req.session.displayName
+        + "name" + req.session.username
+        + "worktime" + req.session.worktime);
+})
+
 
 app.get('/auth', function (req, res, next) {
     const rParams = req.query;
@@ -115,7 +132,6 @@ app.get('/auth', function (req, res, next) {
                 json: true,
             });
             //userId,displayName,pictureUrl
-            //res.send(profile.userId);
             //登録済みユーザーか確認
             req.session.userId = profile.userId;
             req.session.displayName = profile.displayName;
@@ -143,7 +159,7 @@ app.get('/auth', function (req, res, next) {
 
     }
 })
-
+//ユーザー登録確認
 app.get('/regist', async (req, res) => {
     const userId = req.session.userId;
     const displayName = req.session.displayName;
@@ -162,8 +178,8 @@ app.get('/regist', async (req, res) => {
             req.session.username = results.results[0].name;
             req.session.worktime = results.results[0].worktime;
             req.session.administer = results.results[0].administer;
-            //res.send(results);
-            res.redirect('/Home');
+            //res.redirect('/Home');
+            res.render("./home.ejs", { user: req.session });
         }
         client.release();
     } catch (err) {
@@ -171,6 +187,7 @@ app.get('/regist', async (req, res) => {
         res.send("Error " + err);
     }
 })
+//ユーザー登録
 app.post('/register', async (req, res) => {
     const name = req.body.username;
     const userId = req.session.userId;
@@ -184,7 +201,8 @@ app.post('/register', async (req, res) => {
         req.session.username = name;
         req.session.worktime = worktime;
         req.session.administer = administer;
-        res.redirect('/Home');
+        //res.redirect('/Home');
+        res.render("./home.ejs", { user: req.session });
         client.release();
     } catch (err) {
         console.error(err);
