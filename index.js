@@ -59,8 +59,10 @@ app.get("/send", function (req, res) {
 
 
 app.get('/Home', function (req, res) {
-    res.send("Home View! Welcome " + req.session.displayName
-        + req.session.username);
+    res.send("Home View! Welcome "
+        + "Linename" + req.session.displayName
+        + "name" + req.session.username
+        + "worktime" + req.session.worktime);
 })
 app.get('/db', async (req, res) => {
     try {
@@ -157,11 +159,11 @@ app.get('/regist', async (req, res) => {
             res.render("./register.ejs", { user: req.session });
         } else {
             //登録ユーザー
-            req.session.username = results.name;
-            req.session.worktime = results.worktime;
-            req.session.administer = results.administer;
-            res.send(results);
-            //res.redirect('/Home');
+            req.session.username = results.results[0].name;
+            req.session.worktime = results.results[0].worktime;
+            req.session.administer = results.results[0].administer;
+            //res.send(results);
+            res.redirect('/Home');
         }
         client.release();
     } catch (err) {
