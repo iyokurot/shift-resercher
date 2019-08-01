@@ -91,10 +91,13 @@ app.get('/dblocal', async (req, res) => {
 })
 ///テストルート終了---------------------------------------
 app.get('/Home', function (req, res) {
+    /*
     res.send("Home View! Welcome "
         + "Linename" + req.session.displayName
         + "name" + req.session.username
         + "worktime" + req.session.worktime);
+        */
+    res.render("./home.ejs", { user: req.session });
 })
 
 
@@ -178,8 +181,8 @@ app.get('/regist', async (req, res) => {
             req.session.username = results.results[0].name;
             req.session.worktime = results.results[0].worktime;
             req.session.administer = results.results[0].administer;
-            //res.redirect('/Home');
-            res.render("./home.ejs", { user: req.session });
+            res.redirect('/Home');
+            //res.render("./home.ejs", { user: req.session });
         }
         client.release();
     } catch (err) {
@@ -201,8 +204,8 @@ app.post('/register', async (req, res) => {
         req.session.username = name;
         req.session.worktime = worktime;
         req.session.administer = administer;
-        //res.redirect('/Home');
-        res.render("./home.ejs", { user: req.session });
+        res.redirect('/Home');
+        //res.render("./home.ejs", { user: req.session });
         client.release();
     } catch (err) {
         console.error(err);
