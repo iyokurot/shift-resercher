@@ -89,6 +89,29 @@ app.get('/dblocal', async (req, res) => {
         res.send("Error " + err);
     }
 })
+app.get('/Homelocal', async (req, res) => {
+    try {
+        const client = await poollocal.connect()
+        const result = await client.query('SELECT * FROM user_table where userId=$1', ["sampleId"]);
+        const results = { 'results': (result) ? result.rows : null };
+        if (result.rowCount == 0) {
+            res.send("no rows");
+        } else {
+            req.session.userId = results.results[0].userId;
+            req.session.displayName = "LINE名前";
+            req.session.picture = "";
+            req.session.username = results.results[0].name;
+            req.session.worktime = results.results[0].worktime;
+            req.session.administer = results.results[0].administer;
+            res.render("./home.ejs", { user: req.session });
+        }
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+
+})
 ///テストルート終了---------------------------------------
 app.get('/Home', function (req, res) {
     /*
@@ -211,6 +234,10 @@ app.post('/register', async (req, res) => {
         console.error(err);
         res.send("Error " + err);
     }
+})
+
+app.get('/home.js', function (req, res) {
+    res.sendfile('src/script/home.js');
 })
 
 app.listen(process.env.PORT || 5000, () => {
