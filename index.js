@@ -70,7 +70,7 @@ app.get('/db', async (req, res) => {
         if (result.rowCount == 0) {
             res.send("no rows");
         } else {
-            res.send(results);
+            res.send(results.userid);
         }
         client.release();
     } catch (err) {
@@ -160,7 +160,7 @@ app.get('/regist', async (req, res) => {
             req.session.username = results.name;
             req.session.worktime = results.worktime;
             req.session.administer = results.administer;
-            res.send(results[0]);
+            res.send(results);
             //res.redirect('/Home');
         }
         client.release();
