@@ -148,7 +148,7 @@ app.get('/regist', async (req, res) => {
     const picture = req.session.picture;
     try {
         const client = await pool.connect();
-        const result = await client.query('SELECT * FROM user_table where userId=$1', [userId]);
+        const result = await client.query('SELECT * FROM user_table where userId=$1 LIMIT 1', [userId]);
         const results = { 'results': (result) ? result.rows : null };
         //res.render('pages/db', results);
         if (result.rowCount == 0) {
@@ -160,7 +160,7 @@ app.get('/regist', async (req, res) => {
             req.session.username = results.name;
             req.session.worktime = results.worktime;
             req.session.administer = results.administer;
-            res.send(results.name);
+            res.send(results[0].name);
             //res.redirect('/Home');
         }
         client.release();
