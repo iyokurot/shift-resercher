@@ -160,7 +160,8 @@ app.get('/regist', async (req, res) => {
             req.session.username = results.name;
             req.session.worktime = results.worktime;
             req.session.administer = results.administer;
-            res.redirect('/Home');
+            res.send(results);
+            //res.redirect('/Home');
         }
         client.release();
     } catch (err) {
@@ -172,7 +173,7 @@ app.post('/register', async (req, res) => {
     const name = req.body.username;
     const userId = req.session.userId;
     const worktime = req.body.worktime;
-    const administer = true;
+    const administer = false;
     const sql = 'INSERT INTO user_table values($1,$2,$3,$4)';
     const values = [name, userId, worktime, administer];
     try {
