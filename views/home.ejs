@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-
+    <link rel="stylesheet" href="/src/css/home.css">
     <title></title>
 </head>
 
 <body>
-    <script src="/home.js"> </script>
+    <script src="/src/script/home.js"> </script>
     <h1>シフト希望</h1>
     ようこそ<%=user.username %>さん
     <button onclick="getTest()">設定</button>
@@ -16,9 +16,11 @@
         <span>Calender</span>
         <span id="dateText"></span>
         <button>×</button><button>△</button><button>Time</button>
-        <a href="">◁</a><a href="">▷</a>
+        <button id="prevMonth" type="button">前の月</button>
+        <button id="nextMonth" type="button">次の月</button>
         <p>
             Calender
+            <div id="calendar"></div>
         </p>
         補足希望<br>
         <input type="textarea">
