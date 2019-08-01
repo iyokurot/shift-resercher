@@ -160,7 +160,7 @@ app.get('/regist', async (req, res) => {
             req.session.username = results.name;
             req.session.worktime = results.worktime;
             req.session.administer = results.administer;
-            res.send(results[0].name);
+            res.send(results + "::" + results.name);
             //res.redirect('/Home');
         }
         client.release();
