@@ -70,7 +70,7 @@ app.get('/db', async (req, res) => {
         if (result.rowCount == 0) {
             res.send("no rows");
         } else {
-            res.send(results);
+            res.send(results.results.name);
         }
         client.release();
     } catch (err) {
