@@ -19,6 +19,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
     //res.send('Hello world')
@@ -33,13 +35,14 @@ app.get('/', (req, res) => {
     res.render("./index.ejs", { items: data, lineurl: LineURLMaker() });
 })
 
+////テストルート---------------------------------------
 app.post('/Home', function (req, res) {
+    console.log(req.body);
+    console.log(req.body.user);
     res.send("Home View! ");
+
 })
-app.get('/Home', function (req, res) {
-    res.send("Home View! Welcome " + req.session.displayName
-        + req.session.results.name);
-})
+
 app.get("/callback", function (req, res) {
     var data = {
         name: "name"
@@ -52,6 +55,13 @@ app.get("/callback", function (req, res) {
 app.get("/send", function (req, res) {
     res.send(req.session.userName);
 });
+///テストルート終了---------------------------------------
+
+
+app.get('/Home', function (req, res) {
+    res.send("Home View! Welcome " + req.session.displayName
+        + req.session.username);
+})
 app.get('/db', async (req, res) => {
     try {
         const client = await pool.connect()
@@ -147,9 +157,31 @@ app.get('/regist', async (req, res) => {
             res.render("./register.ejs", { user: req.session });
         } else {
             //登録ユーザー
-            req.session.results = results;
+            req.session.username = results.name;
+            req.session.worktime = results.worktime;
+            req.session.administer = results.administer;
             res.redirect('/Home');
         }
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/register', async (req, res) => {
+    const name = req.body.username;
+    const userId = req.session.userId;
+    const worktime = req.body.worktime;
+    const administer = true;
+    const sql = 'INSERT INTO user_table values($1,$2,$3,$4)';
+    const values = [name, userId, worktime, administer];
+    try {
+        const client = await pool.connect();
+        const result = await client.query(sql, values);
+        req.session.username = name;
+        req.session.worktime = worktime;
+        req.session.administer = administer;
+        res.redirect('/Home');
         client.release();
     } catch (err) {
         console.error(err);
