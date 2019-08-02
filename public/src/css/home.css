@@ -18,8 +18,8 @@ table {
 
 td {
     border: 1px solid #ddd;
-    padding: 5px;
-    text-align: center;
+    padding: 15px;
+    text-align:center;
 }
 
 td:first-child {
@@ -32,4 +32,11 @@ td:last-child {
 
 td.is-disabled {
     color: #ccc;
+}
+
+
+@media screen and (max-width: 480px) {
+h1{
+    font-size: 14px;
+}
 }

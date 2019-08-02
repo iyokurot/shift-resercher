@@ -2,22 +2,45 @@ const weeks = ['日', '月', '火', '水', '木', '金', '土']
 const date = new Date()
 let year = date.getFullYear()
 let month = date.getMonth() + 1
+const thismonth = month;
 const config = {
     show: 3,
 }
 let prevMonth;
 let nextMonth;
+let wishtext = "X";
 
 window.addEventListener('DOMContentLoaded', function () {
     onLoad();
     prevMonth = document.getElementById("prevMonth");
     nextMonth = document.getElementById("nextMonth");
+    //前月
     prevMonth.addEventListener('click', moveCalendar);
+    //来月
     nextMonth.addEventListener('click', moveCalendar);
+    //日にち
     document.addEventListener("click", function (e) {
         if (e.target.classList.contains("calendar_td")) {
-            alert('クリックした日付は' + e.target.dataset.date + 'です')
+            //alert('クリックした日付は' + e.target.dataset.date + 'です')
+            //document.getElementById(e.target.dataset.date).innerHTML = wishtext;
+            var wish = document.getElementById(e.target.dataset.date).innerHTML;
+
+            if (wish == wishtext) {
+                document.getElementById(e.target.dataset.date).innerHTML = "";
+            } else {
+                document.getElementById(e.target.dataset.date).innerHTML = wishtext;
+            }
+
         }
+    })
+    document.getElementById("batu").addEventListener("click", function (e) {
+        wishtext = "X";
+    })
+    document.getElementById("sankaku").addEventListener("click", function (e) {
+        wishtext = "△";
+    })
+    document.getElementById("timeset").addEventListener("click", function (e) {
+        wishtext = "time";
     })
 })
 //初期読み込み
@@ -36,7 +59,7 @@ function setDate() {
         printday = 1;
     }
     const dateText = document.getElementById("dateText");
-    dateText.innerHTML = month + "月" + printday + "日～";
+    dateText.innerHTML = "<h1>" + year + " " + month + "月" + printday + "日～</h1>";
     //console.log(month + "/" + day);
 }
 
@@ -55,7 +78,7 @@ function setCalender(year, month) {
     let dayCount = 1 // 日にちのカウント
     let calendarHtml = '' // HTMLを組み立てる変数
 
-    calendarHtml += '<h1>' + year + '/' + month + '</h1>'
+    calendarHtml += '<p>' + year + '/' + month + '</p>'
     calendarHtml += '<table>'
     // 曜日の行を作成
     for (let i = 0; i < weeks.length; i++) {
@@ -76,7 +99,8 @@ function setCalender(year, month) {
                 calendarHtml += '<td class="is-disabled">' + num + '</td>'
                 dayCount++
             } else {
-                calendarHtml += '<td class="calendar_td" data-date=' + month + '/' + dayCount + '>' + dayCount + '</td>'
+                calendarHtml += '<td class="calendar_td" data-date=' + year + '/' + month + '/' + dayCount + '>' + dayCount
+                    + '<br><span id=' + year + '/' + month + '/' + dayCount + '> </span></td>'
                 dayCount++
             }
         }
@@ -90,7 +114,10 @@ function moveCalendar(e) {
     document.getElementById('calendar').innerHTML = ''
 
     if (e.target.id === 'prevMonth') {
-        month--
+        if (thismonth < month) {
+            month--
+        }
+
 
         if (month < 1) {
             year--
