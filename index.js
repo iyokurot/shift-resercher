@@ -116,15 +116,8 @@ app.get('/Homelocal', async (req, res) => {
 })
 ///テストルート終了---------------------------------------
 app.get('/Home', function (req, res) {
-    /*
-    res.send("Home View! Welcome "
-        + "Linename" + req.session.displayName
-        + "name" + req.session.username
-        + "worktime" + req.session.worktime);
-        */
     res.render("./home.ejs", { user: req.session });
 })
-
 
 app.get('/auth', function (req, res, next) {
     const rParams = req.query;
@@ -237,10 +230,16 @@ app.post('/register', async (req, res) => {
         res.send("Error " + err);
     }
 })
+//設定
+app.get('/setting', function (req, res) {
+    res.render("./setting.ejs", { user: req.session });
+})
 
+/*
 app.get('/home.js', function (req, res) {
     res.sendfile('src/script/home.js');
 })
+*/
 
 app.listen(process.env.PORT || 5000, () => {
     console.log('start')

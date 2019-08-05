@@ -59,7 +59,7 @@ function setDate() {
         printday = 1;
     }
     const dateText = document.getElementById("dateText");
-    dateText.innerHTML = "<h1>" + year + " " + month + "月" + printday + "日～</h1>";
+    dateText.innerHTML = "<h1>" + year + " " + month + "月" + printday + "日～受付中</h1>";
     //console.log(month + "/" + day);
 }
 
@@ -78,7 +78,7 @@ function setCalender(year, month) {
     let dayCount = 1 // 日にちのカウント
     let calendarHtml = '' // HTMLを組み立てる変数
 
-    calendarHtml += '<p>' + year + '/' + month + '</p>'
+    calendarHtml += '<p>' + year + '/' + month + '</p><br>'
     calendarHtml += '<table>'
     // 曜日の行を作成
     for (let i = 0; i < weeks.length; i++) {
