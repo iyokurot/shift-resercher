@@ -3,6 +3,7 @@ const app = express()
 const line_login = require("line-login");
 const co = require('co');
 const request = require('request');
+const path = require('path');
 require("dotenv").config();
 
 const session = require("express-session");
@@ -24,6 +25,7 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '/client/build')));
 
 
 app.get('/', (req, res) => {
@@ -39,12 +41,20 @@ app.get('/', (req, res) => {
     res.render("./index.ejs", { items: data, lineurl: LineURLMaker() });
 })
 
+
 ////テストルート---------------------------------------
 app.post('/Home', function (req, res) {
     console.log(req.body);
     console.log(req.body.user);
     res.send("Home View! ");
-
+})
+app.get('/test', function (req, res) {
+    var data = [
+        { name: "tes" },
+        { name: "str" },
+        { name: "sam" }
+    ]
+    res.json(data);
 })
 
 app.get("/callback", function (req, res) {
@@ -78,12 +88,13 @@ app.get('/db', async (req, res) => {
 app.get('/dblocal', async (req, res) => {
     try {
         const client = await poollocal.connect()
-        const result = await client.query('SELECT * FROM user_table where userId=$1', ["sampleId"]);
+        const result = await client.query('SELECT * FROM user_table ');
         const results = { 'results': (result) ? result.rows : null };
         if (result.rowCount == 0) {
             res.send("no rows");
         } else {
-            res.send(results.results[0].name);
+            //console.log(results.results[0]);
+            res.send(results.results);
         }
         client.release();
     } catch (err) {
@@ -112,7 +123,11 @@ app.get('/Homelocal', async (req, res) => {
         console.error(err);
         res.send("Error " + err);
     }
-
+})
+app.post('/dataRegister', function (req, res) {
+    console.log(req.body.comment);
+    console.log(req.body.dataday);
+    res.redirect('/Homelocal');
 })
 ///テストルート終了---------------------------------------
 app.get('/Home', function (req, res) {
@@ -235,11 +250,10 @@ app.get('/setting', function (req, res) {
     res.render("./setting.ejs", { user: req.session });
 })
 
-/*
-app.get('/home.js', function (req, res) {
-    res.sendfile('src/script/home.js');
-})
-*/
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
+
 
 app.listen(process.env.PORT || 5000, () => {
     console.log('start')

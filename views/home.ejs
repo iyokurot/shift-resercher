@@ -23,8 +23,11 @@
             <div id="calendar"></div>
         </p>
         補足希望<br>
-        <input type="textarea">
-        <button>登録</button>
+        <form method="POST" action="/dataRegister">
+            <span name="dataday" data-dataday="8/1"></span>
+            <input type="textarea" name="comment">
+            <button onclick="">登録</button>
+        </form>
     </div>
 
 

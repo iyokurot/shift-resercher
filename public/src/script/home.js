@@ -78,8 +78,8 @@ function setCalender(year, month) {
     let dayCount = 1 // 日にちのカウント
     let calendarHtml = '' // HTMLを組み立てる変数
 
-    calendarHtml += '<p>' + year + '/' + month + '</p><br>'
-    calendarHtml += '<table>'
+    calendarHtml += '<p>' + year + '/' + month + '</p>'
+    calendarHtml += '<table id=calendar-table>'
     // 曜日の行を作成
     for (let i = 0; i < weeks.length; i++) {
         calendarHtml += '<td>' + weeks[i] + '</td>'
@@ -117,14 +117,11 @@ function moveCalendar(e) {
         if (thismonth < month) {
             month--
         }
-
-
         if (month < 1) {
             year--
             month = 12
         }
     }
-
     if (e.target.id === 'nextMonth') {
         month++
 
@@ -137,9 +134,9 @@ function moveCalendar(e) {
     showCalendar(year, month)
 }
 
-
-
-
+function registerOnClick() {
+    alert("click");
+}
 
 
 function getTest() {
