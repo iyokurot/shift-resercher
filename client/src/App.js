@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom';
 import Home from './Home';
 
 const App = () => (
@@ -16,17 +16,30 @@ class Top extends Component {
     super(props);
     this.state = {
       dbcheck: [],
-      test: []
+      test: [],
+      redirect: false
+    }
+  }
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    })
+  }
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to='/Home' />
     }
   }
   render() {
     return (
       <div className="App">
+        {this.renderRedirect()}
         <h1>ログイン</h1>
-        <a href="/auth">
+        <a href="https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1604188912&redirect_uri=https://shift-resercher.herokuapp.com/auth&state=nkDA8PZ6rx&scope=profile&nonce=my%20shift-resercher">
           LINE ログインテスト2
     </a><br></br>
         <button onClick={this.lineAuth}>ログイン</button>
+        <a href="/auth">ログイン２</a>
 
         <div>
           <h2>tester</h2>
@@ -60,6 +73,7 @@ class Top extends Component {
           <div>
             {data.name}
           </div>)}
+        <button onClick={this.setRedirect}>redirect</button>
       </div>
     );
   }
@@ -71,14 +85,22 @@ class Top extends Component {
       .then(data => { this.setState({ dbcheck: data }); })
   }
   lineAuth = () => {
-    fetch('/auth', { mode: 'cors' })
+    fetch('/auth', {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
       .then(res => res.json())
+
   }
   getTest = () => {
     console.log("test");
     fetch('/test')
       .then(res => res.json())
-      .then(data => this.setState({ test: data }))
+    //.then(data => this.setState({ test: data }))
+
   }
 }
 

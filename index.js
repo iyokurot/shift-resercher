@@ -15,6 +15,10 @@ const pool = new Pool({
 const poollocal = new Pool({
     connectionString: 'postgres://postgres:kayopile@localhost:5432/shift_reserch_test'
 });
+const ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:5000'
+];
 
 app.set("view engine", "ejs");
 app.use(session({
@@ -26,6 +30,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, '/client/build')));
+app.use((req, res, next) => {
+    /*
+    const origin = req.headers.origin;
+    if (ALLOWED_ORIGINS.indexOf(req.headers.origin) > -1) {
+        //sess.cookie.secure = true;
+        //res.cookie('example', Math.random().toString(), { maxAge: 86400, httpOnly: true });
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        //res.setHeader('Access-Control-Allow-Methods', ALLOWED_METHODS.join(','));
+        res.setHeader('Access-Control-Allow-Headers', 'Content-type,Accept,X-Custom-Header');
+    }
+    */
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+});
 
 
 app.get('/', (req, res) => {
@@ -38,7 +61,7 @@ app.get('/', (req, res) => {
         ],
     };
     // レンダリングを行う
-    res.render("./index.ejs", { items: data, lineurl: LineURLMaker() });
+    res.render("./index.ejs", { items: data });
 })
 
 
@@ -49,12 +72,15 @@ app.post('/Home', function (req, res) {
     res.send("Home View! ");
 })
 app.get('/test', function (req, res) {
+    /*
     var data = [
         { name: "tes" },
         { name: "str" },
         { name: "sam" }
     ]
     res.json(data);
+    */
+    res.redirect("https://anime.dmkt-sp.jp/animestore/tp_pc");
 })
 
 app.get("/callback", function (req, res) {
@@ -144,7 +170,6 @@ app.get('/auth', function (req, res, next) {
                 code: rParams.code,
                 state: rParams.state,
             };
-
             // アクセストークン取得
             const token = yield getToken({
                 uri: 'https://api.line.me/oauth2/v2.1/token',
@@ -189,6 +214,7 @@ app.get('/auth', function (req, res, next) {
             'scope=profile',
             'nonce=my%20shift-resercher',
         ];
+
 
         // 認証画面へリダイレクト(認可コード取得)
         res.redirect(`${url}?${sParams.join('&')}`);
