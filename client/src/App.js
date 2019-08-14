@@ -7,6 +7,7 @@ const App = () => (
     <div>
       <Route exact path='/' component={Top} />
       <Route path='/Home' component={Home} />
+      <Route path='/Testpage' component={Home} />
     </div>
   </BrowserRouter>
 )
@@ -74,6 +75,7 @@ class Top extends Component {
             {data.name}
           </div>)}
         <button onClick={this.setRedirect}>redirect</button>
+        <Link to="/Home">Home</Link>
       </div>
     );
   }
@@ -97,7 +99,7 @@ class Top extends Component {
   }
   getTest = () => {
     console.log("test");
-    fetch('/test')
+    fetch('/testpageredirect')
       .then(res => res.json())
     //.then(data => this.setState({ test: data }))
 

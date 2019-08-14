@@ -80,8 +80,12 @@ app.get('/test', function (req, res) {
     ]
     res.json(data);
     */
-    res.redirect("https://anime.dmkt-sp.jp/animestore/tp_pc");
+    //res.redirect("https://anime.dmkt-sp.jp/animestore/tp_pc");
 })
+app.get('/testpageredirect', function (req, res) {
+    res.redirect("/Testpage");
+})
+
 
 app.get("/callback", function (req, res) {
     var data = {
@@ -155,9 +159,34 @@ app.post('/dataRegister', function (req, res) {
     console.log(req.body.dataday);
     res.redirect('/Homelocal');
 })
+app.get('/testuserdata', function (req, res) {
+    var data = {
+        userId: "id:dagfhhaog",
+        displayName: "disName",
+        picture: "url:https://....",
+        username: "name",
+        worktime: "遅",
+        administer: 1
+    }
+    res.json(data);
+})
+
 ///テストルート終了---------------------------------------
+/*
 app.get('/Home', function (req, res) {
     res.render("./home.ejs", { user: req.session });
+})
+*/
+app.get('/userdata', function (req, res) {
+    var data = {
+        userId: req.session.userId,
+        displayName: req.session.displayName,
+        picture: req.session.picture,
+        username: req.session.username,
+        worktime: req.session.worktime,
+        administer: req.session.administer
+    }
+    res.json(data);
 })
 
 app.get('/auth', function (req, res, next) {
