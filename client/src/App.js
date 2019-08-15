@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom';
 import Home from './Home';
+import Setting from './Setting';
+//test import
+import Homelocal from './Homelocal';
 
 const App = () => (
   <BrowserRouter>
     <div>
       <Route exact path='/' component={Top} />
       <Route path='/Home' component={Home} />
+      <Route path='./Setting' component={Setting} />
+
       <Route path='/Testpage' component={Home} />
+      <Route path='/Homelocal' component={Homelocal} />
     </div>
   </BrowserRouter>
 )
@@ -36,10 +42,6 @@ class Top extends Component {
       <div className="App">
         {this.renderRedirect()}
         <h1>ログイン</h1>
-        <a href="https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1604188912&redirect_uri=https://shift-resercher.herokuapp.com/auth&state=nkDA8PZ6rx&scope=profile&nonce=my%20shift-resercher">
-          LINE ログインテスト2
-    </a><br></br>
-        <button onClick={this.lineAuth}>ログイン</button>
         <a href="/auth">ログイン２</a>
 
         <div>
@@ -61,9 +63,7 @@ class Top extends Component {
             DBChecker in local
         </button>
           <br></br>
-          <a href="/Homelocal">
-            HomeChecker in local
-        </a>
+          <Link to="/Homelocal">HomeChecker in local</Link>
           <form method="post" action="/Home">
             formtester<br></br>
           </form>
@@ -75,7 +75,6 @@ class Top extends Component {
             {data.name}
           </div>)}
         <button onClick={this.setRedirect}>redirect</button>
-        <Link to="/Home">Home</Link>
       </div>
     );
   }
@@ -86,17 +85,7 @@ class Top extends Component {
       .then(res => res.json())
       .then(data => { this.setState({ dbcheck: data }); })
   }
-  lineAuth = () => {
-    fetch('/auth', {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-      .then(res => res.json())
 
-  }
   getTest = () => {
     console.log("test");
     fetch('/testpageredirect')

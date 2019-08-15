@@ -132,7 +132,14 @@ app.get('/dblocal', async (req, res) => {
         res.send("Error " + err);
     }
 })
-app.get('/Homelocal', async (req, res) => {
+
+app.post('/dataRegister', function (req, res) {
+    console.log(req.body.comment);
+    console.log(req.body.dataday);
+    res.redirect('/Homelocal');
+})
+//Home local
+app.get('/testuserdata', async (req, res) => {
     try {
         const client = await poollocal.connect()
         const result = await client.query('SELECT * FROM user_table where userId=$1', ["sampleId"]);
@@ -140,13 +147,21 @@ app.get('/Homelocal', async (req, res) => {
         if (result.rowCount == 0) {
             res.send("no rows");
         } else {
-            req.session.userId = results.results[0].userId;
+            req.session.userId = results.results[0].userid;
             req.session.displayName = "LINE名前";
-            req.session.picture = "";
+            req.session.picture = "http://...";
             req.session.username = results.results[0].name;
             req.session.worktime = results.results[0].worktime;
             req.session.administer = results.results[0].administer;
-            res.render("./home.ejs", { user: req.session });
+            var data = {
+                userId: req.session.userId,
+                displayName: req.session.displayName,
+                picture: req.session.picture,
+                username: req.session.username,
+                worktime: req.session.worktime,
+                administer: req.session.administer
+            }
+            res.json(data);
         }
         client.release();
     } catch (err) {
@@ -154,29 +169,8 @@ app.get('/Homelocal', async (req, res) => {
         res.send("Error " + err);
     }
 })
-app.post('/dataRegister', function (req, res) {
-    console.log(req.body.comment);
-    console.log(req.body.dataday);
-    res.redirect('/Homelocal');
-})
-app.get('/testuserdata', function (req, res) {
-    var data = {
-        userId: "id:dagfhhaog",
-        displayName: "disName",
-        picture: "url:https://....",
-        username: "name",
-        worktime: "遅",
-        administer: 1
-    }
-    res.json(data);
-})
 
 ///テストルート終了---------------------------------------
-/*
-app.get('/Home', function (req, res) {
-    res.render("./home.ejs", { user: req.session });
-})
-*/
 app.get('/userdata', function (req, res) {
     var data = {
         userId: req.session.userId,
