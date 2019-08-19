@@ -369,7 +369,6 @@ app.post('/register', async (req, res) => {
         req.session.worktime = worktime;
         req.session.administer = administer;
         res.redirect('/Home');
-        //res.render("./home.ejs", { user: req.session });
         client.release();
     } catch (err) {
         console.error(err);
@@ -391,6 +390,7 @@ app.get('/logout', function (req, res, next) {
             },
             json: true,
         });
+        delete req.session;
         res.send(logout);
     })
     //res.redirect('/');
