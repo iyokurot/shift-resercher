@@ -390,7 +390,7 @@ app.get('/logout', function (req, res, next) {
             },
             json: true,
         });
-        delete req.session;
+        req.session.destroy();
         res.send(logout);
     })
     //res.redirect('/');
