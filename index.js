@@ -391,8 +391,9 @@ app.get('/logout', function (req, res, next) {
             },
             json: true,
         });
+        res.send(logout);
     })
-    res.redirect('/');
+    //res.redirect('/');
 })
 
 //設定
