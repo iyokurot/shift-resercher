@@ -287,7 +287,7 @@ app.get('/auth', function (req, res, next) {
                 },
                 json: true,
             });
-
+            req.session.access_token = token.access_token;
             //res.send(token.access_token);
             //ユーザー
             const profile = yield getProfile({
@@ -376,6 +376,25 @@ app.post('/register', async (req, res) => {
         res.send("Error " + err);
     }
 })
+//ログアウト
+app.get('/logout', function (req, res, next) {
+    co(function* () {
+        const logout = yield getToken({
+            uri: 'https://api.line.me/oauth2/v2.1/revoke',
+            form: {
+                access_token: req.session.access_token,
+                client_id: process.env.LINE_LOGIN_CHANNEL_ID,
+                client_secret: process.env.LINE_LOGIN_CHANNEL_SECRET,
+            },
+            headers: {
+                ContentType: "application/x-www-form-urlencoded"
+            },
+            json: true,
+        });
+    })
+    res.redirect('/');
+})
+
 //設定
 /*
 app.get('/setting', function (req, res) {

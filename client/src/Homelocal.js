@@ -25,8 +25,7 @@ class Homelocal extends Component {
             receptionDate: new Date(),//受付中
             stamp: "x",//シフトに記入する文字
             stamptime: "",//時間希望
-            //calendarlist: [],
-            //shiftdatas: [],
+            deadline: "",//締め切り
             default_month_days: [],//defaultのシフト情報
             month_days: [],//更新されるシフト情報
             shifttimes: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
@@ -73,10 +72,11 @@ class Homelocal extends Component {
                 <h1>シフト希望</h1>
                 ようこそ{this.state.userdata.username}さん
                 <Link to="/Setting">設定</Link>
-                <h2>{this.state.date.getFullYear()} {this.state.date.getMonth() + 1}月
+                <a href="/logout">logout</a>
+                <h2>{this.state.receptionDate.getFullYear()} {this.state.receptionDate.getMonth() + 1}月
                 {this.state.receptionDate.getDate()}日～受付中</h2>
 
-                <span id="dateText"></span>
+                <div id="dateText">{this.state.deadline}</div>
                 <button id="batu" onClick={this.onClickstamp.bind(this, "x")}>×</button>
                 <button id="sankaku" onClick={this.onClickstamp.bind(this, "△")}>△</button>
                 <button id="timeset" onClick={this.onClickstamp.bind(this, "time")}>Time</button>
@@ -84,7 +84,7 @@ class Homelocal extends Component {
                 <Calendar
                     locale="ja-JP"
                     calendarType="US"
-                    value={this.state.date}
+                    value={this.state.receptionDate}
                     tileContent={this.getTileContent.bind(this)}
                     onChange={(value) => this.dayClick(value)}
                 />
@@ -140,19 +140,43 @@ class Homelocal extends Component {
 
     //受付中日にち
     getDateReception() {
+        let year = this.state.date.getFullYear();
+        let month = this.state.date.getMonth() + 1;
         const day = this.state.date.getDate();
-        let setday = this.state.date.getFullYear() + "/" + (this.state.date.getMonth() + 1);
-        if (day > 10 && day < 24) {
-            setday += "/16";
-            this.setState({
-                receptionDate: new Date(setday)
-            })
+        let deadline = "";
+        let setday = "";
+        if (day <= 10) {
+            //締め切り
+            const finaldate = new Date(year, month, 0);
+            deadline = month + "/10まで(" + month + "/16～" + month + "/" + finaldate.getDate() + ")"
+            //今月16～末日まで
+            setday = year + "/" + month + "/16";
+        } else if (day > 24) {
+            //年越し処理
+            if (month == 12) {
+                year++;
+                month = 0;
+            }
+            //締め切り
+            const finaldate = new Date(year, month, 0);
+            deadline = (month + 1) + "/10まで(" + (month + 1) + "/16～" + (month + 1) + "/" + finaldate.getDate() + ")"
+            //来月16～末日
+            setday = year + "/" + (month + 1) + "/16";
         } else {
-            setday += "/1";
-            this.setState({
-                receptionDate: new Date(setday)
-            })
+            //年越し処理
+            if (month == 12) {
+                year++;
+                month = 0;
+            }
+            //締め切り
+            deadline = month + "/24まで(" + (month + 1) + "/1～" + (month + 1) + "/15)"
+            //来月1～15まで
+            setday = year + "/" + (month + 1) + "/1";
         }
+        this.setState({
+            deadline: deadline,
+            receptionDate: new Date(setday)
+        })
     }
     getTileContent({ date, view }) {
         // 月表示のときのみ
@@ -295,7 +319,7 @@ class Homelocal extends Component {
             },
             mode: 'cors'
         }).then(res => res.json())
-            .then(str => console.log(str))
+            .then(str => alert("登録しました"))
         this.shiftupdateChecker("");
     }
 
