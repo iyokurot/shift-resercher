@@ -100,7 +100,7 @@ class Home extends Component {
                     onAfterOpen={this.afterOpenModal}
                     onRequestClose={this.closeModal}
                     style={customStyles}
-                    contentLabel="Example Modal"
+                    contentLabel="worktime Modal"
                 >
                     <h2>出勤可能時間を選択</h2>
                     <div>

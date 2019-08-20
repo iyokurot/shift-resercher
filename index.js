@@ -66,19 +66,12 @@ app.get('/', (req, res) => {
 
 
 ////テストルート---------------------------------------
-app.post('/Home', function (req, res) {
-    console.log(req.body);
-    console.log(req.body.user);
-    res.send("Home View! ");
-})
 app.get('/test', function (req, res) {
 
 })
 app.get('/testpageredirect', function (req, res) {
     res.redirect("/Testpage");
 })
-
-
 app.get("/callback", function (req, res) {
     var data = {
         name: "name"
@@ -154,6 +147,22 @@ app.get('/testuserdata', async (req, res) => {
                 administer: req.session.administer
             }
             res.json(data);
+        }
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.get('/testmemberlist', async (req, res) => {
+    try {
+        const client = await poollocal.connect()
+        const result = await client.query('SELECT * FROM user_table');
+        const results = { 'results': (result) ? result.rows : null };
+        if (result.rowCount == 0) {
+            res.send("no rows");
+        } else {
+            res.json(results.results);
         }
         client.release();
     } catch (err) {
@@ -252,6 +261,74 @@ app.post('/testupdatecommentdata', async (req, res) => {
         res.send("Error " + err);
     }
 })
+app.post('/testupdateusername', async (req, res) => {
+    try {
+        const name = req.body[0];
+        const client = await poollocal.connect()
+        const result = await client.query('update user_table set name=$1 where userid=$2', [name, req.session.userId]);
+
+        client.release();
+        res.json("name update");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/testupdateworktime', async (req, res) => {
+    try {
+        const worktime = req.body[0];
+        const client = await poollocal.connect()
+        const result = await client.query('update user_table set worktime=$1 where userid=$2', [worktime, req.session.userId]);
+
+        client.release();
+        res.json("name update");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/testdeletemember', async (req, res) => {
+    try {
+        const id = req.body[0];
+        const client = await poollocal.connect()
+        const result = await client.query('delete from shift_table where userid=$1', [id]);
+        const result1 = await client.query('delete from comment_table where userid=$1', [id]);
+        const result2 = await client.query('delete from user_table where userid=$1', [id]);
+
+        client.release();
+        res.json("delete user");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/testdeleteadminister', async (req, res) => {
+    try {
+        const id = req.body[0];
+        const client = await poollocal.connect()
+        const result = await client.query('update user_table set administer=$1 where userid=$2', ['f', id]);
+
+        client.release();
+        res.json("delete administer");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/testaddadminister', async (req, res) => {
+    try {
+        const id = req.body[0];
+        const client = await poollocal.connect()
+        const result = await client.query('update user_table set administer=$1 where userid=$2', ['t', id]);
+
+        client.release();
+        res.json("add administer");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+
 ///テストルート終了---------------------------------------
 app.get('/userdata', function (req, res) {
     var data = {
@@ -391,9 +468,8 @@ app.get('/logout', function (req, res, next) {
             json: true,
         });
         req.session.destroy();
-        res.send(logout);
     })
-    //res.redirect('/');
+    res.redirect('/');
 })
 
 //設定
@@ -480,7 +556,6 @@ app.get('/getcommentdata', async (req, res) => {
 app.post('/updatecommentdata', async (req, res) => {
     try {
         const comment = req.body[0];
-        console.log(comment)
         const client = await pool.connect()
         const result = await client.query('update comment_table set date=current_date,text=$1 where userid=$2', [comment, req.session.userId]);
 
@@ -491,7 +566,60 @@ app.post('/updatecommentdata', async (req, res) => {
         res.send("Error " + err);
     }
 })
+app.post('/updateusername', async (req, res) => {
+    try {
+        const name = req.body[0];
+        const client = await pool.connect()
+        const result = await client.query('update user_table set name=$1 where userid=$2', [name, req.session.userId]);
 
+        client.release();
+        res.json("name update");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/updateworktime', async (req, res) => {
+    try {
+        const worktime = req.body[0];
+        const client = await pool.connect()
+        const result = await client.query('update user_table set worktime=$1 where userid=$2', [worktime, req.session.userId]);
+
+        client.release();
+        res.json("name update");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/deletemember', async (req, res) => {
+    try {
+        const id = req.body[0];
+        const client = await pool.connect()
+        const result = await client.query('delete from shift_table where userid=$1', [id]);
+        const result1 = await client.query('delete from comment_table where userid=$1', [id]);
+        const result2 = await client.query('delete from user_table where userid=$1', [id]);
+
+        client.release();
+        res.json("delete user");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/deleteadminister', async (req, res) => {
+    try {
+        const id = req.body[0];
+        const client = await pool.connect()
+        const result = await client.query('update user_table set administer=$1 where userid=$2', ['f', id]);
+
+        client.release();
+        res.json("delete administer");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
 
 
 //react
