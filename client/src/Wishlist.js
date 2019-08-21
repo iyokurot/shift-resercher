@@ -5,16 +5,32 @@ class Wishlist extends Component {
         super(props);
         this.state = {
             query: this.props.location.query,
-            accessable: false
+            accessable: false,
+            memberlist: [],
+            allshiftdata: []
         }
 
     }
     componentDidMount() {
+        //アクセス判定
         if (this.props.location.query !== undefined) {
             if (this.props.location.query.pass === "administer") {
                 this.setState({
                     accessable: true
                 })
+                //全ユーザー取得
+                fetch('/testmemberlist')
+                    //fetch('/memberlist')
+                    .then(res => res.json())
+                    .then(list => {
+                        this.setState({ memberlist: list })
+                        //全シフト情報取得
+                        fetch('/testallshiftdata')
+                            //fetch('/allshiftdata')
+                            .then(res => res.json())
+                            .then(data => this.setState({ allshiftdata: data }))
+                    })
+
             }
         }
     }

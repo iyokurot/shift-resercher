@@ -153,7 +153,7 @@ class Homelocal extends Component {
             setday = year + "/" + month + "/16";
         } else if (day > 24) {
             //年越し処理
-            if (month == 12) {
+            if (month === 12) {
                 year++;
                 month = 0;
             }
@@ -164,7 +164,7 @@ class Homelocal extends Component {
             setday = year + "/" + (month + 1) + "/16";
         } else {
             //年越し処理
-            if (month == 12) {
+            if (month === 12) {
                 year++;
                 month = 0;
             }
@@ -207,9 +207,9 @@ class Homelocal extends Component {
             const clickday = value.getFullYear() + ("0" + (value.getMonth() + 1)).slice(-2) + ("0" + value.getDate()).slice(-2);
             this.setState({ clickdate: clickday })
             //空or重複判定
-            if (null == dayslist[clickday] || "" == dayslist[clickday].text) {
+            if (null == dayslist[clickday] || "" === dayslist[clickday].text) {
                 //stampが記号か日付で分岐
-                if (this.state.stamp == "time") {
+                if (this.state.stamp === "time") {
                     this.openModal();
 
                 } else {
@@ -217,12 +217,12 @@ class Homelocal extends Component {
                     this.setState({ month_days: dayslist })
                 }
                 //stamp一致クリック
-            } else if (this.state.stamp == dayslist[clickday].text) {
+            } else if (this.state.stamp === dayslist[clickday].text) {
                 dayslist[clickday] = { text: "" }
                 this.setState({ month_days: dayslist })
-            } else if (this.state.stamp != dayslist[clickday].text) {
+            } else if (this.state.stamp !== dayslist[clickday].text) {
                 //stampが記号か日付で分岐
-                if (this.state.stamp == "time") {
+                if (this.state.stamp === "time") {
                     //this.openModal();
                     dayslist[clickday] = { text: "" }
                 } else {
@@ -284,14 +284,14 @@ class Homelocal extends Component {
         //削除されたシフト情報
         const deleteshiftdata = [];
         for (let shiftday in defshift) {
-            if (newshift[shiftday].text == "") {
+            if (newshift[shiftday].text === "") {
                 deleteshiftdata[shiftday] = { text: defshift[shiftday].text }
             }
         }
         //更新されたシフト情報
         const updateshiftdata = [];
         for (let shiftday in newshift) {
-            if (defshift[shiftday] != null && newshift[shiftday].text != "" && defshift[shiftday].text != newshift[shiftday].text) {
+            if (defshift[shiftday] != null && newshift[shiftday].text !== "" && defshift[shiftday].text !== newshift[shiftday].text) {
                 updateshiftdata[shiftday] = { text: newshift[shiftday].text }
             }
         }
@@ -340,10 +340,10 @@ class Homelocal extends Component {
             .then(str => this.shiftupdateChecker(str))
     }
     shiftupdateChecker(str) {
-        if (str != "") {
+        if (str !== "") {
             const list = [];
             for (let data of this.state.isUpdateshift) {
-                if (data != str) {
+                if (data !== str) {
                     list.push(data);
                 }
             }

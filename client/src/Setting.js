@@ -42,11 +42,12 @@ class Setting extends Component {
         this.closememberModal = this.closememberModal.bind(this);
         this.closeadministerModal = this.closeadministerModal.bind(this);
         this.onChangeaddministeroption = this.onChangeaddministeroption.bind(this);
+        this.onClickadminister = this.onClickadminister.bind(this);
     }
     componentDidMount() {
         //ユーザーデータ取得
-        //fetch('/testuserdata')
-        fetch('/userdata')
+        fetch('/testuserdata')
+            //fetch('/userdata')
             .then(res => res.json())
             .then(data => {
                 this.setState({
@@ -61,8 +62,8 @@ class Setting extends Component {
             })
     }
     loadmemberlist() {
-        //fetch('/testmemberlist')
-        fetch('/memberlist')
+        fetch('/testmemberlist')
+            //fetch('/memberlist')
             .then(res => res.json())
             .then(list => {
                 this.setState({ memberlist: list });
@@ -149,7 +150,7 @@ class Setting extends Component {
                                 <button onClick={(e) => this.onClickdeleteadminister(member)}>解除</button>
                             </span>
                         </div>)}
-                    {this.state.isAddadminister ? (
+                    {(this.state.isAddadminister && this.state.nonadministerlist.length > 0) ? (
                         <span>
                             <select onChange={this.onChangeaddministeroption} value={this.state.addministeroption.name}>
                                 {this.state.nonadministerlist.map((member) =>
@@ -159,7 +160,7 @@ class Setting extends Component {
                             <button onClick={(e) => this.onClickaddAdminister()}>追加</button>
                         </span>
                     ) : (
-                            <button onClick={(e) => this.setState({ isAddadminister: true })}>追加</button>
+                            <button onClick={(e) => this.onClickadminister()}>追加</button>
                         )}
 
                     <button onClick={this.closeadministerModal}>閉じる</button>
@@ -281,6 +282,11 @@ class Setting extends Component {
             }
         }
 
+    }
+    onClickadminister() {
+        this.setState({
+            isAddadminister: true
+        })
     }
     //管理者追加
     onClickaddAdminister() {

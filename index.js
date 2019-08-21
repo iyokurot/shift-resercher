@@ -124,6 +124,7 @@ app.post('/dataRegister', function (req, res) {
     res.redirect('/Homelocal');
 })
 //Home local
+//user
 app.get('/testuserdata', async (req, res) => {
     try {
         const client = await poollocal.connect()
@@ -170,6 +171,59 @@ app.get('/testmemberlist', async (req, res) => {
         res.send("Error " + err);
     }
 })
+app.post('/testupdateusername', async (req, res) => {
+    try {
+        const name = req.body[0];
+        const client = await poollocal.connect()
+        const result = await client.query('update user_table set name=$1 where userid=$2', [name, req.session.userId]);
+
+        client.release();
+        res.json("name update");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/testupdateworktime', async (req, res) => {
+    try {
+        const worktime = req.body[0];
+        const client = await poollocal.connect()
+        const result = await client.query('update user_table set worktime=$1 where userid=$2', [worktime, req.session.userId]);
+
+        client.release();
+        res.json("name update");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/testdeleteadminister', async (req, res) => {
+    try {
+        const id = req.body[0];
+        const client = await poollocal.connect()
+        const result = await client.query('update user_table set administer=$1 where userid=$2', ['f', id]);
+
+        client.release();
+        res.json("delete administer");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/testaddadminister', async (req, res) => {
+    try {
+        const id = req.body[0];
+        const client = await poollocal.connect()
+        const result = await client.query('update user_table set administer=$1 where userid=$2', ['t', id]);
+
+        client.release();
+        res.json("add administer");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+//shift
 app.get('/testshiftdata', async (req, res) => {
     try {
         const client = await poollocal.connect()
@@ -230,6 +284,23 @@ app.post('/testupdateshiftdata', async (req, res) => {
         res.send("Error " + err);
     }
 })
+app.get('/testallshiftdata', async (req, res) => {
+    try {
+        const client = await poollocal.connect()
+        const result = await client.query('SELECT * FROM shift_table');
+        const results = { 'results': (result) ? result.rows : null };
+        if (result.rowCount == 0) {
+            res.send("no rows");
+        } else {
+            res.json(results.results);
+        }
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+//comment
 app.get('/testgetcommentdata', async (req, res) => {
     try {
         const client = await poollocal.connect()
@@ -261,32 +332,7 @@ app.post('/testupdatecommentdata', async (req, res) => {
         res.send("Error " + err);
     }
 })
-app.post('/testupdateusername', async (req, res) => {
-    try {
-        const name = req.body[0];
-        const client = await poollocal.connect()
-        const result = await client.query('update user_table set name=$1 where userid=$2', [name, req.session.userId]);
-
-        client.release();
-        res.json("name update");
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-})
-app.post('/testupdateworktime', async (req, res) => {
-    try {
-        const worktime = req.body[0];
-        const client = await poollocal.connect()
-        const result = await client.query('update user_table set worktime=$1 where userid=$2', [worktime, req.session.userId]);
-
-        client.release();
-        res.json("name update");
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-})
+//all
 app.post('/testdeletemember', async (req, res) => {
     try {
         const id = req.body[0];
@@ -302,32 +348,7 @@ app.post('/testdeletemember', async (req, res) => {
         res.send("Error " + err);
     }
 })
-app.post('/testdeleteadminister', async (req, res) => {
-    try {
-        const id = req.body[0];
-        const client = await poollocal.connect()
-        const result = await client.query('update user_table set administer=$1 where userid=$2', ['f', id]);
 
-        client.release();
-        res.json("delete administer");
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-})
-app.post('/testaddadminister', async (req, res) => {
-    try {
-        const id = req.body[0];
-        const client = await poollocal.connect()
-        const result = await client.query('update user_table set administer=$1 where userid=$2', ['t', id]);
-
-        client.release();
-        res.json("add administer");
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-})
 
 ///テストルート終了---------------------------------------
 app.get('/userdata', function (req, res) {
@@ -472,12 +493,7 @@ app.get('/logout', function (req, res, next) {
     res.redirect('/');
 })
 
-//設定
-/*
-app.get('/setting', function (req, res) {
-    res.render("./setting.ejs", { user: req.session });
-})
-*/
+//user
 app.get('/memberlist', async (req, res) => {
     try {
         const client = await pool.connect()
@@ -494,6 +510,59 @@ app.get('/memberlist', async (req, res) => {
         res.send("Error " + err);
     }
 })
+app.post('/updateusername', async (req, res) => {
+    try {
+        const name = req.body[0];
+        const client = await pool.connect()
+        const result = await client.query('update user_table set name=$1 where userid=$2', [name, req.session.userId]);
+
+        client.release();
+        res.json("name update");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/updateworktime', async (req, res) => {
+    try {
+        const worktime = req.body[0];
+        const client = await pool.connect()
+        const result = await client.query('update user_table set worktime=$1 where userid=$2', [worktime, req.session.userId]);
+
+        client.release();
+        res.json("name update");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/deleteadminister', async (req, res) => {
+    try {
+        const id = req.body[0];
+        const client = await pool.connect()
+        const result = await client.query('update user_table set administer=$1 where userid=$2', ['f', id]);
+
+        client.release();
+        res.json("delete administer");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/addadminister', async (req, res) => {
+    try {
+        const id = req.body[0];
+        const client = await pool.connect()
+        const result = await client.query('update user_table set administer=$1 where userid=$2', ['t', id]);
+
+        client.release();
+        res.json("add administer");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+//shift
 app.get('/shiftdata', async (req, res) => {
     try {
         const client = await pool.connect()
@@ -552,6 +621,7 @@ app.post('/updateshiftdata', async (req, res) => {
         res.send("Error " + err);
     }
 })
+//comment
 app.get('/getcommentdata', async (req, res) => {
     try {
         const client = await pool.connect()
@@ -582,32 +652,7 @@ app.post('/updatecommentdata', async (req, res) => {
         res.send("Error " + err);
     }
 })
-app.post('/updateusername', async (req, res) => {
-    try {
-        const name = req.body[0];
-        const client = await pool.connect()
-        const result = await client.query('update user_table set name=$1 where userid=$2', [name, req.session.userId]);
-
-        client.release();
-        res.json("name update");
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-})
-app.post('/updateworktime', async (req, res) => {
-    try {
-        const worktime = req.body[0];
-        const client = await pool.connect()
-        const result = await client.query('update user_table set worktime=$1 where userid=$2', [worktime, req.session.userId]);
-
-        client.release();
-        res.json("name update");
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-})
+//all
 app.post('/deletemember', async (req, res) => {
     try {
         const id = req.body[0];
@@ -623,19 +668,7 @@ app.post('/deletemember', async (req, res) => {
         res.send("Error " + err);
     }
 })
-app.post('/deleteadminister', async (req, res) => {
-    try {
-        const id = req.body[0];
-        const client = await pool.connect()
-        const result = await client.query('update user_table set administer=$1 where userid=$2', ['f', id]);
 
-        client.release();
-        res.json("delete administer");
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-})
 
 
 //react
