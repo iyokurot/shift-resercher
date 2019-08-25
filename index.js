@@ -734,7 +734,7 @@ app.post('/deletemember', async (req, res) => {
 app.post('/deleteuser', async (req, res) => {
     try {
         const id = req.session.userId;
-        const client = await poollocal.connect()
+        const client = await pool.connect()
         const result = await client.query('delete from shift_table where userid=$1', [id]);
         const result1 = await client.query('delete from comment_table where userid=$1', [id]);
         const result2 = await client.query('delete from user_table where userid=$1', [id]);
