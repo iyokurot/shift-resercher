@@ -709,7 +709,7 @@ app.post('/addcommentdata', async (req, res) => {
                 [req.session.userId, comment[com].date, comment[com].comment, comment[com].wishday]);
         }
         client.release();
-        res.json("com add");
+        res.json(["com add"]);
     } catch (err) {
         console.error(err);
         res.send("Error " + err);
