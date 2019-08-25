@@ -651,6 +651,22 @@ app.post('/updateshiftdata', async (req, res) => {
         res.send("Error " + err);
     }
 })
+app.get('/allshiftdata', async (req, res) => {
+    try {
+        const client = await pool.connect()
+        const result = await client.query('SELECT * FROM shift_table');
+        const results = { 'results': (result) ? result.rows : null };
+        if (result.rowCount == 0) {
+            res.send("no rows");
+        } else {
+            res.json(results.results);
+        }
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
 //comment
 app.get('/getcommentdata', async (req, res) => {
     try {
