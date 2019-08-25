@@ -307,7 +307,7 @@ app.get('/testgetcommentdata', async (req, res) => {
         const result = await client.query('SELECT * FROM comment_table where userid=$1', [req.session.userId]);
         const results = { 'results': (result) ? result.rows : null };
         if (result.rowCount == 0) {
-            const create = await client.query('insert into comment_table (userid) values($1)', [req.session.userId]);
+            //const create = await client.query('insert into comment_table (userid) values($1)', [req.session.userId]);
             res.json("");
         } else {
             res.json(results.results);
@@ -320,13 +320,29 @@ app.get('/testgetcommentdata', async (req, res) => {
 })
 app.post('/testupdatecommentdata', async (req, res) => {
     try {
-        const comment = req.body[0];
-        console.log(comment)
-        const client = await poollocal.connect()
-        const result = await client.query('update comment_table set date=current_date,text=$1 where userid=$2', [comment, req.session.userId]);
-
+        const comment = req.body;
+        const client = await poollocal.connect();
+        for (const com in comment) {
+            const result = await client.query('update comment_table set text=$1,wishday=$2  where userid=$3 and date=$4',
+                [comment[com].comment, comment[com].wishday, req.session.userId, comment[com].date]);
+        }
         client.release();
         res.json("com update");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/testaddcommentdata', async (req, res) => {
+    try {
+        const comment = req.body;
+        const client = await poollocal.connect();
+        for (const com in comment) {
+            const result = await client.query('insert into comment_table (userid,date,text,wishday) values($1,$2,$3,$4)',
+                [req.session.userId, comment[com].date, comment[com].comment, comment[com].wishday]);
+        }
+        client.release();
+        res.json("com add");
     } catch (err) {
         console.error(err);
         res.send("Error " + err);
@@ -348,7 +364,21 @@ app.post('/testdeletemember', async (req, res) => {
         res.send("Error " + err);
     }
 })
+app.post('/testdeleteuser', async (req, res) => {
+    try {
+        const id = req.session.userId;
+        const client = await poollocal.connect()
+        const result = await client.query('delete from shift_table where userid=$1', [id]);
+        const result1 = await client.query('delete from comment_table where userid=$1', [id]);
+        const result2 = await client.query('delete from user_table where userid=$1', [id]);
 
+        client.release();
+        res.json("json");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
 
 ///テストルート終了---------------------------------------
 app.get('/userdata', function (req, res) {
@@ -628,7 +658,7 @@ app.get('/getcommentdata', async (req, res) => {
         const result = await client.query('SELECT * FROM comment_table where userid=$1', [req.session.userId]);
         const results = { 'results': (result) ? result.rows : null };
         if (result.rowCount == 0) {
-            const create = await client.query('insert into comment_table (userid) values($1)', [req.session.userId]);
+            //const create = await client.query('insert into comment_table (userid) values($1)', [req.session.userId]);
             res.json("");
         } else {
             res.json(results.results);
@@ -641,12 +671,29 @@ app.get('/getcommentdata', async (req, res) => {
 })
 app.post('/updatecommentdata', async (req, res) => {
     try {
-        const comment = req.body[0];
-        const client = await pool.connect()
-        const result = await client.query('update comment_table set date=current_date,text=$1 where userid=$2', [comment, req.session.userId]);
-
+        const comment = req.body;
+        const client = await pool.connect();
+        for (const com in comment) {
+            const result = await client.query('update comment_table set text=$1,wishday=$2  where userid=$3 and date=$4',
+                [comment[com].comment, comment[com].wishday, req.session.userId, comment[com].date]);
+        }
         client.release();
         res.json("com update");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/addcommentdata', async (req, res) => {
+    try {
+        const comment = req.body;
+        const client = await pool.connect();
+        for (const com in comment) {
+            const result = await client.query('insert into comment_table (userid,date,text,wishday) values($1,$2,$3,$4)',
+                [req.session.userId, comment[com].date, comment[com].comment, comment[com].wishday]);
+        }
+        client.release();
+        res.json("com add");
     } catch (err) {
         console.error(err);
         res.send("Error " + err);
@@ -663,6 +710,21 @@ app.post('/deletemember', async (req, res) => {
 
         client.release();
         res.json("delete user");
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.post('/deleteuser', async (req, res) => {
+    try {
+        const id = req.session.userId;
+        const client = await poollocal.connect()
+        const result = await client.query('delete from shift_table where userid=$1', [id]);
+        const result1 = await client.query('delete from comment_table where userid=$1', [id]);
+        const result2 = await client.query('delete from user_table where userid=$1', [id]);
+
+        client.release();
+        res.json("json");
     } catch (err) {
         console.error(err);
         res.send("Error " + err);

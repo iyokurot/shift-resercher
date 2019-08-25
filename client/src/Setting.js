@@ -2,6 +2,18 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 
+import { makeStyles } from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
+
+const useStyles = makeStyles(theme => ({
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    input: {
+        margin: theme.spacing(1),
+    },
+}));
 const customStyles = {
     content: {
         top: '50%',
@@ -37,6 +49,8 @@ class Setting extends Component {
         this.updateUsername = this.updateUsername.bind(this);
         this.onChangeworktime = this.onChangeworktime.bind(this);
         this.setworktime = this.setworktime.bind(this);
+        this.onClickunsubsribe = this.onClickunsubsribe.bind(this);
+        this.pushtoHome = this.pushtoHome.bind(this);
 
         this.openmemberModal = this.openmemberModal.bind(this);
         this.closememberModal = this.closememberModal.bind(this);
@@ -46,8 +60,8 @@ class Setting extends Component {
     }
     componentDidMount() {
         //ユーザーデータ取得
-        fetch('/testuserdata')
-            //fetch('/userdata')
+        //fetch('/testuserdata')
+        fetch('/userdata')
             .then(res => res.json())
             .then(data => {
                 this.setState({
@@ -62,8 +76,8 @@ class Setting extends Component {
             })
     }
     loadmemberlist() {
-        fetch('/testmemberlist')
-            //fetch('/memberlist')
+        //fetch('/testmemberlist')
+        fetch('/memberlist')
             .then(res => res.json())
             .then(list => {
                 this.setState({ memberlist: list });
@@ -92,7 +106,18 @@ class Setting extends Component {
                 <p>{this.state.userdata.displayName}</p>
                 <div>
                     ユーザー名
+                    {/* 
                 <input type="textarea" name="name" value={this.state.username} onChange={this.onChangeusername}></input>
+                    */}
+                    <Input
+                        id="username"
+                        value={this.state.username}
+                        onChange={this.onChangeusername}
+                        className={useStyles.input}
+                        inputProps={{
+                            'aria-label': 'username',
+                        }}
+                    />
                     <button onClick={this.updateUsername}>更新</button>
                 </div>
                 <div>
@@ -112,7 +137,7 @@ class Setting extends Component {
                             </span>
                         )}
                 </div>
-                <button>退会</button>
+                <button onClick={this.onClickunsubsribe}>退会</button>
                 <div style={{ display: this.state.userdata.administer ? '' : 'none' }}>
                     管理者権限<br></br>
                     <button>希望一覧</button>
@@ -128,7 +153,7 @@ class Setting extends Component {
                 >
                     <h2>登録者一覧</h2>
                     {this.state.memberlist.map((member) =>
-                        <div>
+                        <div key={member.userid}>
                             {member.name}
                             <span style={{ display: (member.userid !== this.state.userdata.userId) ? '' : 'none' }}>
                                 <button value={member.userid} onClick={(e) => this.onClickdeletemember(member)}>登録削除</button>
@@ -144,7 +169,7 @@ class Setting extends Component {
                 >
                     <h2>管理者一覧</h2>
                     {this.state.administerlist.map((member) =>
-                        <div>
+                        <div key={member.userid}>
                             {member.name}
                             <span style={{ display: (member.userid !== this.state.userdata.userId) ? '' : 'none' }}>
                                 <button onClick={(e) => this.onClickdeleteadminister(member)}>解除</button>
@@ -219,6 +244,28 @@ class Setting extends Component {
         this.setState({
             ischangeworktime: false
         })
+    }
+    //退会ボタン
+    onClickunsubsribe() {
+        //退会確認
+        if (window.confirm("退会しますか？\n全ユーザーデータが削除されます")) {
+            //fetch('/testdeleteuser', {
+            fetch('/deleteuser', {
+                method: 'POST',
+                //body: "sub",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors'
+            }).then(res => res.json())
+            fetch('/logout')
+                .then(res => res.json())
+            this.pushtoHome();
+        }
+
+    }
+    pushtoHome = () => {
+        this.props.history.push('/');
     }
 
     openmemberModal() {
@@ -309,9 +356,6 @@ class Setting extends Component {
                 })
         }
     }
-
-
-
 
     closeadministerModal() {
         this.setState({
