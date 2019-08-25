@@ -477,6 +477,7 @@ class Home extends Component {
                 })
             }
         }
+        console.log(updatecommentdata);
         fetch('/updatecommentdata', {
             //fetch('/testupdatecommentdata', {
             method: 'POST',
@@ -486,6 +487,7 @@ class Home extends Component {
             },
             mode: 'cors'
         }).then(res => res.json())
+        console.log(addcommentdata);
         fetch('/addcommentdata', {
             //fetch('/testaddcommentdata', {
             method: 'POST',
