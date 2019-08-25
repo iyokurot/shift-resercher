@@ -66,8 +66,11 @@ app.get('/', (req, res) => {
 
 
 ////テストルート---------------------------------------
-app.get('/test', function (req, res) {
-
+app.get('/testregister', function (req, res) {
+    req.session.userId = "testerID";
+    req.session.displayName = "LINE名前";
+    req.session.picture = "sample.jpg";
+    res.render("./register.ejs", { user: req.session });
 })
 app.get('/testpageredirect', function (req, res) {
     res.redirect("/Testpage");

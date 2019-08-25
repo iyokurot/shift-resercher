@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom';
 import Home from './Home';
 import Setting from './Setting';
 import Wishlist from './Wishlist';
+import './css/Top.css';
 //test import
 import Homelocal from './Homelocal';
 
@@ -41,11 +42,13 @@ class Top extends Component {
     return (
       <div className="App">
         {this.renderRedirect()}
-        <h1>ログイン</h1>
-        <a href="/auth">ログイン２</a>
+        <h1>Shift-Resercher</h1>
+        <a href="/auth" class="login_button">login_button</a>
+        <form action="/auth" method="GET">
+          <input type="submit" />
+        </form>
 
         <div>
-          <h2>tester</h2>
           ------------------<br></br>
           <a href="/callback">
             callback
@@ -56,6 +59,11 @@ class Top extends Component {
         </a>
           <br></br>
           <Link to="/Home">HomeChecker in local</Link>
+          <br></br>
+
+          <a href="/regist" >
+            regist
+        </a>
           <br></br>
           -------------------------
     </div>

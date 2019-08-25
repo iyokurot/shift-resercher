@@ -1,0 +1,10 @@
+body{
+    text-align: center;
+    background-color: #EFEFE4;
+}
+.login_button{
+    width: 200px;
+    height: 50px;
+    /*background: url(../line/btn_login_base.png);
+    */
+}

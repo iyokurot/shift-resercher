@@ -1,0 +1,46 @@
+body{
+    text-align: center;
+    background-color: #EFEFE4;
+}
+.center{
+    display: inline-block;
+}
+h1{
+  background-color: #EFEFE4;
+  border-bottom: 1px solid rgb(0, 0, 0);
+  color: #e73a3a;
+  -webkit-text-stroke: 1px #FFF;
+}
+#profileimage{
+    width:100px;
+    height:100px;
+    border-radius: 50%;
+}
+#linename{
+    color: rgb(0, 212, 64)
+}
+#namesubtitle{
+    font-size: 12px;
+    color: rgb(37, 37, 37);
+}
+.submitbutton{
+    width: 200px;
+    display: inline-block;
+  padding: 0.3em 1em;
+  text-decoration: none;
+  color: rgb(57, 129, 223);
+  border: solid 2px rgb(57, 129, 223);
+  border-radius: 3px;
+  transition: .4s;
+}
+.submitbutton:hover{
+    background: rgb(57, 129, 223);
+  color: white;
+}
+
+/*スマホ対応*/
+@media screen and (max-width: 480px) {
+h1{
+    font-size: 30px;
+}
+}
