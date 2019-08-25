@@ -65,8 +65,8 @@ class Home extends Component {
     componentDidMount() {
         this.getDateReception();
         //ユーザーデータ取得
-        fetch('/userdata')
-            //fetch('/testuserdata')
+        //fetch('/userdata')
+        fetch('/testuserdata')
             .then(res => res.json())
             .then(data => this.setState({ userdata: data }))
         //シフトデータ取得
@@ -184,6 +184,7 @@ class Home extends Component {
                 com = list[firstdate].comment;
                 wish = list[firstdate].wishday;
             }
+            console.log(firstdate);
             this.setState({
                 default_comments: deflist,
                 comments: list,
@@ -409,6 +410,7 @@ class Home extends Component {
     }
     //登録ボタン
     addDataOnClick() {
+        console.log(this.state.nowprintcommentday);
         this.state.comments[this.state.nowprintcommentday] = {
             comment: this.state.comment,
             wishday: this.state.wishday
@@ -457,6 +459,7 @@ class Home extends Component {
         //コメント更新
         //差分配列add＆update配列生成のちfetch
         const addcommentdata = [];
+        console.log(this.state.comments)
         for (const com in this.state.comments) {
             if (this.state.default_comments[com] == null) {
                 addcommentdata.push({

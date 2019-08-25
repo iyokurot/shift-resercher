@@ -675,7 +675,7 @@ app.get('/getcommentdata', async (req, res) => {
         const results = { 'results': (result) ? result.rows : null };
         if (result.rowCount == 0) {
             //const create = await client.query('insert into comment_table (userid) values($1)', [req.session.userId]);
-            res.json("");
+            res.json([]);
         } else {
             res.json(results.results);
         }
