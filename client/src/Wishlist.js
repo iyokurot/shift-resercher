@@ -34,6 +34,7 @@ class Wishlist extends Component {
             printdays: []//表示する期間
         }
 
+        this.onClickchangeterm = this.onClickchangeterm.bind(this);
         this.setprintDays = this.setprintDays.bind(this);
         this.sortmembershift = this.sortmembershift.bind(this);
     }
@@ -44,7 +45,7 @@ class Wishlist extends Component {
                 this.setState({
                     accessable: true
                 })
-                this.setprintDays();
+                this.setdefaultDays();
                 //全ユーザー取得
                 //fetch('/testmemberlist')
                 fetch('/memberlist')
@@ -57,7 +58,7 @@ class Wishlist extends Component {
                             .then(res => res.json())
                             .then(data => {
                                 this.setState({ allshiftdata: data });
-                                this.sortmembershift(list, data);
+                                this.sortmembershift(list, data, this.state.startdate);
                             })
                     })
 
@@ -71,7 +72,9 @@ class Wishlist extends Component {
                 {this.state.accessable ? (
                     <div>
                         <h1>Wishlist</h1>
-                        アクセス可能
+                        シフト希望一覧
+                        <button value="pre" onClick={this.onClickchangeterm}>◁</button>
+                        <button value="back" onClick={this.onClickchangeterm}>▷</button>
                         <Paper className={classes.root}
                             style={{
                                 overflowX: 'scroll'
@@ -105,8 +108,8 @@ class Wishlist extends Component {
 
         );
     }
-    //表示期間計算
-    setprintDays() {
+    //初期
+    setdefaultDays() {
         //表示する期間開始日を計算
         const date = new Date();
         const year = date.getFullYear();
@@ -126,7 +129,50 @@ class Wishlist extends Component {
         }
         //date確認用
         //startdate = new Date(2019, 7, 16);
+        this.setprintDays(startdate);
+    }
+    onClickchangeterm(e) {
+        const startdate = this.state.startdate;
+        let year = startdate.getFullYear();
+        let month = startdate.getMonth();
+        let day = startdate.getDate();
+        const str = e.target.value;
 
+        if (str === "pre") {
+            if (day === 16) {
+                day = 1;
+            } else if (day === 1) {
+                if (month === 0) {
+                    year--;
+                    month = 11;
+                    day = 16;
+                } else {
+                    month--;
+                    day = 16;
+                }
+            }
+        } else if (str === "back") {
+            //
+            if (day === 1) {
+                day = 16;
+            } else if (day === 16) {
+                if (month === 11) {
+                    year++;
+                    month = 0;
+                    day = 1;
+                } else {
+                    month++;
+                    day = 1;
+                }
+            }
+        }
+        const newstartdate = new Date(year, month, day);
+        this.setState({ startdate: newstartdate })
+        this.setprintDays(newstartdate);
+        this.sortmembershift(this.state.memberlist, this.state.allshiftdata, newstartdate);
+    }
+    //表示期間計算
+    setprintDays(startdate) {
         //表示する期間配列生成
         const days = [];
         if (startdate.getDate() === 1) {
@@ -144,16 +190,16 @@ class Wishlist extends Component {
             printdays: days
         });
     }
-    //
-    sortmembershift(members, shifts) {
-        const printdate = this.state.startdate;
+    //表示用list作成
+    sortmembershift(members, shifts, startdate) {
+        const printdate = startdate;
         let printfinaldate = "";
         let shiftlist = [];
         if (printdate.getDate() === 1) {
             printfinaldate = new Date(printdate.getFullYear(), printdate.getMonth(), 15)
             shiftlist = Array(15);
         } else if (printdate.getDate() === 16) {
-            printfinaldate = new Date(printdate.getFullYear(), printdate.getMonth(), 0);
+            printfinaldate = new Date(printdate.getFullYear(), printdate.getMonth() + 1, 0);
             shiftlist = Array(printfinaldate.getDate() - 15);
         }
         const membertoshift = [];
@@ -180,7 +226,7 @@ class Wishlist extends Component {
                 shift: myshift
             })
         }
-        //
+
         this.setState({
             printlist: membertoshift
         });

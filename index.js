@@ -135,7 +135,7 @@ app.get('/testuserdata', async (req, res) => {
         } else {
             req.session.userId = results.results[0].userid;
             req.session.displayName = "LINE名前";
-            req.session.picture = "http://...";
+            req.session.picture = "sample.jpg";
             req.session.username = results.results[0].name;
             req.session.worktime = results.results[0].worktime;
             req.session.administer = results.results[0].administer;

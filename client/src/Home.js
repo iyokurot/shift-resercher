@@ -184,7 +184,6 @@ class Home extends Component {
                 com = list[firstdate].comment;
                 wish = list[firstdate].wishday;
             }
-            console.log(firstdate);
             this.setState({
                 default_comments: deflist,
                 comments: list,
@@ -410,7 +409,6 @@ class Home extends Component {
     }
     //登録ボタン
     addDataOnClick() {
-        console.log(this.state.nowprintcommentday);
         this.state.comments[this.state.nowprintcommentday] = {
             comment: this.state.comment,
             wishday: this.state.wishday
@@ -459,7 +457,6 @@ class Home extends Component {
         //コメント更新
         //差分配列add＆update配列生成のちfetch
         const addcommentdata = [];
-        console.log(this.state.comments)
         for (const com in this.state.comments) {
             if (this.state.default_comments[com] == null) {
                 addcommentdata.push({
@@ -480,7 +477,6 @@ class Home extends Component {
                 })
             }
         }
-        console.log(updatecommentdata);
         fetch('/updatecommentdata', {
             //fetch('/testupdatecommentdata', {
             method: 'POST',
@@ -490,7 +486,6 @@ class Home extends Component {
             },
             mode: 'cors'
         }).then(res => res.json())
-        console.log(addcommentdata);
         fetch('/addcommentdata', {
             //fetch('/testaddcommentdata', {
             method: 'POST',
@@ -534,6 +529,11 @@ class Home extends Component {
                     //fetch('/testshiftdata')
                     .then(res => res.json())
                     .then(data => this.setdefaultshifts(data))
+                //コメントデータ取得
+                fetch('/getcommentdata')
+                    //fetch('/testgetcommentdata')
+                    .then(res => res.json())
+                    .then(data => this.setdefaultcomment(data))
             }
             this.setState({ isUpdateshift: list });
         } else {
@@ -543,6 +543,11 @@ class Home extends Component {
                     //fetch('/testshiftdata')
                     .then(res => res.json())
                     .then(data => this.setdefaultshifts(data))
+                //コメントデータ取得
+                fetch('/getcommentdata')
+                    //fetch('/testgetcommentdata')
+                    .then(res => res.json())
+                    .then(data => this.setdefaultcomment(data))
             }
         }
     }
