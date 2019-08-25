@@ -65,8 +65,8 @@ class Home extends Component {
     componentDidMount() {
         this.getDateReception();
         //ユーザーデータ取得
-        //fetch('/userdata')
-        fetch('/testuserdata')
+        fetch('/userdata')
+            //fetch('/testuserdata')
             .then(res => res.json())
             .then(data => this.setState({ userdata: data }))
         //シフトデータ取得
