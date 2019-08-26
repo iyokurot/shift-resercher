@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
+import './css/Setting.css';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -102,7 +103,7 @@ class Setting extends Component {
         return (
             <div>
                 <h1>設定</h1>
-                <img src={this.state.userdata.picture}></img>
+                <img src={this.state.userdata.picture} id="profileimage"></img>
                 <p>{this.state.userdata.displayName}</p>
                 <div>
                     ユーザー名

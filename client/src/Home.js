@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import Modal from 'react-modal';
+import './css/Home.css';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import SettingIcon from '@material-ui/icons/SettingsApplications';
+
 
 const customStyles = {
     content: {
@@ -11,8 +16,29 @@ const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)'
+    },
+    formcontrol: {
+        fontSize: '10px'
     }
 };
+const calendarstyle = {
+    content: {
+        display: 'inline-block'
+    }
+}
+const CssTextField = withStyles({
+    root: {
+        '& label.Mui-focused': {
+            color: '#20C2D3',
+        },
+        '& .MuiOutlinedInput-root': {
+            '&.Mui-focused fieldset': {
+                borderColor: '#20C2D3',
+            },
+        },
+    },
+})(TextField);
+
 Modal.setAppElement('#root')
 
 class Home extends Component {
@@ -85,40 +111,56 @@ class Home extends Component {
             <div>
                 <h1>シフト希望</h1>
                 ようこそ{this.state.userdata.username}さん
-                <Link to="/Setting">設定</Link>
-                <a href="/logout">logout</a>
-                <h2>{this.state.receptionDate.getFullYear()} {this.state.receptionDate.getMonth() + 1}月
-                {this.state.receptionDate.getDate()}日～受付中</h2>
 
+                <span>
+                    <Link to="/Setting">
+                        <SettingIcon></SettingIcon>
+                    </Link>
+                    <a href="/logout">
+                        ログアウト
+                    </a>
+                </span>
+                <h2 className="reception">{this.state.receptionDate.getFullYear()} {this.state.receptionDate.getMonth() + 1}月
+                {this.state.receptionDate.getDate()}日～受付中</h2>
                 <div id="dateText">{this.state.deadline}</div>
-                <button id="batu" onClick={this.onClickstamp.bind(this, "x")}>×</button>
-                <button id="sankaku" onClick={this.onClickstamp.bind(this, "△")}>△</button>
-                <button id="timeset" onClick={this.onClickstamp.bind(this, "time")}>Time</button>
-                <div id="calendar"></div>
-                <Calendar
-                    locale="ja-JP"
-                    calendarType="US"
-                    value={this.state.receptionDate}
-                    tileContent={this.getTileContent.bind(this)}
-                    onChange={(value) => this.dayClick(value)}
-                />
-                <div>
+                <button className="wishbutton" id="batu" onClick={this.onClickstamp.bind(this, "x")}>✕</button>
+                <button className="wishbutton" id="sankaku" onClick={this.onClickstamp.bind(this, "△")}>△</button>
+                <button className="wishbutton" id="timeset" onClick={this.onClickstamp.bind(this, "time")}>時間指定</button>
+                <br />
+                <div id="calendar">
+                    <Calendar
+                        locale="ja-JP"
+                        calendarType="US"
+                        value={this.state.receptionDate}
+                        tileContent={this.getTileContent.bind(this)}
+                        onChange={(value) => this.dayClick(value)}
+                    />
+                </div>
+                <div className="flame">
                     補足希望:{this.state.complementdaysText}
-                    <button onClick={this.dayspreOnclick}>◁</button>
-                    <button onClick={this.daysbackOnclick}>▷</button>
+                    <button onClick={this.dayspreOnclick} className="wishbutton" id="prevwish">◁</button>
+                    <button onClick={this.daysbackOnclick} className="wishbutton" id="backwish">▷</button>
                     <br />
-                    <div>
+                    <div id="wishday">
                         希望出勤日数：
+
                     <select onChange={this.wishdayOnchange} value={this.state.wishday}>
                             {this.state.wishdays.map(days =>
                                 <option key={days}>{days}</option>)}
                         </select>日
-                </div>
+                    </div>
 
                     <div>
-                        伝言：
-                    <input type="textarea" name="comment" value={this.state.comment} onChange={this.commentOnchange}></input>
-                        <button onClick={this.addDataOnClick}>登録</button>
+                        <CssTextField
+                            id="outlined-name"
+                            label="追記"
+                            value={this.state.comment}
+                            onChange={this.commentOnchange}
+                            margin="normal"
+                            variant="outlined"
+                            placeholder="希望を記入"
+                        />
+                        <button id="submit_shiftdata" onClick={this.addDataOnClick}>登録</button>
                     </div>
                 </div>
 
@@ -248,7 +290,7 @@ class Home extends Component {
         }
         const day = this.getFormatDate(date);
         return (
-            <p>
+            <p className="calendaritem">
                 {(this.state.month_days[day] && this.state.month_days[day].text) ?
                     this.state.month_days[day].text : '  '
                 }
