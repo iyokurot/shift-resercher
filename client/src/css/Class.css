@@ -1,0 +1,108 @@
+/*Top*/
+.login_button{
+    border: 0px;
+    width: 151px;
+    height: 44px;
+    background: url(../line/btn_login_base.png) left top no-repeat;
+    margin: 10px;
+}
+.login_button:hover{
+    background: url(../line/btn_login_hover.png) left top no-repeat;
+}
+.login_button:active{
+    background: url(../line/btn_login_press.png) left top no-repeat;
+}
+/*Home*/
+.reception{
+    padding: 10px;
+    padding-bottom: 0;
+  border-bottom: 1px solid #5f28c4;
+    margin: 0%;
+    color: #5f28c4;
+}
+.redbutton{
+    color: #b93892;
+    border: solid 1px #b93892;
+    background-color: rgb(220, 238, 250);
+    margin: 2px;
+    width: 80px;
+    display: inline-block;
+    text-decoration: none;
+    transition: .4s;
+}
+.redbutton:hover{
+    background: #b93892;
+    color: white;
+}
+.bluebutton{
+    color: #5f28c4;
+    border: solid 1px #5f28c4;
+    background-color: rgb(220, 238, 250);
+    margin: 2px;
+    width: 80px;
+    display: inline-block;
+    text-decoration: none;
+    transition: .4s;
+}
+.bluebutton:hover{
+    background: #5f28c4;
+    color: white;
+}
+.greenbutton{
+    color: #004918;
+    border: solid 1px #004918;
+    background-color: rgb(220, 238, 250);
+    margin: 2px;
+    width: 80px;
+    display: inline-block;
+    text-decoration: none;
+    transition: .4s;
+}
+.greenbutton:hover{
+    background: #004918;
+    color: white;
+}
+
+.calendaritem{
+    height: 30px;
+}
+.flame{
+    margin: auto;
+    width: 350px;
+    border: solid 2px #5f28c4;
+    padding: 0.5em;
+    margin: 5px auto;
+    background-color: rgba(255,255,255,0.5);
+}
+
+/*Setting*/
+.profilesetting{
+    background-color: rgba(255,255,255, 0.3);
+    border: solid 2px #5f28c4;
+    padding: 3px;
+    margin: auto;
+    width: 350px;
+}
+
+.administerview{
+    margin: 10px 0px;
+    background-color: black;
+    padding:10px;
+}
+.administerheader{
+    margin: 0px;
+    color: rgb(32, 255, 99);
+    font-family: 'serif', serif;
+}
+.administerbutton{
+    color: rgb(32, 255, 99);
+    border: solid 1px rgb(32, 255, 99);
+    margin: 5px;
+    background-color: rgba(255,255,255, 0.3);
+    padding: 2px;
+    width: 80px;
+}
+.administerbutton:hover{
+    background: rgb(32, 255, 99);
+    color: black;
+}

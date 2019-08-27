@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
-import './css/Setting.css';
+
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -103,48 +103,50 @@ class Setting extends Component {
         return (
             <div>
                 <h1>設定</h1>
-                <img src={this.state.userdata.picture} id="profileimage"></img>
-                <p>{this.state.userdata.displayName}</p>
-                <div>
-                    ユーザー名
+                <div className="profilesetting">
+                    <img src={this.state.userdata.picture} id="profileimage"></img>
+                    <p id="linename">{this.state.userdata.displayName}</p>
+                    <div>
+                        ユーザー名
                     {/* 
                 <input type="textarea" name="name" value={this.state.username} onChange={this.onChangeusername}></input>
                     */}
-                    <Input
-                        id="username"
-                        value={this.state.username}
-                        onChange={this.onChangeusername}
-                        className={useStyles.input}
-                        inputProps={{
-                            'aria-label': 'username',
-                        }}
-                    />
-                    <button onClick={this.updateUsername}>更新</button>
-                </div>
-                <div>
-                    勤務区分:
+                        <Input
+                            id="username"
+                            value={this.state.username}
+                            onChange={this.onChangeusername}
+                            className={useStyles.input}
+                            inputProps={{
+                                'aria-label': 'username',
+                            }}
+                        />
+                        <button onClick={this.updateUsername} className="bluebutton" id="updatebutton">更新</button>
+                    </div>
+                    <div>
+                        勤務区分:
                 {this.state.ischangeworktime ? (
-                        <span>
-                            <input type="radio" name="worktime" value="早" checked={this.state.worktime === '早'}
-                                onChange={() => this.setState({ worktime: '早' })} />早番
-                            <input type="radio" name="worktime" value="遅" checked={this.state.worktime === '遅'}
-                                onChange={() => this.setState({ worktime: '遅' })} />遅番
-                            <button onClick={this.setworktime}>更新</button>
-                        </span>
-                    ) : (
                             <span>
-                                {this.state.userdata.worktime}番
-                                <button onClick={this.onChangeworktime}>変更</button>
+                                <input type="radio" name="worktime" value="早" checked={this.state.worktime === '早'}
+                                    onChange={() => this.setState({ worktime: '早' })} />早番
+                            <input type="radio" name="worktime" value="遅" checked={this.state.worktime === '遅'}
+                                    onChange={() => this.setState({ worktime: '遅' })} />遅番
+                            <button onClick={this.setworktime} className="bluebutton">更新</button>
                             </span>
-                        )}
+                        ) : (
+                                <span>
+                                    {this.state.userdata.worktime}番
+                                <button onClick={this.onChangeworktime} className="bluebutton">変更</button>
+                                </span>
+                            )}
+                    </div>
+                    <button onClick={this.onClickunsubsribe} className="redbutton" id="disbutton">退会</button>
                 </div>
-                <button onClick={this.onClickunsubsribe}>退会</button>
-                <div style={{ display: this.state.userdata.administer ? '' : 'none' }}>
-                    管理者権限<br></br>
-                    <button>希望一覧</button>
-                    <Link to={{ pathname: '/Wishlist', query: { pass: "administer" } }}>hope</Link>
-                    <button onClick={this.openmemberModal}>登録者一覧</button>
-                    <button onClick={(e) => this.setState({ administerModalopen: true })}>管理者一覧</button>
+                <div style={{ display: this.state.userdata.administer ? '' : 'none' }} className="administerview">
+                    <h2 className="administerheader">管理者権限</h2>
+                    <Link to={{ pathname: '/Wishlist', query: { pass: "administer" } }}>
+                        <span className="administerbutton">希望一覧</span></Link><br />
+                    <button onClick={this.openmemberModal} className="administerbutton">登録者一覧</button>
+                    <button onClick={(e) => this.setState({ administerModalopen: true })} className="administerbutton">管理者一覧</button>
                 </div>
                 <Modal
                     isOpen={this.state.memberModalopen}

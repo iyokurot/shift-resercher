@@ -1,0 +1,65 @@
+#developer{
+    font-size: 10px;
+    color: rgb(46, 46, 46);
+}
+/*Home*/
+#setting{
+    background-image: url("../images/baseline_settings_applications_black_18dp.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin:0px 10px;
+}
+
+
+#dateText{
+    color: #e73a3a;
+}
+
+#calendar{
+    display: inline-block;
+    background-color: black;
+}
+
+#wishday select{
+  background: transparent;
+  height: 21px;
+  border: 1px solid #5f28c4;
+  border-radius: 2px;
+}
+#submit_shiftdata{
+    border: none;
+    padding: 0;
+    margin: 5px 0 5px 10px;
+    display: inline-block;
+  text-decoration: none;
+  background: #5f28c4;
+  color: #FFF;
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  border-radius: 50%;
+  text-align: center;
+  overflow: hidden;
+  transition: .4s;
+}
+#submit_shiftdata:hover {
+  background: #261050;
+}
+
+/*Setting*/
+#profileimage{
+    width:100px;
+    height:100px;
+    border-radius: 50%;
+}
+#linename{
+    color: rgb(0, 212, 64)
+}
+#updatebutton{
+    width: auto;
+}
+#disbutton{
+    width: 80%;
+    margin: 3px;
+}

@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import Modal from 'react-modal';
-import './css/Home.css';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import SettingIcon from '@material-ui/icons/SettingsApplications';
+//import SettingIcon from '@material-ui/icons/SettingsApplications';
 
 
 const customStyles = {
@@ -29,11 +28,11 @@ const calendarstyle = {
 const CssTextField = withStyles({
     root: {
         '& label.Mui-focused': {
-            color: '#20C2D3',
+            color: '#5f28c4',
         },
         '& .MuiOutlinedInput-root': {
             '&.Mui-focused fieldset': {
-                borderColor: '#20C2D3',
+                borderColor: '#5f28c4',
             },
         },
     },
@@ -113,19 +112,21 @@ class Home extends Component {
                 ようこそ{this.state.userdata.username}さん
 
                 <span>
-                    <Link to="/Setting">
-                        <SettingIcon></SettingIcon>
+                    <Link to="/Setting" id="setting">
+                        <span id="setting"></span>
                     </Link>
                     <a href="/logout">
-                        ログアウト
+                        <span className="redbutton">
+                            ログアウト
+                        </span>
                     </a>
                 </span>
                 <h2 className="reception">{this.state.receptionDate.getFullYear()} {this.state.receptionDate.getMonth() + 1}月
                 {this.state.receptionDate.getDate()}日～受付中</h2>
                 <div id="dateText">{this.state.deadline}</div>
-                <button className="wishbutton" id="batu" onClick={this.onClickstamp.bind(this, "x")}>✕</button>
-                <button className="wishbutton" id="sankaku" onClick={this.onClickstamp.bind(this, "△")}>△</button>
-                <button className="wishbutton" id="timeset" onClick={this.onClickstamp.bind(this, "time")}>時間指定</button>
+                <button className="redbutton" onClick={this.onClickstamp.bind(this, "x")}>✕</button>
+                <button className="greenbutton" onClick={this.onClickstamp.bind(this, "△")}>△</button>
+                <button className="bluebutton" onClick={this.onClickstamp.bind(this, "time")}>時間指定</button>
                 <br />
                 <div id="calendar">
                     <Calendar
@@ -138,8 +139,8 @@ class Home extends Component {
                 </div>
                 <div className="flame">
                     補足希望:{this.state.complementdaysText}
-                    <button onClick={this.dayspreOnclick} className="wishbutton" id="prevwish">◁</button>
-                    <button onClick={this.daysbackOnclick} className="wishbutton" id="backwish">▷</button>
+                    <button onClick={this.dayspreOnclick} className="bluebutton">◁</button>
+                    <button onClick={this.daysbackOnclick} className="bluebutton">▷</button>
                     <br />
                     <div id="wishday">
                         希望出勤日数：

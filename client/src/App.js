@@ -3,7 +3,10 @@ import { BrowserRouter, Route, Link } from 'react-router-dom';
 import Home from './Home';
 import Setting from './Setting';
 import Wishlist from './Wishlist';
-import './css/Top.css';
+import './css/Tag.css';
+import './css/Class.css';
+import './css/Id.css';
+
 
 const App = () => (
   <BrowserRouter>
