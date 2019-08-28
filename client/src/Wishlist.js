@@ -70,7 +70,6 @@ class Wishlist extends Component {
                             .then(data => {
                                 this.setState({ allcommentdata: data });
                                 this.sortmembercomment(list, data, this.state.startdate);
-                                console.log(data);
                             })
                     })
 
@@ -112,19 +111,23 @@ class Wishlist extends Component {
                                 </TableBody>
                             </Table>
                         </Paper>
-                        補足希望
-                        <table>
-                            <tr>
-                                <th>userid</th>
-                                <th>wishday</th>
-                                <th>comment</th>
-                            </tr>
-                            {this.state.printcommentlist.map(comment =>
+                        補足希望<br />
+                        <table className="wishtable">
+                            <thead>
                                 <tr>
-                                    <td>{comment.id}</td>
-                                    <td>{comment.wishday}</td>
-                                    <td>{comment.comment}</td>
-                                </tr>)}
+                                    <th className="tablename">名前</th>
+                                    <th className="tableday">日数</th>
+                                    <th className="tablecomment">追記</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.printcommentlist.map(comment =>
+                                    <tr key={comment.name}>
+                                        <td>{comment.name}</td>
+                                        <td>{comment.wishday}</td>
+                                        <td className="tablecommenttd">{comment.comment}</td>
+                                    </tr>)}
+                            </tbody>
                         </table>
                     </div>
                 ) : (
@@ -261,25 +264,31 @@ class Wishlist extends Component {
     //表示用list作成（コメント
     sortmembercomment(members, comments, startdate) {
         const printdate = startdate;
-        console.log(printdate);
         const membertocomment = [];
         for (const member of members) {
+            let isAdd = false;
             for (const com of comments) {
                 if (member.userid === com.userid) {
-                    if (printdate === com.date) {
+                    const commentdate = new Date(com.date);
+                    if ((printdate.getFullYear() + "/" + printdate.getMonth() + "/" + printdate.getDate()) ===
+                        commentdate.getFullYear() + "/" + commentdate.getMonth() + "/" + commentdate.getDate()) {
                         membertocomment.push({
-                            id: com.userid,
+                            name: member.name,
                             wishday: com.wishday,
                             comment: com.text
                         })
-                    } else {
-                        membertocomment.push({
-                            id: com.userid,
-                            wishday: com.wishday,
-                            comment: com.text
-                        })
+                        isAdd = true;
+                        break;
                     }
                 }
+            }
+            if (!isAdd) {
+                membertocomment.push({
+                    name: member.name,
+                    wishday: "",
+                    comment: ""
+                })
+                isAdd = false;
             }
         }
         this.setState({

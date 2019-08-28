@@ -106,3 +106,32 @@
     background: rgb(32, 255, 99);
     color: black;
 }
+/*Wishlist*/
+.wishtable{
+    display: inline-block;
+    border: solid 1px;
+    text-align: center;
+    border-collapse: collapse;
+    background-color: white;
+    margin: 20px;
+}
+.wishtable th{
+    color: #5f28c4;
+}
+.wishtable th,.wishtable td{
+    border: solid 1px;
+    padding: 5px 2px;
+}
+.tablename{
+    width: 100px;
+}
+.tableday{
+    min-width: 40px;
+    width: 50px;
+}
+.tablecomment{
+    width: 80%;
+}
+.tablecommenttd{
+    text-align: left;
+}
