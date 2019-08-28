@@ -61,8 +61,8 @@ class Setting extends Component {
     }
     componentDidMount() {
         //ユーザーデータ取得
-        fetch('/testuserdata')
-            //fetch('/userdata')
+        //fetch('/testuserdata')
+        fetch('/userdata')
             .then(res => res.json())
             .then(data => {
                 this.setState({
