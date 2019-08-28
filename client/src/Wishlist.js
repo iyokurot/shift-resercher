@@ -27,7 +27,9 @@ class Wishlist extends Component {
             accessable: false,//アクセス判定
             memberlist: [],//登録メンバー
             allshiftdata: [],//全シフト情報
+            allcommentdata: [],//全コメント情報
             printlist: [],//表示するリスト
+            printcommentlist: [],//表示するコメントリスト
             deadlineearly: 10,
             deallinelate: 24,
             startdate: "",
@@ -37,6 +39,7 @@ class Wishlist extends Component {
         this.onClickchangeterm = this.onClickchangeterm.bind(this);
         this.setprintDays = this.setprintDays.bind(this);
         this.sortmembershift = this.sortmembershift.bind(this);
+        this.sortmembercomment = this.sortmembercomment.bind(this);
     }
     componentDidMount() {
         //アクセス判定
@@ -60,6 +63,15 @@ class Wishlist extends Component {
                                 this.setState({ allshiftdata: data });
                                 this.sortmembershift(list, data, this.state.startdate);
                             })
+                        //全コメント取得
+                        //fetch('/testallcommentdata')
+                        fetch('/allcommentdata')
+                            .then(res => res.json())
+                            .then(data => {
+                                this.setState({ allcommentdata: data });
+                                this.sortmembercomment(list, data, this.state.startdate);
+                                console.log(data);
+                            })
                     })
 
             }
@@ -73,8 +85,8 @@ class Wishlist extends Component {
                     <div>
                         <h1>Wishlist</h1>
                         シフト希望一覧
-                        <button value="pre" onClick={this.onClickchangeterm}>◁</button>
-                        <button value="back" onClick={this.onClickchangeterm}>▷</button>
+                        <button className="bluebutton" value="pre" onClick={this.onClickchangeterm}>◁</button>
+                        <button className="bluebutton" value="back" onClick={this.onClickchangeterm}>▷</button>
                         <Paper className={classes.root}
                             style={{
                                 overflowX: 'scroll'
@@ -100,6 +112,20 @@ class Wishlist extends Component {
                                 </TableBody>
                             </Table>
                         </Paper>
+                        補足希望
+                        <table>
+                            <tr>
+                                <th>userid</th>
+                                <th>wishday</th>
+                                <th>comment</th>
+                            </tr>
+                            {this.state.printcommentlist.map(comment =>
+                                <tr>
+                                    <td>{comment.id}</td>
+                                    <td>{comment.wishday}</td>
+                                    <td>{comment.comment}</td>
+                                </tr>)}
+                        </table>
                     </div>
                 ) : (
                         <div>アクセスできません</div>
@@ -170,6 +196,7 @@ class Wishlist extends Component {
         this.setState({ startdate: newstartdate })
         this.setprintDays(newstartdate);
         this.sortmembershift(this.state.memberlist, this.state.allshiftdata, newstartdate);
+        this.sortmembercomment(this.state.memberlist, this.state.allcommentdata, newstartdate);
     }
     //表示期間計算
     setprintDays(startdate) {
@@ -190,7 +217,7 @@ class Wishlist extends Component {
             printdays: days
         });
     }
-    //表示用list作成
+    //表示用list作成（シフト
     sortmembershift(members, shifts, startdate) {
         const printdate = startdate;
         let printfinaldate = "";
@@ -229,6 +256,34 @@ class Wishlist extends Component {
 
         this.setState({
             printlist: membertoshift
+        });
+    }
+    //表示用list作成（コメント
+    sortmembercomment(members, comments, startdate) {
+        const printdate = startdate;
+        console.log(printdate);
+        const membertocomment = [];
+        for (const member of members) {
+            for (const com of comments) {
+                if (member.userid === com.userid) {
+                    if (printdate === com.date) {
+                        membertocomment.push({
+                            id: com.userid,
+                            wishday: com.wishday,
+                            comment: com.text
+                        })
+                    } else {
+                        membertocomment.push({
+                            id: com.userid,
+                            wishday: com.wishday,
+                            comment: com.text
+                        })
+                    }
+                }
+            }
+        }
+        this.setState({
+            printcommentlist: membertocomment
         });
     }
 }

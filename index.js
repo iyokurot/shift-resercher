@@ -351,6 +351,22 @@ app.post('/testaddcommentdata', async (req, res) => {
         res.send("Error " + err);
     }
 })
+app.get('/testallcommentdata', async (req, res) => {
+    try {
+        const client = await poollocal.connect()
+        const result = await client.query('SELECT * FROM comment_table');
+        const results = { 'results': (result) ? result.rows : null };
+        if (result.rowCount == 0) {
+            res.send("no");
+        } else {
+            res.json(results.results);
+        }
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
 //all
 app.post('/testdeletemember', async (req, res) => {
     try {
@@ -550,6 +566,7 @@ app.post('/updateusername', async (req, res) => {
         const result = await client.query('update user_table set name=$1 where userid=$2', [name, req.session.userId]);
 
         client.release();
+        req.session.username = name;
         res.json("name update");
     } catch (err) {
         console.error(err);
@@ -713,6 +730,22 @@ app.post('/addcommentdata', async (req, res) => {
         }
         client.release();
         res.json(["com add"]);
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+app.get('/allcommentdata', async (req, res) => {
+    try {
+        const client = await pool.connect()
+        const result = await client.query('SELECT * FROM comment_table');
+        const results = { 'results': (result) ? result.rows : null };
+        if (result.rowCount == 0) {
+            res.send("no");
+        } else {
+            res.json(results.results);
+        }
+        client.release();
     } catch (err) {
         console.error(err);
         res.send("Error " + err);
