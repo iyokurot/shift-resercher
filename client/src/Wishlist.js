@@ -50,8 +50,8 @@ class Wishlist extends Component {
                 })
                 this.setdefaultDays();
                 //全ユーザー取得
-                fetch('/testmemberlist')
-                    //fetch('/memberlist')
+                //fetch('/testmemberlist')
+                fetch('/memberlist')
                     .then(res => res.json())
                     .then(list => {
                         this.setState({ memberlist: list })
@@ -64,8 +64,8 @@ class Wishlist extends Component {
                                 this.sortmembershift(list, data, this.state.startdate);
                             })
                         //全コメント取得
-                        fetch('/testallcommentdata')
-                            //fetch('/allcommentdata')
+                        //fetch('/testallcommentdata')
+                        fetch('/allcommentdata')
                             .then(res => res.json())
                             .then(data => {
                                 this.setState({ allcommentdata: data });
