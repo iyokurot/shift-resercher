@@ -3,12 +3,14 @@
     color: rgb(46, 46, 46);
 }
 /*Home*/
-#setting{
+#settingimg{
     background-image: url("../images/baseline_settings_applications_black_18dp.png");
+    display: inline-block;
     background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    margin:0px 10px;
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+    padding: 2px;
 }
 
 
@@ -26,6 +28,7 @@
   height: 21px;
   border: 1px solid #5f28c4;
   border-radius: 2px;
+  margin: 5px 2px 0px 2px;
 }
 #submit_shiftdata{
     border: none;
@@ -62,4 +65,9 @@
 #disbutton{
     width: 80%;
     margin: 3px;
+}
+#wishlistbutton{
+    display: inline-block;
+    width: 40%;
+    min-width: 250px;
 }

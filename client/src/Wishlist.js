@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         marginTop: theme.spacing(3),
-        overflowX: 'auto',
+        overflowX: 'auto'
     },
     table: {
         minWidth: 650,
@@ -50,8 +50,8 @@ class Wishlist extends Component {
                 })
                 this.setdefaultDays();
                 //全ユーザー取得
-                //fetch('/testmemberlist')
-                fetch('/memberlist')
+                fetch('/testmemberlist')
+                    //fetch('/memberlist')
                     .then(res => res.json())
                     .then(list => {
                         this.setState({ memberlist: list })
@@ -64,8 +64,8 @@ class Wishlist extends Component {
                                 this.sortmembershift(list, data, this.state.startdate);
                             })
                         //全コメント取得
-                        //fetch('/testallcommentdata')
-                        fetch('/allcommentdata')
+                        fetch('/testallcommentdata')
+                            //fetch('/allcommentdata')
                             .then(res => res.json())
                             .then(data => {
                                 this.setState({ allcommentdata: data });
@@ -88,13 +88,14 @@ class Wishlist extends Component {
                         <button className="bluebutton" value="back" onClick={this.onClickchangeterm}>▷</button>
                         <Paper className={classes.root}
                             style={{
-                                overflowX: 'scroll'
+                                overflowX: 'scroll',
+                                margin: '0 10px'
                             }}>
                             <Table className={classes.table}
                             >
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>name</TableCell>
+                                        <TableCell>名前</TableCell>
                                         {this.state.printdays.map((day) =>
                                             <TableCell key={day}>{day}</TableCell>
                                         )}
@@ -105,30 +106,54 @@ class Wishlist extends Component {
                                         <TableRow key={member.name}>
                                             <TableCell component="th" scope="row" key={member.name}>{member.name}</TableCell>
                                             {member.shift.map(shift =>
-                                                <TableCell component="th" scope="row">{shift}</TableCell>)}
+                                                <TableCell component="td" scope="row">{shift}</TableCell>)}
                                         </TableRow>
                                     )}
                                 </TableBody>
                             </Table>
                         </Paper>
-                        補足希望<br />
-                        <table className="wishtable">
-                            <thead>
-                                <tr>
-                                    <th className="tablename">名前</th>
-                                    <th className="tableday">日数</th>
-                                    <th className="tablecomment">追記</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.printcommentlist.map(comment =>
-                                    <tr key={comment.name}>
-                                        <td>{comment.name}</td>
-                                        <td>{comment.wishday}</td>
-                                        <td className="tablecommenttd">{comment.comment}</td>
-                                    </tr>)}
-                            </tbody>
-                        </table>
+                        <div className="shittablediv">
+                            <table className="shifttable">
+                                <thead>
+                                    <tr>
+                                        <th className="blank">名前</th>
+                                        {this.state.printdays.map((day) =>
+                                            <th key={day}>{day}</th>
+                                        )}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.printlist.map(member =>
+                                        <tr key={member.name}>
+                                            <th key={member.name}>{member.name}</th>
+                                            {member.shift.map(shift =>
+                                                <td>{shift}</td>)}
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="wishtablediv">
+
+                            <h2>補足希望</h2>
+                            <table className="wishtable">
+                                <thead>
+                                    <tr>
+                                        <th className="tablename">名前</th>
+                                        <th className="tableday">日数</th>
+                                        <th className="tablecomment">追記</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.printcommentlist.map(comment =>
+                                        <tr key={comment.name}>
+                                            <td>{comment.name}</td>
+                                            <td>{comment.wishday}</td>
+                                            <td className="tablecommenttd">{comment.comment}</td>
+                                        </tr>)}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 ) : (
                         <div>アクセスできません</div>

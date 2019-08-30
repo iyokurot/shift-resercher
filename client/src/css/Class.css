@@ -20,6 +20,9 @@
     margin: 0%;
     color: #5f28c4;
 }
+.itemholder{
+    margin: 3px;
+}
 .redbutton{
     color: #b93892;
     border: solid 1px #b93892;
@@ -29,6 +32,8 @@
     display: inline-block;
     text-decoration: none;
     transition: .4s;
+    height: 25px;
+    margin: 0 1;
 }
 .redbutton:hover{
     background: #b93892;
@@ -43,6 +48,8 @@
     display: inline-block;
     text-decoration: none;
     transition: .4s;
+    height: 25px;
+    margin: 0 1;
 }
 .bluebutton:hover{
     background: #5f28c4;
@@ -57,6 +64,8 @@
     display: inline-block;
     text-decoration: none;
     transition: .4s;
+    height: 25px;
+    margin: 0 1;
 }
 .greenbutton:hover{
     background: #004918;
@@ -66,61 +75,144 @@
 .calendaritem{
     height: 30px;
 }
+.flameholder{
+    margin: 0 10px;
+}
 .flame{
-    margin: auto;
     width: 350px;
     border: solid 2px #5f28c4;
-    padding: 0.5em;
+    padding: 0.3em;
     margin: 5px auto;
     background-color: rgba(255,255,255,0.5);
 }
 
 /*Setting*/
 .profilesetting{
+    width: 350px;
     background-color: rgba(255,255,255, 0.3);
     border: solid 2px #5f28c4;
     padding: 3px;
-    margin: auto;
-    width: 350px;
+    margin: 5px auto;
+}
+.profilecard{
+    background-color: #ffffff;
+    width: 150px;
+    margin: 0 auto;
+    margin-top: 5px;
+    box-shadow: 0 0 8px gray;
+    border-radius: 10px;
+}
+.worktime{
+    margin: 3px;
 }
 
 .administerview{
     margin: 10px 0px;
-    background-color: black;
+    background-color: #130331;
     padding:10px;
 }
 .administerheader{
     margin: 0px;
-    color: rgb(32, 255, 99);
+    color: #937ac2;
+    background: -webkit-linear-gradient(top, #ffffff, #937ac2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-family: 'serif', serif;
 }
 .administerbutton{
-    color: rgb(32, 255, 99);
-    border: solid 1px rgb(32, 255, 99);
+    color: #c5b8dd;
+    border: solid 1px #c5b8dd;
     margin: 5px;
-    background-color: rgba(255,255,255, 0.3);
+    background-color: #130331;
     padding: 2px;
-    width: 80px;
+    width: 120px;
+    height: 30px;
 }
 .administerbutton:hover{
-    background: rgb(32, 255, 99);
-    color: black;
+    background: #c5b8dd;
+    color: #130331;
 }
 /*Wishlist*/
+.shittablediv{
+    display: inline-block;
+    width: 100%;
+}
+.shifttable{
+    display: block;
+    position: relative;
+    width: 95%;
+    max-width: min-content;
+    overflow: scroll;
+    text-align: center;
+    border-collapse: collapse;
+    background-color: white;
+    margin: 10px;
+    max-height: 800px;
+    border-collapse: collapse;
+    border-radius: 10px;
+}
+.shifttable thead,.shifttable tbody{
+     display: block;
+     width: max-content;
+}
+.shifttable tr{
+    border-bottom: solid 1px #dbdbdb;
+}
+.shifttable tbody th{
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    width: 100px;
+    background-color: #ffffff;
+}
+.shifttable thead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #ffffff;
+}
+.shifttable thead th.blank {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 100px;
+  background: #ffffff;
+}
+.shifttable tbody tr:nth-child(odd){
+    background: #937ac2;
+}
+.shifttable th,.shifttable td{ 
+    display: inline-block;
+    padding: 10px 5px;
+    min-width: 50px;
+    
+}
+.shifttable td{
+    width: 50px;
+}
+
+
 .wishtable{
     display: inline-block;
-    border: solid 1px;
     text-align: center;
     border-collapse: collapse;
     background-color: white;
     margin: 20px;
+    border-radius: 10px;
 }
 .wishtable th{
     color: #5f28c4;
 }
 .wishtable th,.wishtable td{
-    border: solid 1px;
     padding: 5px 2px;
+    border-right: solid 1px;
+}
+.wishtable tr{
+    border-bottom: solid 1px;
 }
 .tablename{
     width: 100px;

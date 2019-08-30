@@ -23,3 +23,8 @@ a:visited {
 a:hover {
       color: #20C2D3;
 }
+@media screen and (max-width: 480px) {
+h1{
+    -webkit-box-reflect: below 0px -webkit-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0) 15%,rgba(0, 0, 0, 0.4));
+}
+}

@@ -71,6 +71,7 @@ class Home extends Component {
         }
         this.setdefaultshifts = this.setdefaultshifts.bind(this);
         this.setdefaultcomment = this.setdefaultcomment.bind(this);
+        this.setComplementdays = this.setComplementdays.bind(this);
         this.getDateReception = this.getDateReception.bind(this);
         this.dayspreOnclick = this.dayspreOnclick.bind(this);
         this.daysbackOnclick = this.daysbackOnclick.bind(this);
@@ -113,7 +114,7 @@ class Home extends Component {
 
                 <span>
                     <Link to="/Setting" id="setting">
-                        <span id="setting"></span>
+                        <div id="settingimg"></div>
                     </Link>
                     <a href="/logout">
                         <span className="redbutton">
@@ -124,10 +125,12 @@ class Home extends Component {
                 <h2 className="reception">{this.state.receptionDate.getFullYear()} {this.state.receptionDate.getMonth() + 1}月
                 {this.state.receptionDate.getDate()}日～受付中</h2>
                 <div id="dateText">{this.state.deadline}</div>
-                <button className="redbutton" onClick={this.onClickstamp.bind(this, "x")}>✕</button>
-                <button className="greenbutton" onClick={this.onClickstamp.bind(this, "△")}>△</button>
-                <button className="bluebutton" onClick={this.onClickstamp.bind(this, "time")}>時間指定</button>
-                <br />
+                <div className="itemholder">
+                    <button className="redbutton" onClick={this.onClickstamp.bind(this, "x")}>✕</button>
+                    <button className="greenbutton" onClick={this.onClickstamp.bind(this, "△")}>△</button>
+                    <button className="bluebutton" onClick={this.onClickstamp.bind(this, "time")}>時間指定</button>
+                </div>
+
                 <div id="calendar">
                     <Calendar
                         locale="ja-JP"
@@ -137,34 +140,35 @@ class Home extends Component {
                         onChange={(value) => this.dayClick(value)}
                     />
                 </div>
-                <div className="flame">
-                    補足希望:{this.state.complementdaysText}
-                    <button onClick={this.dayspreOnclick} className="bluebutton">◁</button>
-                    <button onClick={this.daysbackOnclick} className="bluebutton">▷</button>
-                    <br />
-                    <div id="wishday">
-                        希望出勤日数：
+                <div className="flameholder">
+                    <div className="flame">
+                        補足希望:{this.state.complementdaysText}
+                        <button onClick={this.dayspreOnclick} className="bluebutton">◁</button>
+                        <button onClick={this.daysbackOnclick} className="bluebutton">▷</button>
+                        <br />
+                        <div id="wishday">
+                            希望出勤日数：
 
                     <select onChange={this.wishdayOnchange} value={this.state.wishday}>
-                            {this.state.wishdays.map(days =>
-                                <option key={days}>{days}</option>)}
-                        </select>日
+                                {this.state.wishdays.map(days =>
+                                    <option key={days}>{days}</option>)}
+                            </select>日
                     </div>
 
-                    <div>
-                        <CssTextField
-                            id="outlined-name"
-                            label="追記"
-                            value={this.state.comment}
-                            onChange={this.commentOnchange}
-                            margin="normal"
-                            variant="outlined"
-                            placeholder="希望を記入"
-                        />
-                        <button id="submit_shiftdata" onClick={this.addDataOnClick}>登録</button>
+                        <div>
+                            <CssTextField
+                                id="outlined-name"
+                                label="追記"
+                                value={this.state.comment}
+                                onChange={this.commentOnchange}
+                                margin="normal"
+                                variant="outlined"
+                                placeholder="希望を記入"
+                            />
+                            <button id="submit_shiftdata" onClick={this.addDataOnClick}>登録</button>
+                        </div>
                     </div>
                 </div>
-
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onAfterOpen={this.afterOpenModal}
@@ -188,7 +192,7 @@ class Home extends Component {
                     <button onClick={this.closeModal}>閉じる</button>
                     <button onClick={this.setShiftTime}>決定</button>
                 </Modal>
-            </div>
+            </div >
         );
     }
     getintdate(year, month, day) {
@@ -234,6 +238,7 @@ class Home extends Component {
                 wishday: wish,
                 nowprintcommentday: firstdate
             })
+            this.setComplementdays(recepdate);
         }
     }
     getFormatDate(date) {
@@ -283,6 +288,20 @@ class Home extends Component {
             deadline: deadline,
             receptionDate: new Date(setday)
         })
+    }
+    setComplementdays(date) {
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        let text = "";
+        if (day == 1) {
+            text = month + "/1～" + month + "/15";
+        } else if (day === 16) {
+            const finaldate = new Date(date.getFullYear(), month, 0);
+            text = month + "/16～" + month + "/" + finaldate.getDate();
+        }
+        this.setState({
+            complementdaysText: text
+        });
     }
     getTileContent({ date, view }) {
         // 月表示のときのみ
@@ -388,25 +407,17 @@ class Home extends Component {
                 }
             }
         }
-        //complementdaysText
-        let text = "";
-        if (day === 16) {
-            const finaldate = new Date(year, month, 0);
-            text = (month + 1) + "/" + day + "～" + (month + 1) + "/" + finaldate.getDate();
-        } else {
-            text = (month + 1) + "/" + day + "～" + (month + 1) + "/" + 15;
-        }
         if (this.state.comments[this.getintdate(year, month, day)] == null) {
             this.state.comments[this.getintdate(year, month, day)] = {
                 comment: "",
                 wishday: ""
             }
         }
+        this.setComplementdays(new Date(year, month, day));
         this.setState({
             comment: this.state.comments[this.getintdate(year, month, day)].comment,
             wishday: this.state.comments[this.getintdate(year, month, day)].wishday,
             nowprintcommentday: this.getintdate(year, month, day),
-            complementdaysText: text
         })
     }
     wishdayOnchange(e) {

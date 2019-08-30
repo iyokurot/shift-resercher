@@ -61,8 +61,8 @@ class Setting extends Component {
     }
     componentDidMount() {
         //ユーザーデータ取得
-        //fetch('/testuserdata')
-        fetch('/userdata')
+        fetch('/testuserdata')
+            //fetch('/userdata')
             .then(res => res.json())
             .then(data => {
                 this.setState({
@@ -104,13 +104,12 @@ class Setting extends Component {
             <div>
                 <h1>設定</h1>
                 <div className="profilesetting">
-                    <img src={this.state.userdata.picture} id="profileimage"></img>
-                    <p id="linename">{this.state.userdata.displayName}</p>
+                    <div className="profilecard">
+                        <img src={this.state.userdata.picture} id="profileimage"></img>
+                        <p id="linename">{this.state.userdata.displayName}</p>
+                    </div>
                     <div>
                         ユーザー名
-                    {/* 
-                <input type="textarea" name="name" value={this.state.username} onChange={this.onChangeusername}></input>
-                    */}
                         <Input
                             id="username"
                             value={this.state.username}
@@ -122,7 +121,7 @@ class Setting extends Component {
                         />
                         <button onClick={this.updateUsername} className="bluebutton" id="updatebutton">更新</button>
                     </div>
-                    <div>
+                    <div className="worktime">
                         勤務区分:
                 {this.state.ischangeworktime ? (
                             <span>
@@ -144,7 +143,7 @@ class Setting extends Component {
                 <div style={{ display: this.state.userdata.administer ? '' : 'none' }} className="administerview">
                     <h2 className="administerheader">管理者権限</h2>
                     <Link to={{ pathname: '/Wishlist', query: { pass: "administer" } }}>
-                        <span className="administerbutton">希望一覧</span></Link><br />
+                        <span className="administerbutton" id="wishlistbutton">希望一覧</span></Link><br />
                     <button onClick={this.openmemberModal} className="administerbutton">登録者一覧</button>
                     <button onClick={(e) => this.setState({ administerModalopen: true })} className="administerbutton">管理者一覧</button>
                 </div>
