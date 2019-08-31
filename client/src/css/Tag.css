@@ -1,6 +1,11 @@
 body{
     text-align: center;
     background-color: rgb(220, 238, 250);
+    background-image: url('../images/smoke2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center bottom;
+    background-attachment: fixed;
     color: rgb(59, 53, 70);
 }
 h1{

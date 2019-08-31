@@ -143,8 +143,10 @@ class Home extends Component {
                 <div className="flameholder">
                     <div className="flame">
                         補足希望:{this.state.complementdaysText}
-                        <button onClick={this.dayspreOnclick} className="bluebutton">◁</button>
-                        <button onClick={this.daysbackOnclick} className="bluebutton">▷</button>
+                        <span>
+                            <button onClick={this.dayspreOnclick} className="bluebutton">◁</button>
+                            <button onClick={this.daysbackOnclick} className="bluebutton">▷</button>
+                        </span>
                         <br />
                         <div id="wishday">
                             希望出勤日数：
@@ -293,7 +295,7 @@ class Home extends Component {
         const month = date.getMonth() + 1;
         const day = date.getDate();
         let text = "";
-        if (day == 1) {
+        if (day === 1) {
             text = month + "/1～" + month + "/15";
         } else if (day === 16) {
             const finaldate = new Date(date.getFullYear(), month, 0);

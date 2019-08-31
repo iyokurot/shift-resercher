@@ -26,8 +26,8 @@
 .redbutton{
     color: #b93892;
     border: solid 1px #b93892;
-    background-color: rgb(220, 238, 250);
-    margin: 2px;
+    background-color: white;
+    margin: 3px 3px;
     width: 80px;
     display: inline-block;
     text-decoration: none;
@@ -42,8 +42,8 @@
 .bluebutton{
     color: #5f28c4;
     border: solid 1px #5f28c4;
-    background-color: rgb(220, 238, 250);
-    margin: 2px;
+    background-color: white;
+    margin: 3px 3px;
     width: 80px;
     display: inline-block;
     text-decoration: none;
@@ -58,8 +58,8 @@
 .greenbutton{
     color: #004918;
     border: solid 1px #004918;
-    background-color: rgb(220, 238, 250);
-    margin: 2px;
+    background-color: white;
+    margin: 3px 3px;
     width: 80px;
     display: inline-block;
     text-decoration: none;
@@ -77,9 +77,10 @@
 }
 .flameholder{
     margin: 0 10px;
+    padding: 3px;
 }
 .flame{
-    width: 350px;
+    max-width: 350px;
     border: solid 2px #5f28c4;
     padding: 0.3em;
     margin: 5px auto;
