@@ -143,7 +143,7 @@ class Home extends Component {
                 <div className="flameholder">
                     <div className="flame">
                         補足希望:{this.state.complementdaysText}
-                        <span>
+                        <span id="termbuttons">
                             <button onClick={this.dayspreOnclick} className="bluebutton">◁</button>
                             <button onClick={this.daysbackOnclick} className="bluebutton">▷</button>
                         </span>

@@ -23,6 +23,7 @@
     background-color: black;
 }
 
+
 #wishday select{
   background: transparent;
   height: 21px;
@@ -70,4 +71,11 @@
     display: inline-block;
     width: 40%;
     min-width: 250px;
+}
+
+@media screen and (max-width: 480px) {
+#termbuttons::before{
+    content: "\A";
+    white-space: pre;
+}
 }
