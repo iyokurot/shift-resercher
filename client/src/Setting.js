@@ -103,42 +103,44 @@ class Setting extends Component {
         return (
             <div>
                 <h1>設定</h1>
-                <div className="profilesetting">
-                    <div className="profilecard">
-                        <img src={this.state.userdata.picture} id="profileimage"></img>
-                        <p id="linename">{this.state.userdata.displayName}</p>
-                    </div>
-                    <div>
-                        ユーザー名
+                <div className="profileholder">
+                    <div className="profilesetting">
+                        <div className="profilecard">
+                            <img src={this.state.userdata.picture} id="profileimage"></img>
+                            <p id="linename">{this.state.userdata.displayName}</p>
+                        </div>
+                        <div>
+                            ユーザー名
                         <Input
-                            id="username"
-                            value={this.state.username}
-                            onChange={this.onChangeusername}
-                            className={useStyles.input}
-                            inputProps={{
-                                'aria-label': 'username',
-                            }}
-                        />
-                        <button onClick={this.updateUsername} className="bluebutton" id="updatebutton">更新</button>
-                    </div>
-                    <div className="worktime">
-                        勤務区分:
+                                id="username"
+                                value={this.state.username}
+                                onChange={this.onChangeusername}
+                                className={useStyles.input}
+                                inputProps={{
+                                    'aria-label': 'username',
+                                }}
+                            />
+                            <button onClick={this.updateUsername} className="bluebutton" id="updatebutton">更新</button>
+                        </div>
+                        <div className="worktime">
+                            勤務区分:
                 {this.state.ischangeworktime ? (
-                            <span>
-                                <input type="radio" name="worktime" value="早" checked={this.state.worktime === '早'}
-                                    onChange={() => this.setState({ worktime: '早' })} />早番
-                            <input type="radio" name="worktime" value="遅" checked={this.state.worktime === '遅'}
-                                    onChange={() => this.setState({ worktime: '遅' })} />遅番
-                            <button onClick={this.setworktime} className="bluebutton">更新</button>
-                            </span>
-                        ) : (
                                 <span>
-                                    {this.state.userdata.worktime}番
-                                <button onClick={this.onChangeworktime} className="bluebutton">変更</button>
+                                    <input type="radio" name="worktime" value="早" checked={this.state.worktime === '早'}
+                                        onChange={() => this.setState({ worktime: '早' })} />早番
+                            <input type="radio" name="worktime" value="遅" checked={this.state.worktime === '遅'}
+                                        onChange={() => this.setState({ worktime: '遅' })} />遅番
+                            <button onClick={this.setworktime} className="bluebutton">更新</button>
                                 </span>
-                            )}
+                            ) : (
+                                    <span>
+                                        {this.state.userdata.worktime}番
+                                <button onClick={this.onChangeworktime} className="bluebutton">変更</button>
+                                    </span>
+                                )}
+                        </div>
+                        <button onClick={this.onClickunsubsribe} className="redbutton" id="disbutton">退会</button>
                     </div>
-                    <button onClick={this.onClickunsubsribe} className="redbutton" id="disbutton">退会</button>
                 </div>
                 <div style={{ display: this.state.userdata.administer ? '' : 'none' }} className="administerview">
                     <h2 className="administerheader">管理者権限</h2>

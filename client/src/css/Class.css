@@ -21,13 +21,13 @@
     color: #5f28c4;
 }
 .itemholder{
-    margin: 3px;
+    margin: 3px auto;
 }
 .redbutton{
     color: #b93892;
     border: solid 1px #b93892;
     background-color: white;
-    margin: 3px 3px;
+    margin: 3px 1%;
     width: 80px;
     display: inline-block;
     text-decoration: none;
@@ -43,7 +43,7 @@
     color: #5f28c4;
     border: solid 1px #5f28c4;
     background-color: white;
-    margin: 3px 3px;
+    margin: 3px 1%;
     width: 80px;
     display: inline-block;
     text-decoration: none;
@@ -59,7 +59,7 @@
     color: #004918;
     border: solid 1px #004918;
     background-color: white;
-    margin: 3px 3px;
+    margin: 3px 1%;
     width: 80px;
     display: inline-block;
     text-decoration: none;
@@ -88,11 +88,14 @@
 }
 
 /*Setting*/
+.profileholder{
+    padding: 0 5px;
+}
 .profilesetting{
-    width: 350px;
+    max-width: 350px;
     background-color: rgba(255,255,255, 0.3);
     border: solid 2px #5f28c4;
-    padding: 3px;
+    padding: 0.3em;
     margin: 5px auto;
 }
 .profilecard{
@@ -104,7 +107,7 @@
     border-radius: 10px;
 }
 .worktime{
-    margin: 3px;
+    margin: 10px;
 }
 
 .administerview{
@@ -150,6 +153,7 @@
     margin: 10px;
     max-height: 800px;
     border-collapse: collapse;
+    box-shadow: 0 0 8px gray;
     border-radius: 10px;
 }
 .shifttable thead,.shifttable tbody{
@@ -183,8 +187,8 @@
   width: 100px;
   background: #ffffff;
 }
-.shifttable tbody tr:nth-child(odd){
-    background: #937ac2;
+.shifttable tbody tr:nth-child(odd),.shifttable tbody tr:nth-child(odd) th{
+    background: #cacaca;
 }
 .shifttable th,.shifttable td{ 
     display: inline-block;
@@ -203,17 +207,18 @@
     border-collapse: collapse;
     background-color: white;
     margin: 20px;
+    box-shadow: 0 0 8px gray;
     border-radius: 10px;
 }
 .wishtable th{
-    color: #5f28c4;
+    color: rgb(59, 53, 70);
 }
-.wishtable th,.wishtable td{
+.wishtable .tablename,.wishtable .tableday{
     padding: 5px 2px;
-    border-right: solid 1px;
+    border-right: solid 1px rgb(145, 145, 145);
 }
-.wishtable tr{
-    border-bottom: solid 1px;
+.wishtable .tableheader ,.wishtable tr:not(:last-child){
+    border-bottom: solid 1px rgb(145, 145, 145);
 }
 .tablename{
     width: 100px;

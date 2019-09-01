@@ -1,23 +1,5 @@
 import React, { Component } from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: '100%',
-        marginTop: theme.spacing(3),
-        overflowX: 'auto'
-    },
-    table: {
-        minWidth: 650,
-    },
-}));
 
 class Wishlist extends Component {
     constructor(props) {
@@ -77,7 +59,6 @@ class Wishlist extends Component {
         }
     }
     render() {
-        const classes = useStyles;
         return (
             <div>
                 {this.state.accessable ? (
@@ -86,32 +67,6 @@ class Wishlist extends Component {
                         シフト希望一覧
                         <button className="bluebutton" value="pre" onClick={this.onClickchangeterm}>◁</button>
                         <button className="bluebutton" value="back" onClick={this.onClickchangeterm}>▷</button>
-                        <Paper className={classes.root}
-                            style={{
-                                overflowX: 'scroll',
-                                margin: '0 10px'
-                            }}>
-                            <Table className={classes.table}
-                            >
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>名前</TableCell>
-                                        {this.state.printdays.map((day) =>
-                                            <TableCell key={day}>{day}</TableCell>
-                                        )}
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {this.state.printlist.map(member =>
-                                        <TableRow key={member.name}>
-                                            <TableCell component="th" scope="row" key={member.name}>{member.name}</TableCell>
-                                            {member.shift.map(shift =>
-                                                <TableCell component="td" scope="row">{shift}</TableCell>)}
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </Paper>
                         <div className="shittablediv">
                             <table className="shifttable">
                                 <thead>
@@ -138,7 +93,7 @@ class Wishlist extends Component {
                             <h2>補足希望</h2>
                             <table className="wishtable">
                                 <thead>
-                                    <tr>
+                                    <tr className="tableheader">
                                         <th className="tablename">名前</th>
                                         <th className="tableday">日数</th>
                                         <th className="tablecomment">追記</th>
@@ -147,8 +102,8 @@ class Wishlist extends Component {
                                 <tbody>
                                     {this.state.printcommentlist.map(comment =>
                                         <tr key={comment.name}>
-                                            <td>{comment.name}</td>
-                                            <td>{comment.wishday}</td>
+                                            <td className="tablename">{comment.name}</td>
+                                            <td className="tableday">{comment.wishday}</td>
                                             <td className="tablecommenttd">{comment.comment}</td>
                                         </tr>)}
                                 </tbody>
