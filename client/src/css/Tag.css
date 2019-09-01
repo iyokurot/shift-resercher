@@ -1,5 +1,6 @@
 body{
     text-align: center;
+    /*
     width: 100%;
     height: 100%;
     background-color: white;
@@ -8,7 +9,20 @@ body{
     background-size: cover;
     background-attachment: fixed;
     background-position: center bottom;
+    */
     color: rgb(59, 53, 70);
+}
+body::before{
+    content:"";
+  display:block;
+  position:fixed;
+
+  bottom: 0;
+  z-index:-1;
+  width:100%;
+  height:300vh;
+  background:url('../images/smoke2.jpg') center no-repeat;
+  background-size:cover;
 }
 h1{
     font-family: 'serif', serif;
