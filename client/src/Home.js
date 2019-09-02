@@ -4,7 +4,6 @@ import Calendar from 'react-calendar';
 import Modal from 'react-modal';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-//import SettingIcon from '@material-ui/icons/SettingsApplications';
 
 
 const customStyles = {
@@ -20,11 +19,6 @@ const customStyles = {
         fontSize: '10px'
     }
 };
-const calendarstyle = {
-    content: {
-        display: 'inline-block'
-    }
-}
 const CssTextField = withStyles({
     root: {
         '& label.Mui-focused': {
@@ -109,10 +103,7 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <h1>シフト希望</h1>
-                ようこそ！{this.state.userdata.username}さん
-
-                <span>
+                <div id="personalheader">
                     <Link to="/Setting" id="setting">
                         <div id="settingimg"></div>
                     </Link>
@@ -121,7 +112,11 @@ class Home extends Component {
                             ログアウト
                         </span>
                     </a>
-                </span>
+                </div>
+                <h1>シフト希望</h1>
+                ようこそ！{this.state.userdata.username}さん
+
+
                 <h2 className="reception">{this.state.receptionDate.getFullYear()} {this.state.receptionDate.getMonth() + 1}月
                 {this.state.receptionDate.getDate()}日～受付中</h2>
                 <div id="dateText">{this.state.deadline}</div>
@@ -368,10 +363,20 @@ class Home extends Component {
         this.dayspreback("back")
     }
     dayspreback(str) {
+        const comment = this.state.comments;
+        comment[this.state.nowprintcommentday] = {
+            comment: this.state.comment,
+            wishday: this.state.wishday
+        }
+        this.setState({
+            comments: comment
+        });
+        /*
         this.state.comments[this.state.nowprintcommentday] = {
             comment: this.state.comment,
             wishday: this.state.wishday
         }
+        */
         //nowprintcommentday
         const printday = this.state.nowprintcommentday;
         const datearr = (printday.substr(0, 4) + '/' + printday.substr(4, 2) + '/' + printday.substr(6, 2)).split('/');
@@ -410,10 +415,20 @@ class Home extends Component {
             }
         }
         if (this.state.comments[this.getintdate(year, month, day)] == null) {
+            const comments = this.state.comments;
+            comments[this.getintdate(year, month, day)] = {
+                comment: "",
+                wishday: ""
+            }
+            this.setState({
+                comments: comments
+            });
+            /*
             this.state.comments[this.getintdate(year, month, day)] = {
                 comment: "",
                 wishday: ""
             }
+            */
         }
         this.setComplementdays(new Date(year, month, day));
         this.setState({
@@ -465,10 +480,20 @@ class Home extends Component {
     }
     //登録ボタン
     addDataOnClick() {
+        const comment = this.state.comments;
+        comment[this.state.nowprintcommentday] = {
+            comment: this.state.comment,
+            wishday: this.state.wishday
+        }
+        this.setState({
+            comments: comment
+        });
+        /*
         this.state.comments[this.state.nowprintcommentday] = {
             comment: this.state.comment,
             wishday: this.state.wishday
         }
+        */
         const defshift = this.state.default_month_days;
         const newshift = this.state.month_days;
         const newshiftdata = [];

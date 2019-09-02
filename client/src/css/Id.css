@@ -10,6 +10,9 @@
     width: 200px;
 }
 /*Home*/
+#personalheader{
+    margin-left: 60%;
+}
 #settingimg{
     background-image: url("../images/baseline_settings_applications_black_18dp.png");
     display: inline-block;

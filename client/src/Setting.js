@@ -248,7 +248,12 @@ class Setting extends Component {
                 },
                 mode: 'cors'
             }).then(res => res.json())
-            this.state.userdata.worktime = this.state.worktime
+            const userdata = this.state.userdata;
+            userdata.worktime = this.state.worktime;
+            this.setState({
+                userdata: userdata
+            });
+            //this.state.userdata.worktime = this.state.worktime
         }
         this.setState({
             ischangeworktime: false
