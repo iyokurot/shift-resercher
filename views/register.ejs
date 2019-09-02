@@ -10,9 +10,12 @@
 <body>
     <div class="center">
         <h1>新規登録</h1>
-        <span id="linename"><%=user.displayName %></span>
+        <div class="profile">
+            <div id="linename"><%=user.displayName %></div>
+            <img src=<%=user.picture%> alt="アイコン" id="profileimage">
+        </div>
         <form method="POST" action="/register">
-            <img src=<%=user.picture%> alt="アイコン" id="profileimage"><br>
+
             名前
             <input type=text value=<%=user.displayName %> name="username">
             <br>

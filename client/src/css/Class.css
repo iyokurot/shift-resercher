@@ -92,8 +92,10 @@
 .timeselect{
     border: solid 1px #5f28c4;
     width: 30%;
-    height: 20px;
+    height: 30px;
     margin: 2px;
+    background: white;
+    font-size: 16px;
 }
 
 /*Setting*/
@@ -114,6 +116,7 @@
     margin-top: 5px;
     box-shadow: 0 0 8px gray;
     border-radius: 10px;
+    padding: 3px;
 }
 .worktime{
     margin: 10px;
