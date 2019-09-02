@@ -1,5 +1,7 @@
 body{
     text-align: center;
+    max-width: 500px;
+    display: inline;
     
     color: rgb(59, 53, 70);
 }
@@ -16,6 +18,7 @@ body::before{
 }
 .center{
     display: inline-block;
+    background: #cec9d8;
     width: 100%;
 }
 h1{
