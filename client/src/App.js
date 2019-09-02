@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
+import Register from './Register';
 import Home from './Home';
 import Setting from './Setting';
 import Wishlist from './Wishlist';
@@ -12,6 +13,7 @@ const App = () => (
   <BrowserRouter>
     <div>
       <Route exact path='/' component={Top} />
+      <Route path='/Register' component={Register} />
       <Route path='/Home' component={Home} />
       <Route path='/Setting' component={Setting} />
       <Route path='/Wishlist' component={Wishlist} />

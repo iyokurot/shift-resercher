@@ -106,7 +106,7 @@ class Setting extends Component {
                 <div className="profileholder">
                     <div className="profilesetting">
                         <div className="profilecard">
-                            <img src={this.state.userdata.picture} id="profileimage"></img>
+                            <img src={this.state.userdata.picture} id="profileimage" alt="profile"></img>
                             <p id="linename">{this.state.userdata.displayName}</p>
                         </div>
                         <div>
@@ -220,7 +220,12 @@ class Setting extends Component {
             }).then(res => res.json())
                 .then(str => {
                     alert("登録しました");
-                    this.state.userdata.username = this.state.username;
+                    const userdata = this.state.userdata;
+                    userdata.username = this.state.username;
+                    this.setState({
+                        userdata: userdata
+                    });
+                    //this.state.userdata.username = this.state.username;
                 })
         }
     }
