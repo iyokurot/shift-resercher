@@ -110,7 +110,7 @@ class Home extends Component {
         return (
             <div>
                 <h1>シフト希望</h1>
-                ようこそ{this.state.userdata.username}さん
+                ようこそ！{this.state.userdata.username}さん
 
                 <span>
                     <Link to="/Setting" id="setting">

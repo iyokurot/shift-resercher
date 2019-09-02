@@ -26,10 +26,12 @@
 
 #wishday select{
   background: transparent;
-  height: 21px;
+  height: 25px;
   border: 1px solid #5f28c4;
   border-radius: 2px;
   margin: 5px 2px 0px 2px;
+  font-size: 18px;
+  color: rgb(59, 53, 70);
 }
 #submit_shiftdata{
     border: none;

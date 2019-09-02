@@ -16,6 +16,7 @@ body::before{
 }
 .center{
     display: inline-block;
+    width: 100%;
 }
 h1{
     font-family: 'serif', serif;
