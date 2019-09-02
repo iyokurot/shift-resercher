@@ -77,8 +77,8 @@ class Setting extends Component {
             })
     }
     loadmemberlist() {
-        //fetch('/testmemberlist')
-        fetch('/memberlist')
+        fetch('/testmemberlist')
+            //fetch('/memberlist')
             .then(res => res.json())
             .then(list => {
                 this.setState({ memberlist: list });
@@ -155,15 +155,15 @@ class Setting extends Component {
                     style={customStyles}
                     contentLabel="Register Modal"
                 >
-                    <h2>登録者一覧</h2>
+                    <h2 className="modaltitle">登録者一覧</h2>
                     {this.state.memberlist.map((member) =>
                         <div key={member.userid}>
                             {member.name}
                             <span style={{ display: (member.userid !== this.state.userdata.userId) ? '' : 'none' }}>
-                                <button value={member.userid} onClick={(e) => this.onClickdeletemember(member)}>登録削除</button>
+                                <button className="redbutton" value={member.userid} onClick={(e) => this.onClickdeletemember(member)}>登録削除</button>
                             </span>
                         </div>)}
-                    <button onClick={this.closememberModal}>閉じる</button>
+                    <button className="redbutton" onClick={this.closememberModal}>閉じる</button>
                 </Modal>
                 <Modal
                     isOpen={this.state.administerModalopen}
@@ -171,28 +171,28 @@ class Setting extends Component {
                     style={customStyles}
                     contentLabel="Administer Modal"
                 >
-                    <h2>管理者一覧</h2>
+                    <h2 className="modaltitle">管理者一覧</h2>
                     {this.state.administerlist.map((member) =>
                         <div key={member.userid}>
                             {member.name}
                             <span style={{ display: (member.userid !== this.state.userdata.userId) ? '' : 'none' }}>
-                                <button onClick={(e) => this.onClickdeleteadminister(member)}>解除</button>
+                                <button className="redbutton" onClick={(e) => this.onClickdeleteadminister(member)}>解除</button>
                             </span>
                         </div>)}
                     {(this.state.isAddadminister && this.state.nonadministerlist.length > 0) ? (
                         <span>
-                            <select onChange={this.onChangeaddministeroption} value={this.state.addministeroption.name}>
+                            <select className="timeselect" onChange={this.onChangeaddministeroption} value={this.state.addministeroption.name}>
                                 {this.state.nonadministerlist.map((member) =>
                                     <option>{member.name}</option>
                                 )}
                             </select>
-                            <button onClick={(e) => this.onClickaddAdminister()}>追加</button>
+                            <button className="bluebutton" onClick={(e) => this.onClickaddAdminister()}>追加</button>
                         </span>
                     ) : (
-                            <button onClick={(e) => this.onClickadminister()}>追加</button>
+                            <button className="bluebutton" onClick={(e) => this.onClickadminister()}>追加</button>
                         )}
 
-                    <button onClick={this.closeadministerModal}>閉じる</button>
+                    <button className="redbutton" onClick={this.closeadministerModal}>閉じる</button>
                 </Modal>
 
             </div>

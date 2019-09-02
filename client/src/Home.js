@@ -178,21 +178,21 @@ class Home extends Component {
                     style={customStyles}
                     contentLabel="worktime Modal"
                 >
-                    <h2>出勤可能時間を選択</h2>
+                    <h2 className="modaltitle">出勤可能時間を選択</h2>
                     <div>
-                        <select onChange={this.startTimeChange} value={this.state.startTime}>
+                        <select className="timeselect" onChange={this.startTimeChange} value={this.state.startTime}>
                             {this.state.shifttimes.map(time =>
                                 <option key={time}>{time}</option>
                             )}
                         </select>～
-                    <select onChange={this.endTimeChange} value={this.state.endTime}>
+                    <select className="timeselect" onChange={this.endTimeChange} value={this.state.endTime}>
                             {this.state.shifttimes.map(time =>
                                 <option key={time}>{time}</option>
                             )}
                         </select>
                     </div>
-                    <button onClick={this.closeModal}>閉じる</button>
-                    <button onClick={this.setShiftTime}>決定</button>
+                    <button className="redbutton" onClick={this.closeModal}>閉じる</button>
+                    <button className="bluebutton" onClick={this.setShiftTime}>決定</button>
                 </Modal>
             </div >
         );
