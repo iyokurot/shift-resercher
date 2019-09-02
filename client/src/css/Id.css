@@ -60,6 +60,9 @@
 #linename{
     color: rgb(0, 212, 64)
 }
+#username{
+    width: 150px;
+}
 #updatebutton{
     width: auto;
 }

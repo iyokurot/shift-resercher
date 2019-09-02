@@ -27,7 +27,7 @@
     color: #b93892;
     border: solid 1px #b93892;
     background-color: white;
-    margin: 3px 1%;
+    margin: 3px 10px;
     width: 80px;
     display: inline-block;
     text-decoration: none;
@@ -232,4 +232,10 @@
 }
 .tablecommenttd{
     text-align: left;
+}
+
+@media screen and (max-width: 480px) {
+    .redbutton{
+        margin: 3px 15px;
+    }
 }
