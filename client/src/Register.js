@@ -100,7 +100,7 @@ class Register extends Component {
                 },
                 mode: 'cors'
             }).then(res => res.json())
-                .then(res => this.props.history.push('/'));
+                .then(res => this.props.history.push('/Home'));
         }
     }
 }
