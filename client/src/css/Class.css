@@ -32,7 +32,7 @@
     display: inline-block;
     text-decoration: none;
     transition: .4s;
-    height: 25px;
+    height: 30px;
     margin: 0 1;
 }
 .redbutton:hover{
@@ -48,7 +48,7 @@
     display: inline-block;
     text-decoration: none;
     transition: .4s;
-    height: 25px;
+    height: 30px;
     margin: 0 1;
 }
 .bluebutton:hover{
@@ -64,7 +64,7 @@
     display: inline-block;
     text-decoration: none;
     transition: .4s;
-    height: 25px;
+    height: 30px;
     margin: 0 1;
 }
 .greenbutton:hover{
@@ -80,7 +80,7 @@
     padding: 3px;
 }
 .flame{
-    max-width: 350px;
+    max-width: 380px;
     border: solid 2px #5f28c4;
     padding: 0.3em;
     margin: 5px auto;

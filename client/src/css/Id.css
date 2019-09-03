@@ -13,6 +13,7 @@
 #personalheader{
     margin-left: 60%;
 }
+
 #settingimg{
     background-image: url("../images/baseline_settings_applications_black_18dp.png");
     display: inline-block;
@@ -21,6 +22,7 @@
     width: 30px;
     height: 30px;
     padding: 2px;
+    
 }
 
 
