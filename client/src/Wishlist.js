@@ -186,12 +186,12 @@ class Wishlist extends Component {
         //表示する期間配列生成
         const days = [];
         if (startdate.getDate() === 1) {
-            for (const i = 0; i < 15; i++) {
+            for (let i = 0; i < 15; i++) {
                 days.push((startdate.getMonth() + 1) + "/" + (startdate.getDate() + i));
             }
         } else if (startdate.getDate() === 16) {
             const findate = new Date(startdate.getFullYear(), startdate.getMonth() + 1, 0);
-            for (const i = 0; i < findate.getDate() - startdate.getDate() + 1; i++) {
+            for (let i = 0; i < findate.getDate() - startdate.getDate() + 1; i++) {
                 days.push((startdate.getMonth() + 1) + "/" + (startdate.getDate() + i));
             }
         }
