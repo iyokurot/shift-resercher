@@ -505,7 +505,7 @@ app.post('/register', async (req, res) => {
         req.session.worktime = worktime;
         req.session.administer = administer;
         req.session.regist = true;
-        res.send("regist");
+        res.json("regist");
         client.release();
     } catch (err) {
         console.error(err);
