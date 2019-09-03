@@ -12,8 +12,8 @@ class Wishlist extends Component {
             allcommentdata: [],//全コメント情報
             printlist: [],//表示するリスト
             printcommentlist: [],//表示するコメントリスト
-            deadlineearly: 10,
-            deallinelate: 24,
+            deadlineearly: 10,//締め切り日１
+            deallinelate: 24,//締め切り日２
             startdate: "",
             printdays: []//表示する期間
         }
@@ -140,6 +140,7 @@ class Wishlist extends Component {
         //startdate = new Date(2019, 7, 16);
         this.setprintDays(startdate);
     }
+    //表示期間前後ボタン
     onClickchangeterm(e) {
         const startdate = this.state.startdate;
         let year = startdate.getFullYear();
@@ -161,7 +162,6 @@ class Wishlist extends Component {
                 }
             }
         } else if (str === "back") {
-            //
             if (day === 1) {
                 day = 16;
             } else if (day === 16) {
@@ -186,12 +186,12 @@ class Wishlist extends Component {
         //表示する期間配列生成
         const days = [];
         if (startdate.getDate() === 1) {
-            for (let i = 0; i < 15; i++) {
+            for (const i = 0; i < 15; i++) {
                 days.push((startdate.getMonth() + 1) + "/" + (startdate.getDate() + i));
             }
         } else if (startdate.getDate() === 16) {
             const findate = new Date(startdate.getFullYear(), startdate.getMonth() + 1, 0);
-            for (let i = 0; i < findate.getDate() - startdate.getDate() + 1; i++) {
+            for (const i = 0; i < findate.getDate() - startdate.getDate() + 1; i++) {
                 days.push((startdate.getMonth() + 1) + "/" + (startdate.getDate() + i));
             }
         }

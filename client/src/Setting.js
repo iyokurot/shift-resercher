@@ -225,7 +225,6 @@ class Setting extends Component {
                     this.setState({
                         userdata: userdata
                     });
-                    //this.state.userdata.username = this.state.username;
                 })
         }
     }
@@ -253,7 +252,6 @@ class Setting extends Component {
             this.setState({
                 userdata: userdata
             });
-            //this.state.userdata.worktime = this.state.worktime
         }
         this.setState({
             ischangeworktime: false
@@ -278,6 +276,7 @@ class Setting extends Component {
         }
 
     }
+    //トップ画面へ
     pushtoHome = () => {
         this.props.history.push('/');
     }
@@ -334,7 +333,7 @@ class Setting extends Component {
     }
     //管理者候補変更
     onChangeaddministeroption(e) {
-        for (let member of this.state.nonadministerlist) {
+        for (const member of this.state.nonadministerlist) {
             if (member.name === e.target.value) {
                 this.setState({
                     addministeroption: member

@@ -45,7 +45,7 @@ class Top extends Component {
           <Link to="/Home">HomeChecker in local</Link>
           <br></br>
           -------------------------
-          </div>
+        </div>
       </div>
     );
   }

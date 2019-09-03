@@ -25,12 +25,12 @@ class Register extends Component {
         this.postdata = this.postdata.bind(this);
     }
     componentDidMount() {
-        //fetch
         //ユーザーデータ取得
         fetch('/userdata')
             //fetch('/testuserdata')
             .then(res => res.json())
             .then(data => {
+                //初期登録アクセスかどうか
                 if ((data.regist != null) && !data.regist) {
                     this.setState({ userdata: data, username: data.displayName })
                 } else {
@@ -83,6 +83,7 @@ class Register extends Component {
         })
     }
 
+    //登録ボタン
     postdata() {
         //名前確認
         if (this.state.username === "") {

@@ -192,32 +192,33 @@ class Home extends Component {
             </div >
         );
     }
+    //yyMMdd
     getintdate(year, month, day) {
         return year + ("0" + (month + 1)).slice(-2) + ("0" + day).slice(-2);
     }
     //json変換
     setdefaultshifts(data) {
         const deflist = [];
-        const list = [];
-        for (let shift of data) {
-            list[shift.date] = { text: shift.detail }
+        //const list = [];
+        for (const shift of data) {
+            //list[shift.date] = { text: shift.detail }
             deflist[shift.date] = { text: shift.detail }
         }
         this.setState({
             default_month_days: deflist,
-            month_days: list
+            month_days: deflist.slice()
         })
     }
     //commentSetting
     setdefaultcomment(data) {
         if (data !== "") {
-            const deflist = [];
+            //const deflist = [];
             const list = [];
             for (const comment of data) {
                 const date = new Date(comment.date);
                 const num = date.getFullYear() + ("0" + (date.getMonth() + 1)).slice(-2) + ("0" + date.getDate()).slice(-2);
                 list[num] = { comment: comment.text, wishday: comment.wishday }
-                deflist[num] = { comment: comment.text, wishday: comment.wishday }
+                //deflist[num] = { comment: comment.text, wishday: comment.wishday }
             }
             //締め切りの初期コメント設定
             const recepdate = this.state.receptionDate;
@@ -229,7 +230,7 @@ class Home extends Component {
                 wish = list[firstdate].wishday;
             }
             this.setState({
-                default_comments: deflist,
+                default_comments: list.slice(),//deflist,
                 comments: list,
                 comment: com,
                 wishday: wish,
@@ -345,7 +346,6 @@ class Home extends Component {
             } else if (this.state.stamp !== dayslist[clickday].text) {
                 //stampが記号か日付で分岐
                 if (this.state.stamp === "time") {
-                    //this.openModal();
                     dayslist[clickday] = { text: "" }
                 } else {
                     dayslist[clickday] = { text: this.state.stamp }
@@ -371,12 +371,6 @@ class Home extends Component {
         this.setState({
             comments: comment
         });
-        /*
-        this.state.comments[this.state.nowprintcommentday] = {
-            comment: this.state.comment,
-            wishday: this.state.wishday
-        }
-        */
         //nowprintcommentday
         const printday = this.state.nowprintcommentday;
         const datearr = (printday.substr(0, 4) + '/' + printday.substr(4, 2) + '/' + printday.substr(6, 2)).split('/');
@@ -384,8 +378,6 @@ class Home extends Component {
         let year = nowdate.getFullYear();
         let month = nowdate.getMonth();
         let day = nowdate.getDate();
-
-
         if (str === "pre") {
             if (day === 16) {
                 day = 1;
@@ -400,7 +392,6 @@ class Home extends Component {
                 }
             }
         } else if (str === "back") {
-            //
             if (day === 1) {
                 day = 16;
             } else {
@@ -423,12 +414,6 @@ class Home extends Component {
             this.setState({
                 comments: comments
             });
-            /*
-            this.state.comments[this.getintdate(year, month, day)] = {
-                comment: "",
-                wishday: ""
-            }
-            */
         }
         this.setComplementdays(new Date(year, month, day));
         this.setState({
@@ -488,31 +473,25 @@ class Home extends Component {
         this.setState({
             comments: comment
         });
-        /*
-        this.state.comments[this.state.nowprintcommentday] = {
-            comment: this.state.comment,
-            wishday: this.state.wishday
-        }
-        */
         const defshift = this.state.default_month_days;
         const newshift = this.state.month_days;
         const newshiftdata = [];
         //追加されたシフト情報
-        for (let shiftday in newshift) {
+        for (const shiftday in newshift) {
             if (defshift[shiftday] == null) {
                 newshiftdata[shiftday] = { text: newshift[shiftday].text }
             }
         }
         //削除されたシフト情報
         const deleteshiftdata = [];
-        for (let shiftday in defshift) {
+        for (const shiftday in defshift) {
             if (newshift[shiftday].text === "") {
                 deleteshiftdata[shiftday] = { text: defshift[shiftday].text }
             }
         }
         //更新されたシフト情報
         const updateshiftdata = [];
-        for (let shiftday in newshift) {
+        for (const shiftday in newshift) {
             if (defshift[shiftday] != null && newshift[shiftday].text !== "" && defshift[shiftday].text !== newshift[shiftday].text) {
                 updateshiftdata[shiftday] = { text: newshift[shiftday].text }
             }
@@ -579,11 +558,10 @@ class Home extends Component {
             .then(str => alert("登録しました"))
         this.shiftupdateChecker("");
     }
-
     //shiftDB更新用fetch
     dbUpdater(url, data) {
         let postdata = [];
-        for (let shift in data) {
+        for (const shift in data) {
             postdata.push({ date: shift, text: data[shift].text })
         }
         fetch(url, {
@@ -599,7 +577,7 @@ class Home extends Component {
     shiftupdateChecker(str) {
         if (str !== "") {
             const list = [];
-            for (let data of this.state.isUpdateshift) {
+            for (const data of this.state.isUpdateshift) {
                 if (data !== str) {
                     list.push(data);
                 }
