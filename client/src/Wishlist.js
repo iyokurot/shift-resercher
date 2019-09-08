@@ -5,7 +5,6 @@ class Wishlist extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            //query: this.props.location.query,
             nowloading: true,//読み込み中
             accessable: false,//アクセス判定
             memberlist: [],//登録メンバー
@@ -26,8 +25,6 @@ class Wishlist extends Component {
     }
     componentDidMount() {
         //アクセス判定
-        //if (this.props.location.query !== undefined) {
-        //if (this.props.location.query.pass === "administer") {
         //ユーザーデータ取得
         //fetch('/testuserdata')
         fetch('/userdata')
@@ -66,13 +63,10 @@ class Wishlist extends Component {
                                 })
                         })
                 } else {
+                    //アクセス拒否
                     this.setState({ nowloading: false })
                 }
             });
-
-
-        //}
-        //}
     }
     render() {
         return (
