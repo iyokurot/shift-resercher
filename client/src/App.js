@@ -42,7 +42,7 @@ class Top extends Component {
 
         <div>
           ------------------<br></br>
-          <Link to="/Home">HomeChecker in local</Link>
+          <Link to="/Home">HomeChecker in locals</Link>
           <br></br>
           -------------------------
         </div>

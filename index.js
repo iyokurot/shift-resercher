@@ -52,11 +52,49 @@ app.get('/userdata', function (req, res) {
     res.json(data);
 })
 
-app.get('/auth', function (req, res, next) {
+app.get('/auth', async (req, res, next) => {
     const rParams = req.query;
 
     if (rParams.code) {
         // 認可コード取得のコールバックでここに来る
+        try {
+            const auth = {
+                code: rParams.code,
+                state: rParams.state,
+            };
+            // アクセストークン取得
+            const token = await getToken({
+                uri: 'https://api.line.me/oauth2/v2.1/token',
+                form: {
+                    grant_type: 'authorization_code',
+                    code: auth.code,
+                    redirect_uri: process.env.LINE_LOGIN_CALLBACK_URL,
+                    client_id: process.env.LINE_LOGIN_CHANNEL_ID,
+                    client_secret: process.env.LINE_LOGIN_CHANNEL_SECRET,
+                },
+                json: true,
+            });
+            req.session.access_token = token.access_token;
+            //res.send(token.access_token);
+            //ユーザー
+            const profile = await getProfile({
+                uri: 'https://api.line.me/v2/profile/',
+                headers: {
+                    Authorization: 'Bearer ' + token.access_token
+                },
+                json: true,
+            });
+            //userId,displayName,pictureUrl
+            //登録済みユーザーか確認
+            req.session.userId = profile.userId;
+            req.session.displayName = profile.displayName;
+            req.session.picture = profile.pictureUrl;
+            res.redirect('/regist');
+
+        } catch (err) {
+            console.log(err);
+        }
+        /*
         co(function* () {
             const auth = {
                 code: rParams.code,
@@ -91,7 +129,7 @@ app.get('/auth', function (req, res, next) {
             req.session.picture = profile.pictureUrl;
             res.redirect('/regist');
 
-        });
+        });*/
     } else if (rParams.access_token) {
         // アクセストークン取得後のコールバックでここに来る
         res.send(rParams);
