@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const co = require('co');
+//const co = require('co');
 const request = require('request');
 const path = require('path');
 require("dotenv").config();
@@ -204,9 +204,9 @@ app.post('/register', async (req, res) => {
     }
 })
 //ログアウト
-app.get('/logout', function (req, res, next) {
-    co(function* () {
-        const logout = yield getToken({
+app.get('/logout', async (req, res, next) => {
+    try {
+        const logout = await getToken({
             uri: 'https://api.line.me/oauth2/v2.1/revoke',
             form: {
                 access_token: req.session.access_token,
@@ -219,7 +219,9 @@ app.get('/logout', function (req, res, next) {
             json: true,
         });
         req.session.destroy();
-    })
+    } catch (err) {
+        console.log(err);
+    }
     res.redirect('/');
 })
 
