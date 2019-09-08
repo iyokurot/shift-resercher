@@ -5,7 +5,8 @@ class Wishlist extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            query: this.props.location.query,
+            //query: this.props.location.query,
+            nowloading: true,//読み込み中
             accessable: false,//アクセス判定
             memberlist: [],//登録メンバー
             allshiftdata: [],//全シフト情報
@@ -25,96 +26,115 @@ class Wishlist extends Component {
     }
     componentDidMount() {
         //アクセス判定
-        if (this.props.location.query !== undefined) {
-            if (this.props.location.query.pass === "administer") {
-                this.setState({
-                    accessable: true
-                })
-                this.setdefaultDays();
-                //全ユーザー取得
-                //fetch('/testmemberlist')
-                fetch('/memberlist')
-                    .then(res => res.json())
-                    .then(list => {
-                        this.setState({ memberlist: list })
-                        //全シフト情報取得
-                        //fetch('/testallshiftdata')
-                        fetch('/allshiftdata')
-                            .then(res => res.json())
-                            .then(data => {
-                                this.setState({ allshiftdata: data });
-                                this.sortmembershift(list, data, this.state.startdate);
-                            })
-                        //全コメント取得
-                        //fetch('/testallcommentdata')
-                        fetch('/allcommentdata')
-                            .then(res => res.json())
-                            .then(data => {
-                                this.setState({ allcommentdata: data });
-                                this.sortmembercomment(list, data, this.state.startdate);
-                            })
+        //if (this.props.location.query !== undefined) {
+        //if (this.props.location.query.pass === "administer") {
+        //ユーザーデータ取得
+        //fetch('/testuserdata')
+        fetch('/userdata')
+            .then(res => res.json())
+            .then(data => {
+                if (data.administer) {
+                    //アクセス許可
+                    this.setState({
+                        accessable: true
                     })
+                    this.setdefaultDays();
+                    //全ユーザー取得
+                    //fetch('/testmemberlist')
+                    fetch('/memberlist')
+                        .then(res => res.json())
+                        .then(list => {
+                            this.setState({ memberlist: list })
+                            //全シフト情報取得
+                            //fetch('/testallshiftdata')
+                            fetch('/allshiftdata')
+                                .then(res => res.json())
+                                .then(data => {
+                                    this.setState({ allshiftdata: data });
+                                    this.sortmembershift(list, data, this.state.startdate);
+                                })
+                            //全コメント取得
+                            //fetch('/testallcommentdata')
+                            fetch('/allcommentdata')
+                                .then(res => res.json())
+                                .then(data => {
+                                    this.setState({
+                                        allcommentdata: data,
+                                        nowloading: false
+                                    });
+                                    this.sortmembercomment(list, data, this.state.startdate);
+                                })
+                        })
+                } else {
+                    this.setState({ nowloading: false })
+                }
+            });
 
-            }
-        }
+
+        //}
+        //}
     }
     render() {
         return (
-            <div>
-                {this.state.accessable ? (
+            <div>{this.state.nowloading ? (
+                <div>読み込み中</div>
+            ) : (
                     <div>
-                        <h1>Wishlist</h1>
-                        シフト希望一覧
+                        {this.state.accessable ? (
+                            <div>
+                                <h1>Wishlist</h1>
+                                シフト希望一覧
                         <button className="bluebutton" value="pre" onClick={this.onClickchangeterm}>◁</button>
-                        <button className="bluebutton" value="back" onClick={this.onClickchangeterm}>▷</button>
-                        <div className="shittablediv">
-                            <table className="shifttable">
-                                <thead>
-                                    <tr>
-                                        <th className="blank">名前</th>
-                                        {this.state.printdays.map((day) =>
-                                            <th key={day}>{day}</th>
-                                        )}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {this.state.printlist.map(member =>
-                                        <tr key={member.name}>
-                                            <th key={member.name}>{member.name}</th>
-                                            {member.shift.map(shift =>
-                                                <td>{shift}</td>)}
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className="wishtablediv">
+                                <button className="bluebutton" value="back" onClick={this.onClickchangeterm}>▷</button>
+                                <div className="shittablediv">
+                                    <table className="shifttable">
+                                        <thead>
+                                            <tr>
+                                                <th className="blank">名前</th>
+                                                {this.state.printdays.map((day) =>
+                                                    <th key={day}>{day}</th>
+                                                )}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.printlist.map(member =>
+                                                <tr key={member.name}>
+                                                    <th key={member.name}>{member.name}</th>
+                                                    {member.shift.map(shift =>
+                                                        <td>{shift}</td>)}
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className="wishtablediv">
 
-                            <h2>補足希望</h2>
-                            <table className="wishtable">
-                                <thead>
-                                    <tr className="tableheader">
-                                        <th className="tablename">名前</th>
-                                        <th className="tableday">日数</th>
-                                        <th className="tablecomment">追記</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {this.state.printcommentlist.map(comment =>
-                                        <tr key={comment.name}>
-                                            <td className="tablename">{comment.name}</td>
-                                            <td className="tableday">{comment.wishday}</td>
-                                            <td className="tablecommenttd">{comment.comment}</td>
-                                        </tr>)}
-                                </tbody>
-                            </table>
-                        </div>
+                                    <h2>補足希望</h2>
+                                    <table className="wishtable">
+                                        <thead>
+                                            <tr className="tableheader">
+                                                <th className="tablename">名前</th>
+                                                <th className="tableday">日数</th>
+                                                <th className="tablecomment">追記</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.printcommentlist.map(comment =>
+                                                <tr key={comment.name}>
+                                                    <td className="tablename">{comment.name}</td>
+                                                    <td className="tableday">{comment.wishday}</td>
+                                                    <td className="tablecommenttd">{comment.comment}</td>
+                                                </tr>)}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        ) : (
+                                <div>アクセスできません</div>
+                            )}
                     </div>
-                ) : (
-                        <div>アクセスできません</div>
-                    )}
+                )}
             </div>
-
         );
     }
     //初期

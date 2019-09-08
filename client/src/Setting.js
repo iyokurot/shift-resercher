@@ -144,7 +144,7 @@ class Setting extends Component {
                 </div>
                 <div style={{ display: this.state.userdata.administer ? '' : 'none' }} className="administerview">
                     <h2 className="administerheader">管理者権限</h2>
-                    <Link to={{ pathname: '/Wishlist', query: { pass: "administer" } }}>
+                    <Link to='/Wishlist'>
                         <span className="administerbutton" id="wishlistbutton">希望一覧</span></Link><br />
                     <button onClick={this.openmemberModal} className="administerbutton">登録者一覧</button>
                     <button onClick={(e) => this.setState({ administerModalopen: true })} className="administerbutton">管理者一覧</button>

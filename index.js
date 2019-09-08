@@ -464,52 +464,6 @@ app.post('/deleteuser', async (req, res) => {
     }
 })
 
-//react
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/client/build/index.html'));
-});
-
-
-app.listen(process.env.PORT || 5000, () => {
-    console.log('start')
-})
-
-function getToken(params) {
-    return new Promise((resolve, reject) => {
-        request.post(params, (error, response, body) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(body);
-            }
-        });
-    });
-}
-
-function getProfile(params) {
-    return new Promise((resolve, reject) => {
-        request.get(params, (error, response, body) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(body);
-            }
-        });
-    });
-}
-function RandomMaker() {
-    //LINEログイン用乱数生成
-    var state = "";
-    // 生成する文字列の長さ
-    var l = 10;
-    // 生成する文字列に含める文字セット
-    var c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var cl = c.length;
-    for (var i = 0; i < l; i++) {
-        state += c[Math.floor(Math.random() * cl)];
-    }
-    return state;
-}
 ////テストルート---------------------------------------
 //Home local
 //user
@@ -786,3 +740,52 @@ app.post('/testdeleteuser', async (req, res) => {
     }
 })
 ///テストルート終了---------------------------------------
+
+
+
+//react
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
+
+
+app.listen(process.env.PORT || 5000, () => {
+    console.log('start')
+})
+
+function getToken(params) {
+    return new Promise((resolve, reject) => {
+        request.post(params, (error, response, body) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(body);
+            }
+        });
+    });
+}
+
+function getProfile(params) {
+    return new Promise((resolve, reject) => {
+        request.get(params, (error, response, body) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(body);
+            }
+        });
+    });
+}
+function RandomMaker() {
+    //LINEログイン用乱数生成
+    var state = "";
+    // 生成する文字列の長さ
+    var l = 10;
+    // 生成する文字列に含める文字セット
+    var c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var cl = c.length;
+    for (var i = 0; i < l; i++) {
+        state += c[Math.floor(Math.random() * cl)];
+    }
+    return state;
+}
