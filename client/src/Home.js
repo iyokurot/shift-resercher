@@ -19,8 +19,7 @@ const customStyles = {
         fontSize: '10px'
     }
 };
-const CssTextField = withStyles({
-    root: {
+const CssTextField = withStyles({root: {
         '& label.Mui-focused': {
             color: '#5f28c4',
         },
