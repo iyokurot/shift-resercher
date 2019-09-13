@@ -1,22 +1,21 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
-import Register from './Register';
-import Home from './Home';
-import Setting from './Setting';
-import Wishlist from './Wishlist';
-import './css/Tag.css';
-import './css/Class.css';
-import './css/Id.css';
-
+import React, { Component } from 'react'
+import { BrowserRouter, Route, Link } from 'react-router-dom'
+import Register from './Register'
+import Home from './Home'
+import Setting from './Setting'
+import Wishlist from './Wishlist'
+import './css/Tag.css'
+import './css/Class.css'
+import './css/Id.css'
 
 const App = () => (
   <BrowserRouter>
     <div>
-      <Route exact path='/' component={Top} />
-      <Route path='/Register' component={Register} />
-      <Route path='/Home' component={Home} />
-      <Route path='/Setting' component={Setting} />
-      <Route path='/Wishlist' component={Wishlist} />
+      <Route exact path="/" component={Top} />
+      <Route path="/Register" component={Register} />
+      <Route path="/Home" component={Home} />
+      <Route path="/Setting" component={Setting} />
+      <Route path="/Wishlist" component={Wishlist} />
     </div>
   </BrowserRouter>
 )
@@ -39,7 +38,6 @@ class Top extends Component {
         </form>
         <span id="developer">Developed by itoyu</span>
 
-
         <div>
           ------------------<br></br>
           <Link to="/Home">HomeChecker in locals</Link>
@@ -47,8 +45,8 @@ class Top extends Component {
           -------------------------
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
