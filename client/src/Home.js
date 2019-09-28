@@ -255,7 +255,7 @@ class Home extends Component {
       </div>
     )
   }
-  //yyMMdd
+  //yyMMdd日付
   getintdate(year, month, day) {
     return year + ('0' + (month + 1)).slice(-2) + ('0' + day).slice(-2)
   }
