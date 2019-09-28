@@ -43,21 +43,6 @@ class Setting extends Component {
       administerModalopen: false,
       isAddadminister: false,
     }
-    /*
-    this.loadmemberlist = this.loadmemberlist.bind(this)
-    this.onChangeusername = this.onChangeusername.bind(this)
-    this.updateUsername = this.updateUsername.bind(this)
-    this.onChangeworktime = this.onChangeworktime.bind(this)
-    this.setworktime = this.setworktime.bind(this)
-    this.onClickunsubsribe = this.onClickunsubsribe.bind(this)
-    this.pushtoHome = this.pushtoHome.bind(this)
-
-    this.openmemberModal = this.openmemberModal.bind(this)
-    this.closememberModal = this.closememberModal.bind(this)
-    this.closeadministerModal = this.closeadministerModal.bind(this)
-    this.onChangeaddministeroption = this.onChangeaddministeroption.bind(this)
-    this.onClickadminister = this.onClickadminister.bind(this)
-    */
   }
   componentDidMount() {
     //ユーザーデータ取得

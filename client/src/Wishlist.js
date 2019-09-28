@@ -16,13 +16,6 @@ class Wishlist extends Component {
       startdate: '',
       printdays: [], //表示する期間
     }
-
-    /*
-    this.onClickchangeterm = this.onClickchangeterm.bind(this)
-    this.setprintDays = this.setprintDays.bind(this)
-    this.sortmembershift = this.sortmembershift.bind(this)
-    this.sortmembercomment = this.sortmembercomment.bind(this)
-    */
   }
   componentDidMount() {
     //アクセス判定

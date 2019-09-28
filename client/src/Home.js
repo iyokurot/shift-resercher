@@ -90,25 +90,6 @@ class Home extends Component {
       modalIsOpen: false, //モーダル判定
       isUpdateshift: [], //シフト更新
     }
-    /*
-    this.setdefaultshifts = this.setdefaultshifts.bind(this)
-    this.setdefaultcomment = this.setdefaultcomment.bind(this)
-    this.setComplementdays = this.setComplementdays.bind(this)
-    this.getDateReception = this.getDateReception.bind(this)
-    this.dayspreOnclick = this.dayspreOnclick.bind(this)
-    this.daysbackOnclick = this.daysbackOnclick.bind(this)
-    this.dayspreback = this.dayspreback.bind(this)
-    this.wishdayOnchange = this.wishdayOnchange.bind(this)
-    this.commentOnchange = this.commentOnchange.bind(this)
-    this.openModal = this.openModal.bind(this)
-    this.afterOpenModal = this.afterOpenModal.bind(this)
-    this.closeModal = this.closeModal.bind(this)
-    this.setShiftTime = this.setShiftTime.bind(this)
-    this.startTimeChange = this.startTimeChange.bind(this)
-    this.endTimeChange = this.endTimeChange.bind(this)
-    this.addDataOnClick = this.addDataOnClick.bind(this)
-    this.shiftupdateChecker = this.shiftupdateChecker.bind(this)
-    */
   }
   componentDidMount() {
     this.getDateReception()
