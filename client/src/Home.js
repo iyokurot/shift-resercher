@@ -116,7 +116,7 @@ class Home extends Component {
     fetch('/userdata')
       //fetch('/testuserdata')
       .then(res => res.json())
-      .then(data => this.setState({ userdata: data }))
+      .then(data => console.log(data)) //this.setState({ userdata: data }))
     //シフトデータ取得
     fetch('/shiftdata')
       //fetch('/testshiftdata')

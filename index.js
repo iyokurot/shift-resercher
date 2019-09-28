@@ -16,7 +16,6 @@ const poollocal = new Pool({
   connectionString:
     'postgres://postgres:kayopile@localhost:5432/shift_reserch_test',
 })
-const ALLOWED_ORIGINS = ['http://localhost:3000', 'http://localhost:5000']
 
 app.use(
   session({
@@ -40,16 +39,20 @@ app.use((req, res, next) => {
 })
 
 app.get('/userdata', function(req, res) {
-  var data = {
-    userId: req.session.userId,
-    displayName: req.session.displayName,
-    picture: req.session.picture,
-    username: req.session.username,
-    worktime: req.session.worktime,
-    administer: req.session.administer,
-    regist: req.session.regist,
+  if (req.session.access_token != null) {
+    var data = {
+      userId: req.session.userId,
+      displayName: req.session.displayName,
+      picture: req.session.picture,
+      username: req.session.username,
+      worktime: req.session.worktime,
+      administer: req.session.administer,
+      regist: req.session.regist,
+    }
+    res.json(data)
+  } else {
+    res.json('')
   }
-  res.json(data)
 })
 
 app.get('/auth', async (req, res, next) => {
