@@ -210,11 +210,11 @@ class Home extends Component {
                 variant="outlined"
                 placeholder="希望を記入"
               />
-              <button id="submit_shiftdata" onClick={this.addDataOnClick}>
-                登録
-              </button>
             </div>
           </div>
+          <button id="submit_shiftdata" onClick={this.addDataOnClick}>
+            登録
+          </button>
         </div>
         <Modal
           isOpen={this.state.modalIsOpen}
