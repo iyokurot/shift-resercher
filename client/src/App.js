@@ -11,6 +11,10 @@ import './css/Id.css'
 const App = () => (
   <BrowserRouter>
     <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=Norican&display=swap"
+        rel="stylesheet"
+      ></link>
       <Route exact path="/" component={Top} />
       <Route path="/Register" component={Register} />
       <Route path="/Home" component={Home} />

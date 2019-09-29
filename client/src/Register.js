@@ -39,7 +39,7 @@ class Register extends Component {
   render() {
     return (
       <div>
-        <h1>新規登録</h1>
+        <h1>Sign Up</h1>
         <div className="profileholder">
           <div className="profilesetting">
             <div className="profilecard">

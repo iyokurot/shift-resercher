@@ -25,7 +25,8 @@ body::before {
   background-size: cover;
 }
 h1 {
-  font-family: 'serif', serif;
+  font-family: 'Norican', serif;
+  font-weight: normal;
   color: #661cf1;
   background: -webkit-linear-gradient(top, #661cf1, #130331);
   -webkit-background-clip: text;

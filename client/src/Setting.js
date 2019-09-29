@@ -86,7 +86,7 @@ class Setting extends Component {
   render() {
     return (
       <div>
-        <h1>設定</h1>
+        <h1>Settings</h1>
         <div className="profileholder">
           <div className="profilesetting">
             <div className="profilecard">
