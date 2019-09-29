@@ -32,7 +32,7 @@ class Register extends Component {
           this.setState({ userdata: data, username: data.displayName })
         } else {
           //アクセス拒否
-          this.props.history.push('/')
+          //this.props.history.push('/')
         }
       })
   }
@@ -60,6 +60,7 @@ class Register extends Component {
                 inputProps={{
                   'aria-label': 'username',
                 }}
+                placeholder="10文字以内"
               />
               <p id="namesubtitle">サイト内で使用する名前を記入してください</p>
             </div>
@@ -107,6 +108,8 @@ class Register extends Component {
     //名前確認
     if (this.state.username === '') {
       alert('名前を入力してください')
+    } else if (this.state.username.length > 10) {
+      alert('ユーザー名は10文字以内で入力してください')
     } else {
       const data = {
         username: this.state.username,

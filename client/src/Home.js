@@ -91,6 +91,8 @@ class Home extends Component {
       isUpdateshift: [], //シフト更新
     }
   }
+  deadlineEarly = 10
+  deadlineLate = 24
   componentDidMount() {
     this.getDateReception()
     //ユーザーデータ取得
@@ -243,9 +245,7 @@ class Home extends Component {
   //json変換
   setdefaultshifts = data => {
     const deflist = []
-    //const list = [];
     for (const shift of data) {
-      //list[shift.date] = { text: shift.detail }
       deflist[shift.date] = { text: shift.detail }
     }
     this.setState({
@@ -256,7 +256,6 @@ class Home extends Component {
   //commentSetting
   setdefaultcomment = data => {
     if (data !== '') {
-      //const deflist = [];
       const list = []
       for (const comment of data) {
         const date = new Date(comment.date)
@@ -265,7 +264,6 @@ class Home extends Component {
           ('0' + (date.getMonth() + 1)).slice(-2) +
           ('0' + date.getDate()).slice(-2)
         list[num] = { comment: comment.text, wishday: comment.wishday }
-        //deflist[num] = { comment: comment.text, wishday: comment.wishday }
       }
       //締め切りの初期コメント設定
       const recepdate = this.state.receptionDate
@@ -302,14 +300,14 @@ class Home extends Component {
     let receptionday = ''
     let deadline = ''
     let setday = ''
-    if (day <= 10) {
+    if (day <= this.deadlineEarly) {
       //締め切り
       const finaldate = new Date(year, month, 0)
       receptionday = month + '/16～' + month + '/' + finaldate.getDate()
       deadline = month + '/10まで(' + receptionday + ')'
       //今月16～末日まで
       setday = year + '/' + month + '/16'
-    } else if (day > 24) {
+    } else if (day > this.deadlineLate) {
       //年越し処理
       if (month === 12) {
         year++

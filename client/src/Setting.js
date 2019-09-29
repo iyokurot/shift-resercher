@@ -107,6 +107,7 @@ class Setting extends Component {
                 inputProps={{
                   'aria-label': 'username',
                 }}
+                placeholder="10文字以内"
               />
               <button
                 onClick={this.updateUsername}
@@ -282,25 +283,31 @@ class Setting extends Component {
   //ユーザー名変更処理
   updateUsername = () => {
     if (this.state.username !== this.state.userdata.username) {
-      //更新fetch
-      //fetch('/testupdateusername', {
-      fetch('/updateusername', {
-        method: 'POST',
-        body: JSON.stringify([this.state.username]),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        mode: 'cors',
-      })
-        .then(res => res.json())
-        .then(str => {
-          alert('登録しました')
-          const userdata = this.state.userdata
-          userdata.username = this.state.username
-          this.setState({
-            userdata: userdata,
-          })
+      if (this.state.username === '') {
+        alert('名前を入力してください')
+      } else if (this.state.username.length > 10) {
+        alert('ユーザー名は10文字以内で入力してください')
+      } else {
+        //更新fetch
+        //fetch('/testupdateusername', {
+        fetch('/updateusername', {
+          method: 'POST',
+          body: JSON.stringify([this.state.username]),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          mode: 'cors',
         })
+          .then(res => res.json())
+          .then(str => {
+            alert('登録しました')
+            const userdata = this.state.userdata
+            userdata.username = this.state.username
+            this.setState({
+              userdata: userdata,
+            })
+          })
+      }
     }
   }
   //勤務区分変更判定

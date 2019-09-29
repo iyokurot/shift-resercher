@@ -1,187 +1,188 @@
 /*Top*/
-.login_button{
-    border: 0px;
-    width: 151px;
-    height: 44px;
-    background: url(../line/btn_login_base.png) left top no-repeat;
-    margin: 10px;
+.login_button {
+  border: 0px;
+  width: 151px;
+  height: 44px;
+  background: url(../line/btn_login_base.png) left top no-repeat;
+  margin: 10px;
 }
-.login_button:hover{
-    background: url(../line/btn_login_hover.png) left top no-repeat;
+.login_button:hover {
+  background: url(../line/btn_login_hover.png) left top no-repeat;
 }
-.login_button:active{
-    background: url(../line/btn_login_press.png) left top no-repeat;
+.login_button:active {
+  background: url(../line/btn_login_press.png) left top no-repeat;
 }
 /*Home*/
-.reception{
-    padding: 10px;
-    padding-bottom: 0;
+.reception {
+  padding: 10px;
+  padding-bottom: 0;
   border-bottom: 1px solid #5f28c4;
-    margin: 0%;
-    color: #5f28c4;
+  margin: 0%;
+  color: #5f28c4;
 }
-.itemholder{
-    margin: 3px auto;
+.itemholder {
+  margin: 3px auto;
 }
-.redbutton{
-    color: #b93892;
-    border: solid 1px #b93892;
-    background-color: white;
-    margin: 3px 10px;
-    width: 80px;
-    display: inline-block;
-    text-decoration: none;
-    transition: .4s;
-    height: 30px;
-    margin: 0 1;
+.redbutton {
+  color: #b93892;
+  border: solid 1px #b93892;
+  background-color: white;
+  margin: 3px 10px;
+  width: 80px;
+  display: inline-block;
+  text-decoration: none;
+  transition: 0.4s;
+  height: 30px;
+  margin: 0 1;
 }
-.redbutton:hover{
-    background: #b93892;
-    color: white;
+.redbutton:hover {
+  background: #b93892;
+  color: white;
 }
-.bluebutton{
-    color: #5f28c4;
-    border: solid 1px #5f28c4;
-    background-color: white;
-    margin: 3px 10px;
-    width: 80px;
-    display: inline-block;
-    text-decoration: none;
-    transition: .4s;
-    height: 30px;
-    margin: 0 1;
+.bluebutton {
+  color: #5f28c4;
+  border: solid 1px #5f28c4;
+  background-color: white;
+  margin: 3px 10px;
+  width: 80px;
+  display: inline-block;
+  text-decoration: none;
+  transition: 0.4s;
+  height: 30px;
+  margin: 0 1;
 }
-.bluebutton:hover{
-    background: #5f28c4;
-    color: white;
+.bluebutton:hover {
+  background: #5f28c4;
+  color: white;
 }
-.greenbutton{
-    color: #004918;
-    border: solid 1px #004918;
-    background-color: white;
-    margin: 3px 10px;
-    width: 80px;
-    display: inline-block;
-    text-decoration: none;
-    transition: .4s;
-    height: 30px;
-    margin: 0 1;
+.greenbutton {
+  color: #004918;
+  border: solid 1px #004918;
+  background-color: white;
+  margin: 3px 10px;
+  width: 80px;
+  display: inline-block;
+  text-decoration: none;
+  transition: 0.4s;
+  height: 30px;
+  margin: 0 1;
 }
-.greenbutton:hover{
-    background: #004918;
-    color: white;
+.greenbutton:hover {
+  background: #004918;
+  color: white;
 }
 
-.calendaritem{
-    height: 30px;
+.calendaritem {
+  height: 30px;
 }
-.flameholder{
-    margin: 0 10px;
-    padding: 3px;
+.flameholder {
+  margin: 0 10px;
+  padding: 3px;
 }
-.flame{
-    max-width: 380px;
-    border: solid 2px #5f28c4;
-    padding: 0.3em;
-    margin: 5px auto;
-    background-color: rgba(255,255,255,0.5);
+.flame {
+  max-width: 380px;
+  border: solid 2px #5f28c4;
+  padding: 0.3em;
+  margin: 5px auto;
+  background-color: rgba(255, 255, 255, 0.5);
 }
-.modaltitle{
-    margin: 0;
+.modaltitle {
+  margin: 0;
 }
-.timeselect{
-    border: solid 1px #5f28c4;
-    width: 30%;
-    height: 30px;
-    margin: 2px;
-    background: white;
-    font-size: 16px;
+.timeselect {
+  border: solid 1px #5f28c4;
+  width: 30%;
+  height: 30px;
+  margin: 2px;
+  background: white;
+  font-size: 16px;
 }
 
 /*Setting*/
-.profileholder{
-    padding: 0 5px;
+.profileholder {
+  padding: 0 5px;
 }
-.profilesetting{
-    max-width: 350px;
-    background-color: rgba(255,255,255, 0.3);
-    border: solid 2px #5f28c4;
-    padding: 0.3em;
-    margin: 5px auto;
+.profilesetting {
+  max-width: 350px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: solid 2px #5f28c4;
+  padding: 0.3em;
+  margin: 5px auto;
 }
-.profilecard{
-    background-color: #ffffff;
-    width: 150px;
-    margin: 0 auto;
-    margin-top: 5px;
-    box-shadow: 0 0 8px gray;
-    border-radius: 10px;
-    padding: 3px;
+.profilecard {
+  background-color: #ffffff;
+  width: 150px;
+  margin: 0 auto;
+  margin-top: 5px;
+  box-shadow: 0 0 8px gray;
+  border-radius: 10px;
+  padding: 3px;
 }
-.worktime{
-    margin: 10px;
+.worktime {
+  margin: 10px;
 }
 
-.administerview{
-    margin: 10px 0px;
-    background-color: #130331;
-    padding:10px;
+.administerview {
+  margin: 10px 0px;
+  background-color: #130331;
+  padding: 10px;
 }
-.administerheader{
-    margin: 0px;
-    color: #937ac2;
-    background: -webkit-linear-gradient(top, #ffffff, #937ac2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-family: 'serif', serif;
+.administerheader {
+  margin: 0px;
+  color: #937ac2;
+  background: -webkit-linear-gradient(top, #ffffff, #937ac2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'serif', serif;
 }
-.administerbutton{
-    color: #c5b8dd;
-    border: solid 1px #c5b8dd;
-    margin: 5px;
-    background-color: #130331;
-    padding: 2px;
-    width: 120px;
-    height: 30px;
+.administerbutton {
+  color: #c5b8dd;
+  border: solid 1px #c5b8dd;
+  margin: 5px;
+  background-color: #130331;
+  padding: 2px;
+  width: 120px;
+  height: 30px;
 }
-.administerbutton:hover{
-    background: #c5b8dd;
-    color: #130331;
+.administerbutton:hover {
+  background: #c5b8dd;
+  color: #130331;
 }
 /*Wishlist*/
-.shittablediv{
-    display: inline-block;
-    width: 100%;
+.shittablediv {
+  display: inline-block;
+  width: 100%;
 }
-.shifttable{
-    display: block;
-    position: relative;
-    width: 95%;
-    max-width: min-content;
-    overflow: scroll;
-    text-align: center;
-    border-collapse: collapse;
-    background-color: white;
-    margin: 10px;
-    max-height: 800px;
-    border-collapse: collapse;
-    box-shadow: 0 0 8px gray;
-    border-radius: 10px;
+.shifttable {
+  display: inline-block;
+  position: relative;
+  width: 95%;
+  max-width: min-content;
+  overflow: scroll;
+  text-align: center;
+  border-collapse: collapse;
+  background-color: white;
+  margin: 10px;
+  max-height: 800px;
+  border-collapse: collapse;
+  box-shadow: 0 0 8px gray;
+  border-radius: 10px;
 }
-.shifttable thead,.shifttable tbody{
-     display: block;
-     width: max-content;
+.shifttable thead,
+.shifttable tbody {
+  display: block;
+  width: max-content;
 }
-.shifttable tr{
-    border-bottom: solid 1px #dbdbdb;
+.shifttable tr {
+  border-bottom: solid 1px #dbdbdb;
 }
-.shifttable tbody th{
-    position: -webkit-sticky;
-    position: sticky;
-    left: 0;
-    z-index: 1;
-    width: 100px;
-    background-color: #ffffff;
+.shifttable tbody th {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  width: 100px;
+  background-color: #ffffff;
 }
 .shifttable thead {
   position: -webkit-sticky;
@@ -199,61 +200,63 @@
   width: 100px;
   background: #ffffff;
 }
-.shifttable tbody tr:nth-child(odd),.shifttable tbody tr:nth-child(odd) th{
-    background: #cacaca;
+.shifttable tbody tr:nth-child(odd),
+.shifttable tbody tr:nth-child(odd) th {
+  background: #cacaca;
 }
-.shifttable th,.shifttable td{ 
-    display: inline-block;
-    padding: 10px 5px;
-    min-width: 50px;
-    
+.shifttable th,
+.shifttable td {
+  display: inline-block;
+  padding: 10px 5px;
+  min-width: 50px;
 }
-.shifttable td{
-    width: 50px;
+.shifttable td {
+  width: 50px;
 }
 
-
-.wishtable{
-    display: inline-block;
-    text-align: center;
-    border-collapse: collapse;
-    background-color: white;
-    margin: 20px;
-    box-shadow: 0 0 8px gray;
-    border-radius: 10px;
+.wishtable {
+  display: inline-block;
+  text-align: center;
+  border-collapse: collapse;
+  background-color: white;
+  margin: 20px;
+  box-shadow: 0 0 8px gray;
+  border-radius: 10px;
 }
-.wishtable th{
-    color: rgb(59, 53, 70);
+.wishtable th {
+  color: rgb(59, 53, 70);
 }
-.wishtable .tablename,.wishtable .tableday{
-    padding: 5px 2px;
-    border-right: solid 1px rgb(145, 145, 145);
+.wishtable .tablename,
+.wishtable .tableday {
+  padding: 5px 2px;
+  border-right: solid 1px rgb(145, 145, 145);
 }
-.wishtable .tableheader ,.wishtable tr:not(:last-child){
-    border-bottom: solid 1px rgb(145, 145, 145);
+.wishtable .tableheader,
+.wishtable tr:not(:last-child) {
+  border-bottom: solid 1px rgb(145, 145, 145);
 }
-.tablename{
-    width: 100px;
+.tablename {
+  width: 100px;
 }
-.tableday{
-    min-width: 40px;
-    width: 50px;
+.tableday {
+  min-width: 40px;
+  width: 50px;
 }
-.tablecomment{
-    width: 80%;
+.tablecomment {
+  width: 80%;
 }
-.tablecommenttd{
-    text-align: left;
+.tablecommenttd {
+  text-align: left;
 }
 
 @media screen and (max-width: 480px) {
-    .redbutton{
-        margin: 3px 10px;
-    }
-    .bluebutton{
-        margin: 3px 10px;
-    }
-    .greenbutton{
-        margin: 3px 10px;
-    }
+  .redbutton {
+    margin: 3px 10px;
+  }
+  .bluebutton {
+    margin: 3px 10px;
+  }
+  .greenbutton {
+    margin: 3px 10px;
+  }
 }
