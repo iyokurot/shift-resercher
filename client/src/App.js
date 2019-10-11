@@ -43,16 +43,17 @@ class Top extends Component {
           <input type="submit" className="login_button" value="" />
         </form>
         <span id="developer">Developed by itoyu</span>
-
-        <div>
+      </div>
+    )
+  }
+}
+/*
+<div>
           ------------------<br></br>
           <Link to="/Home">HomeChecker in locals</Link>
           <br></br>
           -------------------------
         </div>
-      </div>
-    )
-  }
-}
+ */
 
 export default App
