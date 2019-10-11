@@ -293,8 +293,15 @@
   display: inline-block;
   max-height: 400px;
   overflow-y: scroll;
+  margin: 5px;
 }
-
+.infoTable thead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #ffffff;
+}
 .infoTable thead th.blank {
   position: -webkit-sticky;
   position: sticky;
@@ -303,6 +310,7 @@
   z-index: 3;
   width: 100px;
   background: #a3e7de;
+  height: 30px;
 }
 
 @media screen and (max-width: 480px) {

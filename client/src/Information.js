@@ -28,8 +28,8 @@ class Information extends Component {
     }
   }
   componentDidMount() {
-    fetch('/userdata')
-      //fetch('/testuserdata')
+    //fetch('/userdata')
+    fetch('/testuserdata')
       .then(res => res.json())
       .then(data => this.setState({ userdata: data }))
     this.fetchInfodata()
@@ -60,7 +60,10 @@ class Information extends Component {
             <br />
             <div id="newInfomessageFlame">
               <p id="newInfomessageTop">本文</p>
-              <textarea id="newInfomessageText"></textarea>
+              <textarea
+                id="newInfomessageText"
+                onChange={this.onChangeMessage}
+              ></textarea>
             </div>
             <br />
             <button
@@ -81,7 +84,7 @@ class Information extends Component {
             <table className="infoTable">
               <thead>
                 {this.state.modal || this.state.changeablemodal ? (
-                  ''
+                  <tr></tr>
                 ) : (
                   <tr>
                     <th className="blank" id="infoTableth">
@@ -210,8 +213,8 @@ class Information extends Component {
   }
   //infoFetch
   fetchInfodata = () => {
-    fetch('/informationdata')
-      //fetch('/testinformationdata')
+    //fetch('/informationdata')
+    fetch('/testinformationdata')
       .then(res => res.json())
       .then(data => this.setState({ informations: data }))
   }
@@ -249,6 +252,7 @@ class Information extends Component {
         title: this.state.title,
         message: this.state.message,
       }
+      console.log(data)
       fetch('/addinformationdata', {
         //fetch('/testaddinformationdata', {
         method: 'POST',
@@ -353,8 +357,8 @@ class Information extends Component {
   deleteInfo = e => {
     if (window.confirm('削除しますか？')) {
       //削除処理
-      fetch('/updateinformationdata', {
-        //fetch('/testupdateinformationdata', {
+      fetch('/deleteinformationdata', {
+        //fetch('/testdeleteinformationdata', {
         method: 'POST',
         body: JSON.stringify([e.target.value]),
         headers: {
