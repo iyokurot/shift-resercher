@@ -200,7 +200,7 @@ app.get('/memberlist', async (req, res) => {
       const result = await client.query('SELECT * FROM user_table')
       const results = { results: result ? result.rows : null }
       if (result.rowCount == 0) {
-        res.send('no rows')
+        res.json([])
       } else {
         res.json(results.results)
       }
@@ -304,7 +304,7 @@ app.get('/shiftdata', async (req, res) => {
       )
       const results = { results: result ? result.rows : null }
       if (result.rowCount == 0) {
-        res.send('no rows')
+        res.json([])
       } else {
         res.json(results.results)
       }
@@ -387,7 +387,7 @@ app.get('/allshiftdata', async (req, res) => {
       const result = await client.query('SELECT * FROM shift_table')
       const results = { results: result ? result.rows : null }
       if (result.rowCount == 0) {
-        res.send('no rows')
+        res.json([])
       } else {
         res.json(results.results)
       }
@@ -484,7 +484,7 @@ app.get('/allcommentdata', async (req, res) => {
       const result = await client.query('SELECT * FROM comment_table')
       const results = { results: result ? result.rows : null }
       if (result.rowCount == 0) {
-        res.send('no')
+        res.json([])
       } else {
         res.json(results.results)
       }
