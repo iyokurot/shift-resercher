@@ -89,6 +89,7 @@ class Home extends Component {
       nowprintcommentday: '',
       modalIsOpen: false, //モーダル判定
       isUpdateshift: [], //シフト更新
+      informations: [], //おしらせ3件
     }
   }
   deadlineEarly = 10
@@ -110,6 +111,11 @@ class Home extends Component {
       //fetch('/testgetcommentdata')
       .then(res => res.json())
       .then(data => this.setdefaultcomment(data))
+    //お知らせ３件取得
+    fetch('/informationdatathree')
+      //fetch('/testinformationdatathree')
+      .then(res => res.json())
+      .then(data => this.setState({ informations: data }))
   }
   render() {
     return (
@@ -130,6 +136,28 @@ class Home extends Component {
           {this.state.receptionDate.getDate()}日～受付中
         </h2>
         <div id="dateText">{this.state.deadline}</div>
+        <div id="infoFlame">
+          <span id="infoTitle">おしらせ</span>
+          <div>
+            <table id="infotable">
+              <tbody>
+                {this.state.informations.map(info => (
+                  <tr key={info.id}>
+                    <td id="infotabledate">
+                      {this.slashformatDate(info.date)}
+                    </td>
+                    <td id="infotabletitle">
+                      <span>{info.title}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <button className="lightgreenbutton" onClick={this.pushtoInfomation}>
+            一覧へ
+          </button>
+        </div>
         <div className="itemholder">
           <button
             className="redbutton"
@@ -241,6 +269,13 @@ class Home extends Component {
   //yyMMdd日付
   getintdate(year, month, day) {
     return year + ('0' + (month + 1)).slice(-2) + ('0' + day).slice(-2)
+  }
+  //yyyy/mm/dd
+  slashformatDate(str) {
+    const date = new Date(str)
+    return (
+      date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate()
+    )
   }
   //json変換
   setdefaultshifts = data => {
@@ -684,6 +719,9 @@ class Home extends Component {
           .then(data => this.setdefaultcomment(data))
       }
     }
+  }
+  pushtoInfomation = () => {
+    this.props.history.push('/Information')
   }
 }
 

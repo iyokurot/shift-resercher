@@ -1,42 +1,62 @@
-#developer{
-    font-size: 10px;
-    color: rgb(46, 46, 46);
+#developer {
+  font-size: 10px;
+  color: rgb(46, 46, 46);
 }
 /*Register*/
-#namesubtitle{
-    font-size: 12px;
+#namesubtitle {
+  font-size: 12px;
 }
-#registerbutton{
-    width: 200px;
+#registerbutton {
+  width: 200px;
 }
 /*Home*/
-#personalheader{
-    margin-left: 60%;
+#personalheader {
+  margin-left: 60%;
 }
 
-#settingimg{
-    background-image: url("../images/baseline_settings_applications_black_18dp.png");
-    display: inline-block;
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 30px;
-    height: 30px;
-    padding: 2px;
-    
+#settingimg {
+  background-image: url('../images/baseline_settings_applications_black_18dp.png');
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 30px;
+  height: 30px;
+  padding: 2px;
 }
 
-
-#dateText{
-    color: #e73a3a;
+#dateText {
+  color: #e73a3a;
+  font-size: 20px;
+}
+#infoTitle {
+  font-weight: bold;
+}
+#infoFlame {
+  max-width: 380px;
+  border: solid 2px #1dbea9;
+  padding: 0.3em;
+  margin: 5px auto;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+#infotable {
+  table-layout: fixed;
+  width: 100%;
+}
+#infotabledate {
+  width: 100px;
+}
+#infotabletitle {
+  white-space: nowrap;
+  overflow-x: hidden;
 }
 
-#calendar{
-    display: inline-block;
-    background-color: black;
+#calendar {
+  display: inline-block;
+  background-color: black;
 }
 
-
-#wishday select{
+#wishday select {
   background: transparent;
   height: 25px;
   border: 1px solid #5f28c4;
@@ -45,54 +65,130 @@
   font-size: 18px;
   color: rgb(59, 53, 70);
 }
-#submit_shiftdata{
-    border: none;
-    padding: 0;
-    margin: 5px 0 5px 10px;
-    display: inline-block;
+#submit_shiftdata {
+  border: none;
+  padding: 0;
+  margin: 5px 0 5px 10px;
+  display: inline-block;
   text-decoration: none;
   background: #5f28c4;
-  color: #FFF;
+  color: #fff;
   width: 70px;
   height: 70px;
   line-height: 70px;
   border-radius: 50%;
   text-align: center;
   overflow: hidden;
-  transition: .4s;
+  transition: 0.4s;
 }
 #submit_shiftdata:hover {
   background: #261050;
 }
 
 /*Setting*/
-#profileimage{
-    width:100px;
-    height:100px;
-    border-radius: 50%;
+#profileimage {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
 }
-#linename{
-    color: rgb(0, 212, 64)
+#linename {
+  color: rgb(0, 212, 64);
 }
-#username{
-    width: 150px;
+#username {
+  width: 150px;
 }
-#updatebutton{
-    width: auto;
+#updatebutton {
+  width: auto;
 }
-#disbutton{
-    width: 80%;
-    margin: 3px;
+#disbutton {
+  width: 80%;
+  margin: 3px;
 }
-#wishlistbutton{
-    display: inline-block;
-    width: 40%;
-    min-width: 250px;
+#wishlistbutton {
+  display: inline-block;
+  width: 40%;
+  min-width: 250px;
+}
+/*infomation*/
+#infoTableHeader {
+  font-size: 20px;
+  color: #1dbea9;
+  font-weight: bold;
+  margin: 10px;
+}
+#infotr {
+  transition: 0.4s;
+}
+#infotr:hover {
+  background-color: #1dbea9;
+}
+#newInfomessageFlame {
+  position: relative;
+  display: inline-block;
+  margin: 20px 0;
+  padding: 0;
+  border: none;
+  width: 300px;
+}
+#newInfomessageFlame #newInfomessageTop {
+  position: absolute;
+  display: inline-block;
+  top: -13px;
+  left: 10px;
+  padding: 0 9px;
+  line-height: 1;
+  font-size: 19px;
+  background: #fff;
+  color: #5f28c4;
+  font-weight: bold;
+}
+#newInfomessageFlame p {
+  margin: 0;
+  padding: 0;
+}
+#newInfomessageText {
+  width: 95%;
+  height: 200px;
+  outline: none;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  border: solid 2px gray;
+  border-radius: 8px;
+  padding: 5px;
+  padding-top: 8px;
+  font-size: 16px;
+  resize: none;
+  color: black;
+}
+#newInfomessageText:focus {
+  border: solid 2px #5f28c4;
+  color: #5f28c4;
+}
+
+#newInfomationtitle {
+  font-size: 16px;
+  padding: 5px;
+  border-bottom: solid 1px gray;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  transition: 0.4s;
+  height: 20px;
+}
+#newInfomationtitle:hover {
+  border-bottom: solid 1px black;
+}
+#newInfomationtitle:focus {
+  outline: 0;
+  border-bottom: solid 1px #5f28c4;
+}
+#infoTableth {
+  width: 50px;
 }
 
 @media screen and (max-width: 480px) {
-#termbuttons::before{
-    content: "\A";
+  #termbuttons::before {
+    content: '\A';
     white-space: pre;
-}
+  }
 }

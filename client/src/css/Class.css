@@ -71,6 +71,23 @@
   background: #004918;
   color: white;
 }
+.lightgreenbutton {
+  border: solid 1px #1dbea9;
+  color: #1dbea9;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0);
+  margin: 3px 10px;
+  width: 60%;
+  display: inline-block;
+  text-decoration: none;
+  transition: 0.4s;
+  height: 30px;
+  margin: 0 1;
+}
+.lightgreenbutton:hover {
+  background: #1dbea9;
+  color: white;
+}
 
 .calendaritem {
   height: 30px;
@@ -143,10 +160,25 @@
   padding: 2px;
   width: 120px;
   height: 30px;
+  transition: 0.4s;
 }
 .administerbutton:hover {
   background: #c5b8dd;
   color: #130331;
+}
+.administerbuttonreverse {
+  color: #130331;
+  border: solid 1px #130331;
+  margin: 5px;
+  background-color: #c5b8dd;
+  padding: 2px;
+  width: 120px;
+  height: 30px;
+  transition: 0.4s;
+}
+.administerbuttonreverse:hover {
+  background: #130331;
+  color: #c5b8dd;
 }
 /*Wishlist*/
 .shittablediv {
@@ -247,6 +279,30 @@
 }
 .tablecommenttd {
   text-align: left;
+}
+/*info*/
+.infotablebutton {
+  color: black;
+  border: none;
+  margin: 0px;
+  background-color: rgba(0, 0, 0, 0);
+  width: 100%;
+  height: 40px;
+}
+.infoTable {
+  display: inline-block;
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.infoTable thead th.blank {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 100px;
+  background: #a3e7de;
 }
 
 @media screen and (max-width: 480px) {

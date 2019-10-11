@@ -173,6 +173,14 @@ class Setting extends Component {
             </span>
           </Link>
           <br />
+          <button
+            onClick={this.pushtoInformation}
+            className="administerbutton"
+            style={{ width: '250px' }}
+          >
+            お知らせ配信
+          </button>
+          <br />
           <button onClick={this.openmemberModal} className="administerbutton">
             登録者一覧
           </button>
@@ -359,6 +367,10 @@ class Setting extends Component {
   //トップ画面へ
   pushtoHome = () => {
     this.props.history.push('/')
+  }
+  //お知らせ画面へ
+  pushtoInformation = () => {
+    this.props.history.push('/Information')
   }
 
   openmemberModal = () => {

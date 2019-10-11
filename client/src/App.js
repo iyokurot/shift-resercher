@@ -4,6 +4,7 @@ import Register from './Register'
 import Home from './Home'
 import Setting from './Setting'
 import Wishlist from './Wishlist'
+import Information from './Information'
 import './css/Tag.css'
 import './css/Class.css'
 import './css/Id.css'
@@ -20,6 +21,7 @@ const App = () => (
       <Route path="/Home" component={Home} />
       <Route path="/Setting" component={Setting} />
       <Route path="/Wishlist" component={Wishlist} />
+      <Route path="/Information" component={Information} />
     </div>
   </BrowserRouter>
 )

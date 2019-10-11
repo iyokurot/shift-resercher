@@ -210,7 +210,7 @@ app.get('/memberlist', async (req, res) => {
       res.send('Error ' + err)
     }
   } else {
-    res.send('')
+    res.send([])
   }
 })
 app.post('/updateusername', async (req, res) => {
@@ -495,6 +495,88 @@ app.get('/allcommentdata', async (req, res) => {
     }
   } else {
     res.json('')
+  }
+})
+//information
+app.get('/informationdata', async (req, res) => {
+  try {
+    const client = await pool.connect()
+    const result = await client.query(
+      'SELECT * FROM information_table order by date desc',
+    )
+    const results = { results: result ? result.rows : null }
+    if (result.rowCount == 0) {
+      res.json([])
+    } else {
+      res.json(results.results)
+    }
+    client.release()
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.get('/informationdatathree', async (req, res) => {
+  try {
+    const client = await pool.connect()
+    const result = await client.query(
+      'SELECT * FROM information_table order by date desc limit 3',
+    )
+    const results = { results: result ? result.rows : null }
+    if (result.rowCount == 0) {
+      res.json([])
+    } else {
+      res.json(results.results)
+    }
+    client.release()
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.post('/addinformationdata', async (req, res) => {
+  try {
+    const info = req.body
+    const client = await pool.connect()
+    const result = await client.query(
+      'insert into information_table (title,message,date) values($1,$2,CURRENT_DATE)',
+      [info.title, info.message],
+    )
+    client.release()
+    res.json('com add')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.post('/deleteinformationdata', async (req, res) => {
+  try {
+    const id = parseInt(req.body)
+    const client = await pool.connect()
+    const result = await client.query(
+      'delete from information_table where id=$1',
+      [id],
+    )
+    client.release()
+    res.json('delete')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.post('/updateinformationdata', async (req, res) => {
+  try {
+    const info = req.body
+    const client = await pool.connect()
+    const result = await client.query(
+      'update information_table set title=$1,message=$2  where id=$3',
+      [info.title, info.message, info.id],
+    )
+    client.release()
+    res.json('com update')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
   }
 })
 //all
@@ -844,6 +926,89 @@ app.get('/testallcommentdata', async (req, res) => {
     res.send('Error ' + err)
   }
 })
+//information
+app.get('/testinformationdata', async (req, res) => {
+  try {
+    const client = await poollocal.connect()
+    const result = await client.query(
+      'SELECT * FROM information_table order by date desc',
+    )
+    const results = { results: result ? result.rows : null }
+    if (result.rowCount == 0) {
+      res.json([])
+    } else {
+      res.json(results.results)
+    }
+    client.release()
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.get('/testinformationdatathree', async (req, res) => {
+  try {
+    const client = await poollocal.connect()
+    const result = await client.query(
+      'SELECT * FROM information_table order by date desc limit 3',
+    )
+    const results = { results: result ? result.rows : null }
+    if (result.rowCount == 0) {
+      res.json([])
+    } else {
+      res.json(results.results)
+    }
+    client.release()
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.post('/testaddinformationdata', async (req, res) => {
+  try {
+    const info = req.body
+    const client = await poollocal.connect()
+    const result = await client.query(
+      'insert into information_table (title,message,date) values($1,$2,CURRENT_DATE)',
+      [info.title, info.message],
+    )
+    client.release()
+    res.json('com add')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.post('/testdeleteinformationdata', async (req, res) => {
+  try {
+    const id = parseInt(req.body)
+    const client = await poollocal.connect()
+    const result = await client.query(
+      'delete from information_table where id=$1',
+      [id],
+    )
+    client.release()
+    res.json('delete')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.post('/testupdateinformationdata', async (req, res) => {
+  try {
+    const info = req.body
+    const client = await poollocal.connect()
+    const result = await client.query(
+      'update information_table set title=$1,message=$2  where id=$3',
+      [info.title, info.message, info.id],
+    )
+    client.release()
+    res.json('com update')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+
 //all
 app.post('/testdeletemember', async (req, res) => {
   try {
