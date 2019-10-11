@@ -28,8 +28,8 @@ class Information extends Component {
     }
   }
   componentDidMount() {
-    //fetch('/userdata')
-    fetch('/testuserdata')
+    fetch('/userdata')
+      //fetch('/testuserdata')
       .then(res => res.json())
       .then(data => this.setState({ userdata: data }))
     this.fetchInfodata()
@@ -213,8 +213,8 @@ class Information extends Component {
   }
   //infoFetch
   fetchInfodata = () => {
-    //fetch('/informationdata')
-    fetch('/testinformationdata')
+    fetch('/informationdata')
+      //fetch('/testinformationdata')
       .then(res => res.json())
       .then(data => this.setState({ informations: data }))
   }
