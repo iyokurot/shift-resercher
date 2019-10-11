@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal'
+
 const customStyles = {
   content: {
     top: '50%',
@@ -74,69 +75,77 @@ class Information extends Component {
           ''
         )}
 
-        <div id="infoFlame">
-          <p id="infoTableHeader">お知らせ一覧</p>
-          <table className="infoTable">
-            <thead>
-              <tr>
-                <th className="blank" id="infoTableth">
-                  日付
-                </th>
-                <th className="blank">タイトル</th>
-                {this.state.userdata.administer ? (
-                  <th className="blank" id="infoTableth">
-                    変更削除
-                  </th>
+        <div id="infoFlameHolder">
+          <div id="infoFlame">
+            <p id="infoTableHeader">お知らせ一覧</p>
+            <table className="infoTable">
+              <thead>
+                {this.state.modal || this.state.changeablemodal ? (
+                  ''
                 ) : (
-                  <th></th>
+                  <tr>
+                    <th className="blank" id="infoTableth">
+                      日付
+                    </th>
+                    <th className="blank" id="infoTablethtitle">
+                      タイトル
+                    </th>
+                    {this.state.userdata.administer ? (
+                      <th className="blank" id="infoTableth">
+                        変更削除
+                      </th>
+                    ) : (
+                      <th></th>
+                    )}
+                  </tr>
                 )}
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.informations.map(data => (
-                <tr key={data.id} id="infotr">
-                  <td>
-                    <button
-                      value={data.id}
-                      onClick={this.openModal}
-                      className="infotablebutton"
-                    >
-                      {this.dateformater(data.date)}
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      value={data.id}
-                      onClick={this.openModal}
-                      className="infotablebutton"
-                    >
-                      {data.title}
-                    </button>
-                  </td>
-                  {this.state.userdata.administer ? (
+              </thead>
+              <tbody>
+                {this.state.informations.map(data => (
+                  <tr key={data.id} id="infotr">
                     <td>
                       <button
-                        onClick={this.openChangeableModal}
-                        className="bluebutton"
                         value={data.id}
+                        onClick={this.openModal}
+                        className="infotablebutton"
                       >
-                        変更
-                      </button>
-                      <button
-                        onClick={this.deleteInfo}
-                        className="redbutton"
-                        value={data.id}
-                      >
-                        削除
+                        {this.dateformater(data.date)}
                       </button>
                     </td>
-                  ) : (
-                    <td></td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    <td>
+                      <button
+                        value={data.id}
+                        onClick={this.openModal}
+                        className="infotablebutton"
+                      >
+                        {data.title}
+                      </button>
+                    </td>
+                    {this.state.userdata.administer ? (
+                      <td>
+                        <button
+                          onClick={this.openChangeableModal}
+                          className="bluebutton"
+                          value={data.id}
+                        >
+                          変更
+                        </button>
+                        <button
+                          onClick={this.deleteInfo}
+                          className="redbutton"
+                          value={data.id}
+                        >
+                          削除
+                        </button>
+                      </td>
+                    ) : (
+                      <td></td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
         <Modal
           isOpen={this.state.modal}
@@ -144,10 +153,21 @@ class Information extends Component {
           style={customStyles}
           contentLabel="Register Modal"
         >
-          登校日 {this.dateformater(this.state.selectinfo.date)}
+          <input
+            id="informationTitle"
+            value={this.state.selectinfo.title}
+            readOnly
+          ></input>
           <br />
-          タイトル{this.state.selectinfo.title}
-          <div>{this.state.selectinfo.message}</div>
+          <div>投稿日 {this.dateformater(this.state.selectinfo.date)}</div>
+          <div id="newInfomessageFlame">
+            <p id="newInfomessageTop">本文</p>
+            <textarea
+              id="newInfomessageText"
+              value={this.state.selectinfo.message}
+              readOnly
+            ></textarea>
+          </div>
         </Modal>
         <Modal
           isOpen={this.state.changeablemodal}
@@ -155,25 +175,33 @@ class Information extends Component {
           style={customStyles}
           contentLabel="Register Modal"
         >
-          {this.dateformater(this.state.selectinfo.date)}　投稿
-          <br />
-          タイトル
           <input
+            id="informationTitle"
             onChange={this.updateTitle}
             value={this.state.selectinfo.title}
           ></input>
+          <div>投稿日 {this.dateformater(this.state.selectinfo.date)}</div>
+          <div id="newInfomessageFlame">
+            <p id="newInfomessageTop">本文</p>
+            <textarea
+              id="newInfomessageText"
+              value={this.state.selectinfo.message}
+              onChange={this.updateMessage}
+            ></textarea>
+          </div>
           <br />
-          本文
-          <br />
-          <textarea
-            onChange={this.updateMessage}
-            value={this.state.selectinfo.message}
-          ></textarea>
-          <br />
-          <button onClick={this.updateInfo} className="bluebutton">
+          <button
+            onClick={this.updateInfo}
+            className="bluebutton"
+            style={{ width: '120px' }}
+          >
             変更
           </button>
-          <button onClick={this.closeChangeableModal} className="redbutton">
+          <button
+            onClick={this.closeChangeableModal}
+            className="redbutton"
+            style={{ width: '120px' }}
+          >
             閉じる
           </button>
         </Modal>

@@ -31,6 +31,9 @@
 #infoTitle {
   font-weight: bold;
 }
+#infoFlameHolder {
+  margin: 0 5px;
+}
 #infoFlame {
   max-width: 380px;
   border: solid 2px #1dbea9;
@@ -122,6 +125,24 @@
 #infotr:hover {
   background-color: #1dbea9;
 }
+#informationTitle {
+  font-size: 16px;
+  padding: 5px;
+  border-bottom: solid 1px gray;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  transition: 0.4s;
+  height: 20px;
+  width: 320px;
+}
+#informationTitle:hover {
+  border-bottom: solid 1px black;
+}
+#informationTitle:focus {
+  outline: 0;
+  border-bottom: solid 1px #5f28c4;
+}
 #newInfomessageFlame {
   position: relative;
   display: inline-block;
@@ -184,6 +205,9 @@
 }
 #infoTableth {
   width: 50px;
+}
+#infoTablethtitle {
+  width: max-content;
 }
 
 @media screen and (max-width: 480px) {
