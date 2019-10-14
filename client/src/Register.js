@@ -115,6 +115,7 @@ class Register extends Component {
         username: this.state.username,
         worktime: this.state.worktime,
       }
+      //fetch('/testregister', {
       fetch('/register', {
         method: 'POST',
         body: JSON.stringify(data),

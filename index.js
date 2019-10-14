@@ -151,10 +151,17 @@ app.post('/register', async (req, res) => {
     const userId = req.session.userId
     const worktime = req.body.worktime
     const administer = false
-    const sql = 'INSERT INTO user_table values($1,$2,$3,$4)'
-    const values = [name, userId, worktime, administer]
+    const sql = 'INSERT INTO user_table values($1,$2,$3,$4,$5)'
     try {
       const client = await pool.connect()
+      const countResult = await client.query('select count(*) from user_table')
+      const values = [
+        name,
+        userId,
+        worktime,
+        administer,
+        countResult.rows[0].count,
+      ]
       const result = await client.query(sql, values)
       req.session.username = name
       req.session.worktime = worktime
@@ -197,7 +204,9 @@ app.get('/memberlist', async (req, res) => {
   if (req.session.access_token != null && req.session.administer) {
     try {
       const client = await pool.connect()
-      const result = await client.query('SELECT * FROM user_table')
+      const result = await client.query(
+        'SELECT * FROM user_table order by userno asc',
+      )
       const results = { results: result ? result.rows : null }
       if (result.rowCount == 0) {
         res.json([])
@@ -502,7 +511,7 @@ app.get('/informationdata', async (req, res) => {
   try {
     const client = await pool.connect()
     const result = await client.query(
-      'SELECT * FROM information_table order by date desc',
+      'SELECT * FROM information_table order by date desc,id desc',
     )
     const results = { results: result ? result.rows : null }
     if (result.rowCount == 0) {
@@ -520,7 +529,7 @@ app.get('/informationdatathree', async (req, res) => {
   try {
     const client = await pool.connect()
     const result = await client.query(
-      'SELECT * FROM information_table order by date desc limit 3',
+      'SELECT * FROM information_table order by date desc,id desc limit 3',
     )
     const results = { results: result ? result.rows : null }
     if (result.rowCount == 0) {
@@ -639,6 +648,34 @@ app.post('/deleteuser', async (req, res) => {
 })
 
 ////テストルート---------------------------------------
+app.post('/testregister', async (req, res) => {
+  const name = req.body.username
+  const userId = req.session.userId
+  const worktime = req.body.worktime
+  const administer = false
+  const sql = 'INSERT INTO user_table values($1,$2,$3,$4,$5)'
+  try {
+    const client = await poollocal.connect()
+    const countResult = await client.query('select count(*) from user_table')
+    const values = [
+      name,
+      userId,
+      worktime,
+      administer,
+      countResult.rows[0].count,
+    ]
+    const result = await client.query(sql, values)
+    req.session.username = name
+    req.session.worktime = worktime
+    req.session.administer = administer
+    req.session.regist = true
+    res.json('regist')
+    client.release()
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
 //Home local
 //user
 app.get('/testuserdata', async (req, res) => {
@@ -652,13 +689,14 @@ app.get('/testuserdata', async (req, res) => {
     if (result.rowCount == 0) {
       res.send('no rows')
     } else {
-      req.session.userId = results.results[0].userid
+      req.session.userId = 'addlister' //results.results[0].userid
       req.session.displayName = 'LINE名前'
       req.session.picture = 'sample.jpg'
       req.session.username = results.results[0].name
       req.session.worktime = results.results[0].worktime
       req.session.administer = results.results[0].administer
       req.session.regist = false
+      req.session.access_token = 'test_token'
       var data = {
         userId: req.session.userId,
         displayName: req.session.displayName,
@@ -679,7 +717,9 @@ app.get('/testuserdata', async (req, res) => {
 app.get('/testmemberlist', async (req, res) => {
   try {
     const client = await poollocal.connect()
-    const result = await client.query('SELECT * FROM user_table')
+    const result = await client.query(
+      'SELECT * FROM user_table order by userno asc',
+    )
     const results = { results: result ? result.rows : null }
     if (result.rowCount == 0) {
       res.send('no rows')
