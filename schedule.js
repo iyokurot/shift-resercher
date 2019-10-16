@@ -11,7 +11,7 @@ let pushtext = ''
 if (17 === today.getDate()) {
   pushtext = 'today scheduler'
 } else {
-  pushtext = 'scheduler test ' + today.getDate()
+  pushtext = 'scheduler test ' + today
 }
 
 function messagePost() {
