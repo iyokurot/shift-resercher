@@ -9,7 +9,7 @@ const client = new line.Client(config)
 const today = new Date()
 let pushtext = ''
 if (17 === today.getDate()) {
-  pushtext = 'today scheduler'
+  pushtext = 'today scheduler ' + today
 } else {
   pushtext = 'scheduler test ' + today
 }
