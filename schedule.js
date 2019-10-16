@@ -6,12 +6,19 @@ const config = {
 }
 
 const client = new line.Client(config)
+const today = new Date()
+let pushtext = ''
+if (17 === today.getDate()) {
+  pushtext = 'today scheduler'
+} else {
+  pushtext = 'scheduler test'
+}
 
 function messagePost() {
   client
     .broadcast({
       type: 'text',
-      text: 'schdulerテスト',
+      text: pushtext,
     })
     .then(data => console.log(data))
     .catch(e => console.log(e))
