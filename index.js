@@ -160,7 +160,7 @@ app.post('/register', async (req, res) => {
         userId,
         worktime,
         administer,
-        countResult.rows[0].count,
+        0, //countResult.rows[0].count,
       ]
       const result = await client.query(sql, values)
       req.session.username = name
