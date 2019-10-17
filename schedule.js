@@ -1,3 +1,6 @@
+//毎日15時に起動させる（heroku　scheduler）
+//締め切り日（１０，２４）にLINEBotが通知を配信
+
 const line = require('@line/bot-sdk')
 
 const config = {
@@ -7,14 +10,18 @@ const config = {
 
 const client = new line.Client(config)
 const today = new Date()
-let pushtext = ''
 if (17 === today.getDate()) {
-  pushtext = 'today scheduler ' + today
+  messagePost('today scheduler ' + today)
+  messagePost('https://shift-resercher.herokuapp.com/')
 } else {
-  pushtext = 'scheduler test ' + today
+  messagePost('scheduler test ' + today)
 }
 
-function messagePost() {
+if (10 === today.getDate() || 24 === today.getDate()) {
+  messagePost('本日シフト締め切り日です！')
+}
+
+function messagePost(pushtext) {
   client
     .broadcast({
       type: 'text',
@@ -23,5 +30,3 @@ function messagePost() {
     .then(data => console.log(data))
     .catch(e => console.log(e))
 }
-
-messagePost()

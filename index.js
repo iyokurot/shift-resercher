@@ -154,7 +154,7 @@ app.post('/register', async (req, res) => {
     const sql = 'INSERT INTO user_table values($1,$2,$3,$4,$5)'
     try {
       const client = await pool.connect()
-      const countResult = await client.query('select count(*) from user_table')
+      //const countResult = await client.query('select count(*) from user_table')
       const values = [
         name,
         userId,
