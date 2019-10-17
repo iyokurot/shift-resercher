@@ -129,7 +129,9 @@ app.get('/regist', async (req, res) => {
     const results = { results: result ? result.rows : null }
     if (result.rowCount == 0) {
       //未登録
-      //res.send("未登録");
+      console.log('未登録ユーザー')
+      console.log('userID : ' + userId)
+      console.log('displayName : ' + displayName)
       req.session.regist = false
       res.redirect('/Register')
     } else {
@@ -146,12 +148,14 @@ app.get('/regist', async (req, res) => {
 })
 //ユーザー登録
 app.post('/register', async (req, res) => {
+  console.log('新規登録')
   if (req.session.access_token != null) {
     const name = req.body.username
     const userId = req.session.userId
     const worktime = req.body.worktime
     const administer = false
     const sql = 'INSERT INTO user_table values($1,$2,$3,$4,$5)'
+    console.log(name + ' : ' + userId)
     try {
       const client = await pool.connect()
       //const countResult = await client.query('select count(*) from user_table')
@@ -167,6 +171,7 @@ app.post('/register', async (req, res) => {
       req.session.worktime = worktime
       req.session.administer = administer
       req.session.regist = true
+      console.log('new user Regist!')
       res.json('regist')
       client.release()
     } catch (err) {

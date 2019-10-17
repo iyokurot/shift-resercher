@@ -32,7 +32,7 @@ class Register extends Component {
           this.setState({ userdata: data, username: data.displayName })
         } else {
           //アクセス拒否
-          //this.props.history.push('/')
+          this.props.history.push('/')
         }
       })
   }
