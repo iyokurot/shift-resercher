@@ -149,38 +149,38 @@ app.get('/regist', async (req, res) => {
 //ユーザー登録
 app.post('/register', async (req, res) => {
   console.log('新規登録')
-  if (req.session.access_token != null) {
-    const name = req.body.username
-    const userId = req.session.userId
-    const worktime = req.body.worktime
-    const administer = false
-    const sql = 'INSERT INTO user_table values($1,$2,$3,$4,$5)'
-    console.log(name + ' : ' + userId)
-    try {
-      const client = await pool.connect()
-      //const countResult = await client.query('select count(*) from user_table')
-      const values = [
-        name,
-        userId,
-        worktime,
-        administer,
-        0, //countResult.rows[0].count,
-      ]
-      const result = await client.query(sql, values)
-      req.session.username = name
-      req.session.worktime = worktime
-      req.session.administer = administer
-      req.session.regist = true
-      console.log('new user Regist!')
-      res.json('regist')
-      client.release()
-    } catch (err) {
-      console.error(err)
-      res.send('Error ' + err)
-    }
-  } else {
-    res.json('')
+  //if (req.session.access_token != null) {
+  const name = req.body.username
+  const userId = req.session.userId
+  const worktime = req.body.worktime
+  const administer = false
+  const sql = 'INSERT INTO user_table values($1,$2,$3,$4,$5)'
+  console.log(name + ' : ' + userId)
+  try {
+    const client = await pool.connect()
+    //const countResult = await client.query('select count(*) from user_table')
+    const values = [
+      name,
+      userId,
+      worktime,
+      administer,
+      0, //countResult.rows[0].count,
+    ]
+    const result = await client.query(sql, values)
+    req.session.username = name
+    req.session.worktime = worktime
+    req.session.administer = administer
+    req.session.regist = true
+    console.log('new user Regist!')
+    res.json('regist')
+    client.release()
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
   }
+  //} else {
+  //  res.json('')
+  //}
 })
 //ログアウト
 app.get('/logout', async (req, res, next) => {
