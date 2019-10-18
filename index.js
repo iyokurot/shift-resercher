@@ -6,6 +6,8 @@ const path = require('path')
 require('dotenv').config()
 
 const session = require('express-session')
+const redis = require('redis')
+const RedisStore = require('connect-redis')(session)
 const { Pool } = require('pg')
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -22,6 +24,15 @@ app.use(
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
+    store: new RedisStore({
+      urll: process.env.REDIS_URL,
+      client: redis.createClient({
+        url: process.env.REDIS_URL,
+      }),
+    }),
+    cookie: {
+      maxAge: null,
+    },
   }),
 )
 app.use(express.json())
