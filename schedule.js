@@ -14,7 +14,7 @@ if (17 === today.getDate()) {
   messagePost('today scheduler ' + today)
   messagePost('https://shift-resercher.herokuapp.com/')
 } else {
-  messagePost('scheduler test ' + today)
+  messagePost('締め切り通知テスト！\nhttps://shift-resercher.herokuapp.com/')
 }
 
 if (10 === today.getDate() || 24 === today.getDate()) {
