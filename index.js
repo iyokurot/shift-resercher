@@ -62,8 +62,8 @@ app.get('/userdata', function(req, res) {
       administer: req.session.administer,
       regist: req.session.regist,
     }
-    console.log('名前:' + username)
-    console.log(userId)
+    console.log('名前:' + req.session.username)
+    console.log(req.session.userId)
     res.json(data)
   } else {
     res.json('')
