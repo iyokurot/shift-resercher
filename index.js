@@ -22,8 +22,8 @@ const poollocal = new Pool({
 app.use(
   session({
     secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
+    resave: true,
+    saveUninitialized: false,
     store: new RedisStore({
       urll: process.env.REDIS_URL,
       client: redis.createClient({
