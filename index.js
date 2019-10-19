@@ -50,6 +50,8 @@ app.use((req, res, next) => {
 })
 
 app.get('/userdata', function(req, res) {
+  console.log('ログイン中＿ページ移動')
+  console.log(req.session)
   if (req.session.access_token != null) {
     var data = {
       userId: req.session.userId,
@@ -60,6 +62,8 @@ app.get('/userdata', function(req, res) {
       administer: req.session.administer,
       regist: req.session.regist,
     }
+    console.log('名前:' + username)
+    console.log(userId)
     res.json(data)
   } else {
     res.json('')
@@ -150,6 +154,7 @@ app.get('/regist', async (req, res) => {
       req.session.worktime = results.results[0].worktime
       req.session.administer = results.results[0].administer
       console.log('userログイン')
+      console.log('username:' + req.session.username)
       res.redirect('/Home')
     }
     client.release()
