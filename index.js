@@ -154,7 +154,7 @@ app.get('/regist', async (req, res) => {
       req.session.worktime = results.results[0].worktime
       req.session.administer = results.results[0].administer
       console.log('userログイン')
-      console.log('username:' + req.session.username)
+      console.log(req.session)
       res.redirect('/Home')
     }
     client.release()
