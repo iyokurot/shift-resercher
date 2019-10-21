@@ -62,8 +62,6 @@ app.get('/userdata', function(req, res) {
       administer: req.session.administer,
       regist: req.session.regist,
     }
-    console.log('名前:' + req.session.username)
-    console.log(req.session.userId)
     res.json(data)
   } else {
     res.json('')
@@ -727,6 +725,7 @@ app.get('/testuserdata', async (req, res) => {
         administer: req.session.administer,
         regist: req.session.regist,
       }
+      console.log(req.session)
       res.json(data)
     }
     client.release()

@@ -10,15 +10,11 @@ const config = {
 
 const client = new line.Client(config)
 const today = new Date()
-if (17 === today.getDate()) {
-  messagePost('today scheduler ' + today)
-  messagePost('https://shift-resercher.herokuapp.com/')
-} else {
-  messagePost('締め切り通知テスト！\nhttps://shift-resercher.herokuapp.com/')
-}
 
 if (10 === today.getDate() || 24 === today.getDate()) {
-  messagePost('本日シフト締め切り日です！')
+  messagePost(
+    '本日シフト締め切り日です！\nhttps://shift-resercher.herokuapp.com/',
+  )
 }
 
 function messagePost(pushtext) {
