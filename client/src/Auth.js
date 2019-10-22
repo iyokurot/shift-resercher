@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-
+import { Link } from 'react-router-dom'
 export default class Auth extends Component {
-  componentDidMount() {
-    fetch('/auth')
-      .then(res => res.json())
-      .then(data => console.log(data))
-  }
+  componentDidMount() {}
   render() {
-    return <div></div>
+    return <Link to="/Home"></Link>
   }
 }

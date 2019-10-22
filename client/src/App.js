@@ -18,7 +18,7 @@ const App = () => (
         rel="stylesheet"
       ></link>
       <Route exact path="/" component={Top} />
-      <Route path="/auth" component={Auth} />
+      <Route path="/regist" component={Auth} />
       <Route path="/Register" component={Register} />
       <Route path="/Home" component={Home} />
       <Route path="/Setting" component={Setting} />
@@ -44,6 +44,7 @@ class Top extends Component {
         <form action="/auth" method="GET">
           <input type="submit" className="login_button" value="" />
         </form>
+        <Link to="/Home">auth</Link>
         <span id="developer">Developed by itoyu</span>
       </div>
     )
