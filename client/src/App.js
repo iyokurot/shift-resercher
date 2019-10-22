@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
+import Auth from './Auth'
 import Register from './Register'
 import Home from './Home'
 import Setting from './Setting'
@@ -17,6 +18,7 @@ const App = () => (
         rel="stylesheet"
       ></link>
       <Route exact path="/" component={Top} />
+      <Route path="/auth" component={Auth} />
       <Route path="/Register" component={Register} />
       <Route path="/Home" component={Home} />
       <Route path="/Setting" component={Setting} />
@@ -42,6 +44,7 @@ class Top extends Component {
         <form action="/auth" method="GET">
           <input type="submit" className="login_button" value="" />
         </form>
+        <Link to="/auth">auth</Link>
         <span id="developer">Developed by itoyu</span>
       </div>
     )
