@@ -42,11 +42,19 @@ class Top extends Component {
         <form action="/auth" method="GET">
           <input type="submit" className="login_button" value="" />
         </form>
+        <button className="login_button" value="" onClick={this.onClickLogin} />
+        <br />
         <span id="developer">Developed by itoyu</span>
       </div>
     )
   }
+  onClickLogin = () => {
+    fetch('/auth')
+      .then(res => res.json())
+      .then(data => console.log(data))
+  }
 }
+
 /*
 <div>
           ------------------<br></br>
