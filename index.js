@@ -106,8 +106,7 @@ app.get('/auth', async (req, res, next) => {
       req.session.userId = profile.userId
       req.session.displayName = profile.displayName
       req.session.picture = profile.pictureUrl
-      res.send('regist')
-      //res.redirect('/regist')
+      res.redirect('/regist')
     } catch (err) {
       console.log(err)
     }
@@ -155,7 +154,8 @@ app.get('/regist', async (req, res) => {
       req.session.administer = results.results[0].administer
       console.log('userログイン')
       console.log(req.session)
-      res.redirect('/Home')
+      //res.redirect('/Home')
+      res.render('./client/src/Home')
     }
     client.release()
   } catch (err) {
