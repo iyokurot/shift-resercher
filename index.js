@@ -106,8 +106,7 @@ app.get('/auth', async (req, res, next) => {
       req.session.userId = profile.userId
       req.session.displayName = profile.displayName
       req.session.picture = profile.pictureUrl
-      //res.redirect('/regist')
-      res.json('ok')
+      res.redirect('/regist')
     } catch (err) {
       console.log(err)
     }

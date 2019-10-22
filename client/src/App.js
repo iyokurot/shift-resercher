@@ -44,7 +44,6 @@ class Top extends Component {
         <form action="/auth" method="GET">
           <input type="submit" className="login_button" value="" />
         </form>
-        <Link to="/auth">auth</Link>
         <span id="developer">Developed by itoyu</span>
       </div>
     )
