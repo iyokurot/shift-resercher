@@ -155,7 +155,7 @@ app.get('/regist', async (req, res) => {
       console.log('userログイン')
       console.log(req.session)
       //res.redirect('/Home')
-      res.location('Home')
+      res.location('/Home')
     }
     client.release()
   } catch (err) {
