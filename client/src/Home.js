@@ -90,6 +90,7 @@ class Home extends Component {
       modalIsOpen: false, //モーダル判定
       isUpdateshift: [], //シフト更新
       informations: [], //おしらせ3件
+      isNowLoading: true, //読み込み中(シフト)
     }
   }
   deadlineEarly = 10
@@ -183,55 +184,61 @@ class Home extends Component {
             時間指定
           </button>
         </div>
-        <div id="calendar">
-          <Calendar
-            locale="ja-JP"
-            calendarType="US"
-            value={this.state.receptionDate}
-            tileContent={this.getTileContent.bind(this)}
-            onChange={value => this.dayClick(value)}
-          />
-        </div>
-        <div className="flameholder">
-          <div className="flame">
-            補足希望:{this.state.complementdaysText}
-            <span id="termbuttons">
-              <button onClick={this.dayspreOnclick} className="bluebutton">
-                ◁
-              </button>
-              <button onClick={this.daysbackOnclick} className="bluebutton">
-                ▷
-              </button>
-            </span>
-            <br />
-            <div id="wishday">
-              希望出勤日数：
-              <select
-                onChange={this.wishdayOnchange}
-                value={this.state.wishday}
-              >
-                {this.state.wishdays.map(days => (
-                  <option key={days}>{days}</option>
-                ))}
-              </select>
-              日
-            </div>
-            <div>
-              <CssTextField
-                id="outlined-name"
-                label="追記"
-                value={this.state.comment}
-                onChange={this.commentOnchange}
-                margin="normal"
-                variant="outlined"
-                placeholder="希望を記入"
+        {this.state.isNowLoading ? (
+          '読み込み中'
+        ) : (
+          <div>
+            <div id="calendar">
+              <Calendar
+                locale="ja-JP"
+                calendarType="US"
+                value={this.state.receptionDate}
+                tileContent={this.getTileContent.bind(this)}
+                onChange={value => this.dayClick(value)}
               />
             </div>
+            <div className="flameholder">
+              <div className="flame">
+                補足希望:{this.state.complementdaysText}
+                <span id="termbuttons">
+                  <button onClick={this.dayspreOnclick} className="bluebutton">
+                    ◁
+                  </button>
+                  <button onClick={this.daysbackOnclick} className="bluebutton">
+                    ▷
+                  </button>
+                </span>
+                <br />
+                <div id="wishday">
+                  希望出勤日数：
+                  <select
+                    onChange={this.wishdayOnchange}
+                    value={this.state.wishday}
+                  >
+                    {this.state.wishdays.map(days => (
+                      <option key={days}>{days}</option>
+                    ))}
+                  </select>
+                  日
+                </div>
+                <div>
+                  <CssTextField
+                    id="outlined-name"
+                    label="追記"
+                    value={this.state.comment}
+                    onChange={this.commentOnchange}
+                    margin="normal"
+                    variant="outlined"
+                    placeholder="希望を記入"
+                  />
+                </div>
+              </div>
+              <button id="submit_shiftdata" onClick={this.addDataOnClick}>
+                登録
+              </button>
+            </div>
           </div>
-          <button id="submit_shiftdata" onClick={this.addDataOnClick}>
-            登録
-          </button>
-        </div>
+        )}
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -291,6 +298,7 @@ class Home extends Component {
     this.setState({
       default_month_days: deflist,
       month_days: deflist.slice(),
+      isNowLoading: false,
     })
   }
   //commentSetting
