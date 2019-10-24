@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 //const co = require('co');
+const line = require('@line/bot-sdk')
 const request = require('request')
 const path = require('path')
 require('dotenv').config()
@@ -18,6 +19,11 @@ const poollocal = new Pool({
   connectionString:
     'postgres://postgres:kayopile@localhost:5432/shift_reserch_test',
 })
+const config = {
+  channelAccessToken: process.env.ACCESS_TOKEN || 'token',
+  channelSecret: process.env.SECRET_KEY || 'key',
+}
+const client = new line.Client(config)
 
 app.use(
   session({
@@ -50,10 +56,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   next()
 })
-app.post('/line', function(req, res) {
-  console.log(req)
-  res.status(200).end()
-})
+app.post('/line', line.middleware(config), (req, res) => lineBot(req, res))
 
 app.get('/userdata', function(req, res) {
   console.log('ログイン中＿ページ移動')
@@ -1206,4 +1209,25 @@ function RandomMaker() {
     state += c[Math.floor(Math.random() * cl)]
   }
   return state
+}
+function lineBot(req, res) {
+  res.status(200).end()
+  console.log('pass')
+  const events = req.body.events
+  console.log(events)
+  const promises = []
+  for (let i = 0, l = events.length; i < l; i++) {
+    const ev = events[i]
+    promises.push(echoman(ev))
+  }
+  Promise.all(promises).then(console.log('pass'))
+}
+async function echoman(ev) {
+  const pro = await client.getProfile(ev.source.userId)
+  /*
+  return client.replyMessage(ev.replyToken, {
+    type: "text",
+    text: `${pro.displayName}さん、今「${ev.message.text}」って言いました？`
+  });
+  */
 }
