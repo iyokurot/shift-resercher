@@ -19,6 +19,7 @@ const poollocal = new Pool({
   connectionString:
     'postgres://postgres:kayopile@localhost:5432/shift_reserch_test',
 })
+//LINE Bot
 const config = {
   channelAccessToken: process.env.ACCESS_TOKEN || 'token',
   channelSecret: process.env.SECRET_KEY || 'key',
@@ -30,6 +31,7 @@ app.use(
     secret: 'keyboard cat',
     resave: true,
     saveUninitialized: false,
+
     store: new RedisStore({
       urll: process.env.REDIS_URL,
       client: redis.createClient({
@@ -56,7 +58,10 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   next()
 })
-app.post('/line', line.middleware(config), (req, res) => lineBot(req, res))
+app.post('/line', function(req, res) {
+  res.status(200).end()
+  console.log(req.body.events)
+})
 
 app.get('/userdata', function(req, res) {
   console.log('ログイン中＿ページ移動')
