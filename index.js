@@ -58,27 +58,22 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   next()
 })
+//LINEBot用Push（有料プラン）
 app.post('/line', function(req, res) {
   res.status(200).end()
-  console.log(req.body.events[0].source)
+  console.log(req.body.events[0].source.groupId)
   const message = {
     type: 'text',
     text: 'Hi',
   }
-  if (
-    req.body.events[0].source.groupId === 'C4f37ba38a7feee8d70a3d5866b29f6d4'
-  ) {
-    client
-      .pushMessage('C4f37ba38a7feee8d70a3d5866b29f6d4', message)
-      .then(() => {
-        console.log('OK')
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  } else {
-    console.log('unKnown Groupe')
-  }
+  client
+    .pushMessage('<groupeId>', message)
+    .then(() => {
+      console.log('OK')
+    })
+    .catch(err => {
+      console.log(err)
+    })
 })
 
 app.get('/userdata', function(req, res) {
