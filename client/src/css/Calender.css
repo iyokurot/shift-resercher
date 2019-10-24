@@ -20,3 +20,9 @@
 .DatePanel {
   width: 14%;
 }
+.DatePanel:hover {
+  background-color: gray;
+}
+.DatePanel:active {
+  background-color: aqua;
+}

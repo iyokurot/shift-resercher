@@ -65,7 +65,7 @@ class Calender extends Component {
     let date = this.state.printdays
     if (1 === date.getDate()) {
       if (0 === date.getMonth()) {
-        date = new Date(date.getFullYear() - 1, 12, 16)
+        date = new Date(date.getFullYear() - 1, 11, 16)
       } else {
         date = new Date(date.getFullYear(), date.getMonth() - 1, 16)
       }
@@ -78,13 +78,33 @@ class Calender extends Component {
     console.log(date)
     this.setCalendar(date)
   }
+  onClickBack = () => {
+    let date = this.state.printdays
+    if (1 === date.getDate()) {
+      date = new Date(date.getFullYear(), date.getMonth(), 16)
+    } else {
+      if (11 === date.getMonth()) {
+        date = new Date(date.getFullYear() + 1, 0, 1)
+      } else {
+        date = new Date(date.getFullYear(), date.getMonth() + 1, 1)
+      }
+    }
+
+    this.setState({
+      printdays: date,
+    })
+    console.log(date)
+    this.setCalendar(date)
+  }
   render() {
     return (
       <div className="calendar">
         Calender
         <div className="calendar-header">
-          <button onClick={this.onClickPre}>＜</button>2019/10
-          <button>＞</button>
+          <button onClick={this.onClickPre}>＜</button>
+          {this.state.printdays.getFullYear()}/
+          {this.state.printdays.getMonth() + 1}
+          <button onClick={this.onClickBack}>＞</button>
         </div>
         <div className="calendar-weeks">
           {this.state.weeks.map(week => (
