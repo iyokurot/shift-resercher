@@ -60,12 +60,14 @@ app.use((req, res, next) => {
 })
 app.post('/line', function(req, res) {
   res.status(200).end()
-  console.log(req.body.events)
+  console.log(req.body.events[0].source)
   const message = {
     type: 'text',
     text: 'Hi',
   }
-  if (req.body.events.source.groupId === 'C4f37ba38a7feee8d70a3d5866b29f6d4') {
+  if (
+    req.body.events[0].source.groupId === 'C4f37ba38a7feee8d70a3d5866b29f6d4'
+  ) {
     client
       .pushMessage('C4f37ba38a7feee8d70a3d5866b29f6d4', message)
       .then(() => {
