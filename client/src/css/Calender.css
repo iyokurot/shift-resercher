@@ -1,0 +1,22 @@
+.calendar {
+  width: 80%;
+  background-color: white;
+  border: solid 2px;
+}
+.calendar-header {
+  border-top: solid 1px;
+  border-bottom: solid 1px;
+}
+.calendar-weeks {
+  display: flex;
+}
+.calendar-week {
+  width: 14%;
+}
+.calendar-days {
+  display: flex;
+  flex-wrap: wrap;
+}
+.DatePanel {
+  width: 14%;
+}

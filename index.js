@@ -30,6 +30,7 @@ app.use(
         url: process.env.REDIS_URL,
       }),
     }),
+
     cookie: {
       maxAge: null,
       secure: false,
@@ -48,6 +49,10 @@ app.use((req, res, next) => {
   )
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   next()
+})
+app.post('/line', function(req, res) {
+  console.log(req)
+  res.status(200)
 })
 
 app.get('/userdata', function(req, res) {
@@ -690,6 +695,42 @@ app.post('/testregister', async (req, res) => {
     req.session.administer = administer
     req.session.regist = true
     res.json('regist')
+    client.release()
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.get('/test', async (req, res, next) => {
+  try {
+    const client = await poollocal.connect()
+    const result = await client.query(
+      'SELECT * FROM user_table where userId=$1',
+      ['sampleId'],
+    )
+    const results = { results: result ? result.rows : null }
+    if (result.rowCount == 0) {
+      res.send('no rows')
+    } else {
+      req.session.userId = 'addlister' //results.results[0].userid
+      req.session.displayName = 'LINE名前'
+      req.session.picture = 'sample.jpg'
+      req.session.username = results.results[0].name
+      req.session.worktime = results.results[0].worktime
+      req.session.administer = results.results[0].administer
+      req.session.regist = false
+      req.session.access_token = 'test_token'
+      var data = {
+        userId: req.session.userId,
+        displayName: req.session.displayName,
+        picture: req.session.picture,
+        username: req.session.username,
+        worktime: req.session.worktime,
+        administer: req.session.administer,
+        regist: req.session.regist,
+      }
+      res.json(data)
+    }
     client.release()
   } catch (err) {
     console.error(err)
