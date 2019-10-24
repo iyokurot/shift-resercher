@@ -61,6 +61,22 @@ app.use((req, res, next) => {
 app.post('/line', function(req, res) {
   res.status(200).end()
   console.log(req.body.events)
+  const message = {
+    type: 'text',
+    text: 'Hi',
+  }
+  if (req.body.events.source.groupId === 'C4f37ba38a7feee8d70a3d5866b29f6d4') {
+    client
+      .pushMessage('C4f37ba38a7feee8d70a3d5866b29f6d4', message)
+      .then(() => {
+        console.log('OK')
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  } else {
+    console.log('unKnown Groupe')
+  }
 })
 
 app.get('/userdata', function(req, res) {
