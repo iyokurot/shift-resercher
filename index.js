@@ -1215,12 +1215,14 @@ function lineBot(req, res) {
   console.log('pass')
   const events = req.body.events
   console.log(events)
+  /*
   const promises = []
   for (let i = 0, l = events.length; i < l; i++) {
     const ev = events[i]
     promises.push(echoman(ev))
   }
   Promise.all(promises).then(console.log('pass'))
+  */
 }
 async function echoman(ev) {
   const pro = await client.getProfile(ev.source.userId)
