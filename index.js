@@ -52,7 +52,7 @@ app.use((req, res, next) => {
 })
 app.post('/line', function(req, res) {
   console.log(req)
-  res.status(200)
+  res.status(200).end()
 })
 
 app.get('/userdata', function(req, res) {
