@@ -1230,4 +1230,5 @@ async function echoman(ev) {
     text: `${pro.displayName}さん、今「${ev.message.text}」って言いました？`
   });
   */
+  return
 }
