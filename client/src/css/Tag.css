@@ -53,6 +53,9 @@ a:hover {
 button:focus {
   outline: 0;
 }
+select:focus {
+  outline: 0;
+}
 @media screen and (max-width: 480px) {
   h1 {
     /*

@@ -78,7 +78,7 @@ app.post('/line', function(req, res) {
 
 app.get('/userdata', function(req, res) {
   console.log('ログイン中＿ページ移動')
-  console.log(req.session)
+  console.log(req.session.username)
   if (req.session.access_token != null) {
     var data = {
       userId: req.session.userId,
@@ -171,6 +171,7 @@ app.get('/regist', async (req, res) => {
       //未登録
       console.log('未登録ユーザー')
       console.log('displayName : ' + displayName)
+      console.log(userId)
       req.session.regist = false
       res.redirect('/Register')
     } else {
@@ -179,7 +180,7 @@ app.get('/regist', async (req, res) => {
       req.session.worktime = results.results[0].worktime
       req.session.administer = results.results[0].administer
       console.log('userログイン')
-      console.log(req.session)
+      console.log(req.session.username)
       res.redirect('/Home')
     }
     client.release()
@@ -771,7 +772,7 @@ app.get('/testuserdata', async (req, res) => {
     if (result.rowCount == 0) {
       res.send('no rows')
     } else {
-      req.session.userId = 'addlister' //results.results[0].userid
+      req.session.userId = results.results[0].userid
       req.session.displayName = 'LINE名前'
       req.session.picture = 'sample.jpg'
       req.session.username = results.results[0].name
@@ -1126,6 +1127,25 @@ app.post('/testupdateinformationdata', async (req, res) => {
     )
     client.release()
     res.json('com update')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+//plan
+app.get('/testplandata', async (req, res) => {
+  try {
+    const client = await poollocal.connect()
+    const result = await client.query(
+      'SELECT * FROM plan_table order by date desc',
+    )
+    const results = { results: result ? result.rows : null }
+    if (result.rowCount == 0) {
+      res.json([])
+    } else {
+      res.json(results.results)
+    }
+    client.release()
   } catch (err) {
     console.error(err)
     res.send('Error ' + err)

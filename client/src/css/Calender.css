@@ -1,27 +1,86 @@
 .calendar {
   width: 80%;
+  min-width: 340px;
+  min-height: 300px;
   background-color: white;
-  border: solid 2px;
+  border: solid 1px rgb(226, 226, 226);
+  padding: 2px;
+  margin: 0 auto;
 }
 .calendar-header {
-  border-top: solid 1px;
-  border-bottom: solid 1px;
+  height: 50px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.calendar-monthButton {
+  border: none;
+  width: 100%;
+  height: 100%;
+  margin-top: 1px;
+  background-color: white;
+}
+.calendar-monthButton:hover {
+  background-color: rgb(226, 226, 226);
+}
+#calendar-printmonth {
+  border: none;
+  width: 100%;
+  height: 100%;
+  margin-top: 1px;
+  font-size: 18px;
+  background-color: white;
+}
+#calendar-printmonth:hover {
+  background-color: rgb(226, 226, 226);
+}
+.select-explain-text {
+  margin: 0;
+  font-size: 20px;
+}
+.year-select select {
+  width: min-content;
+  background-color: white;
+  font-size: 20px;
+  color: #5f28c4;
+  border: solid 1px #5f28c4;
+  border-radius: 5px;
+  text-align: center;
+  margin: 7px 0;
+  padding: 8px;
+}
+#select-printmonth-button {
+  border: solid 1px #1dbea9;
+  border-radius: 5px;
+  width: 200px;
+  margin-top: 10px;
+  font-size: 20px;
+  background-color: white;
+  color: #1dbea9;
+  transition: 0.4s;
+}
+
+#select-printmonth-button:hover {
+  background-color: #1dbea9;
+  color: white;
+}
+
 .calendar-weeks {
   display: flex;
 }
 .calendar-week {
-  width: 14%;
+  width: 14.28571%;
 }
 .calendar-days {
   display: flex;
   flex-wrap: wrap;
 }
 .DatePanel {
-  width: 14%;
+  width: 14.28571%;
 }
 .DatePanel:hover {
-  background-color: gray;
+  background-color: rgb(226, 226, 226);
 }
 .DatePanel:active {
   /*background-color: aqua;*/
@@ -44,7 +103,9 @@
 }
 .datepanel-planarea {
   height: 20px;
-  /*background-color: aquamarine;*/
+  font-size: 10px;
+  /*background-color: rgba(179, 248, 225, 0.3);*/
+  border-bottom: dashed 2px rgb(196, 237, 238);
 }
 .datepanel-shiftarea {
   height: 45px;
@@ -53,4 +114,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+#shiftstyle-big {
+  font-size: 24px;
+}
+#shiftstyle-default {
 }

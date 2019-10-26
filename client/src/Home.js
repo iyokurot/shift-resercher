@@ -4,6 +4,7 @@ import Calendar from 'react-calendar'
 import Modal from 'react-modal'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
+import NewCalender from './Calender'
 
 const customStyles = {
   content: {
@@ -187,16 +188,16 @@ class Home extends Component {
         {this.state.isNowLoading ? (
           '読み込み中'
         ) : (
-          <div>
-            <div id="calendar">
-              <Calendar
-                locale="ja-JP"
-                calendarType="US"
-                value={this.state.receptionDate}
-                tileContent={this.getTileContent.bind(this)}
+          <div id="shift-holder">
+            <div id="newcalendar">
+              <NewCalender
+                receptionDate={this.state.receptionDate}
+                plans={''}
+                shifts={this.state.month_days}
                 onChange={value => this.dayClick(value)}
               />
             </div>
+
             <div className="flameholder">
               <div className="flame">
                 補足希望:{this.state.complementdaysText}
@@ -278,6 +279,17 @@ class Home extends Component {
       </div>
     )
   }
+  /*
+  <div id="calendar">
+              <Calendar
+                locale="ja-JP"
+                calendarType="US"
+                value={this.state.receptionDate}
+                tileContent={this.getTileContent.bind(this)}
+                onChange={value => this.dayClick(value)}
+              />
+            </div>
+  */
   //yyMMdd日付
   getintdate(year, month, day) {
     return year + ('0' + (month + 1)).slice(-2) + ('0' + day).slice(-2)

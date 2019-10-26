@@ -21,27 +21,35 @@ export default class Test extends Component {
     list[20191027] = { text: '△' }
     list[20191030] = { text: '10:00-22:00' }
     const planlist = [
-      { date: new Date('2019/10/17'), text: '早出' },
-      { date: new Date('2019/10/21'), text: 'アイナナ' },
-      { date: new Date('2019/10/30'), text: '棚卸し' },
+      { date: '2019/10/17', text: '早出' },
+      { date: '2019/10/21', text: 'アイナナ' },
+      { date: '2019/10/30', text: '棚卸し' },
     ]
     this.setState({
       shifts: list,
-      plans: planlist,
     })
+    fetch('/testplandata')
+      .then(res => res.json())
+      .then(plans => {
+        this.setState({ plans: plans })
+      })
   }
 
   render() {
     return (
       <div>
         <h1>Test</h1>
-        <div>
-          <NewCalender
-            receptionDate={this.state.receptionDate}
-            plans={this.state.plans}
-            shifts={this.state.shifts}
-          />
+        <div id="top">
+          <div id="testcalendar">
+            <NewCalender
+              receptionDate={this.state.receptionDate}
+              plans={this.state.plans}
+              shifts={this.state.shifts}
+              onChange={value => console.log(value)}
+            />
+          </div>
         </div>
+        <br />
         <Calendar
           locale="ja-JP"
           calendarType="US"

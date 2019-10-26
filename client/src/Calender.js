@@ -10,18 +10,25 @@ class Calender extends Component {
     //予定リスと:plans
     this.state = {
       weeks: ['月', '火', '水', '木', '金'],
-      predays: [],
-      days: [],
-      backdays: [],
-      printdays: this.props.receptionDate,
-      selectDay: this.props.receptionDate,
-      shifts: [],
+      months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      years: [2018, 2019, 2020],
+      selectMonth: '',
+      selectYear: '',
+      predays: [], //範囲外前の日たち
+      days: [], //範囲内
+      backdays: [], //範囲外あとのひたち
+      printdays: this.props.receptionDate, //締め切り期間開始日
+      selectDay: this.props.receptionDate, //選択している日にち
+      shifts: [], //シフトたち
+      isSelectMonth: false, //月選択Bool
     }
   }
   componentDidMount() {
     this.setCalendar(this.props.receptionDate)
     this.setState({
       shifts: this.props.shifts,
+      selectYear: this.props.receptionDate.getFullYear(),
+      selectMonth: this.props.receptionDate.getMonth() + 1,
     })
   }
   setCalendar = setdate => {
@@ -35,7 +42,12 @@ class Calender extends Component {
       if (0 < date.getDay()) {
         const beforefinaldate = new Date(date.getFullYear(), date.getMonth(), 0)
         for (let i = date.getDay() - 1; i >= 0; i--) {
-          prelist.push(beforefinaldate.getDate() - i)
+          const prepushdate = new Date(
+            beforefinaldate.getFullYear(),
+            beforefinaldate.getMonth(),
+            beforefinaldate.getDate() - i,
+          )
+          prelist.push(prepushdate)
         }
       }
       for (let i = 1; i < 16; i++) {
@@ -46,7 +58,12 @@ class Calender extends Component {
       //あと
       if (6 >= date.getDay()) {
         for (let i = 1; i < 7 - date.getDay(); i++) {
-          backlist.push(15 + i)
+          const backpushdate = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            15 + i,
+          )
+          backlist.push(backpushdate)
         }
       }
     } else {
@@ -54,7 +71,12 @@ class Calender extends Component {
       //前
       if (0 < date.getDay()) {
         for (let i = date.getDay() - 1; i >= 0; i--) {
-          prelist.push(15 - i)
+          const prepushdate = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            15 - i,
+          )
+          prelist.push(prepushdate)
         }
       }
       const finalday = new Date(date.getFullYear(), date.getMonth() + 1, 0)
@@ -67,7 +89,12 @@ class Calender extends Component {
       //あと
       if (6 > finalday.getDay()) {
         for (let i = 1; i < 7 - finalday.getDay(); i++) {
-          backlist.push(i)
+          const backpushdate = new Date(
+            finalday.getFullYear(),
+            finalday.getMonth() + 1,
+            i,
+          )
+          backlist.push(backpushdate)
         }
       }
     }
@@ -77,13 +104,37 @@ class Calender extends Component {
       backdays: backlist,
     })
   }
+  onClickselectMonth = () => {
+    this.setState({
+      isSelectMonth: !this.state.isSelectMonth,
+    })
+  }
+  onChangeSelectYear = e => {
+    this.setState({
+      selectYear: e.target.value,
+    })
+  }
+  onChangeSelectMonth = e => {
+    this.setState({
+      selectMonth: e.target.value,
+    })
+  }
+  onClickDecisionMonth = () => {
+    const date = new Date(this.state.selectYear, this.state.selectMonth - 1, 1)
+    this.setState({
+      printdays: date,
+      isSelectMonth: false,
+    })
+    this.setCalendar(date)
+  }
   serchPlans = day => {
     const plans = this.props.plans
     for (let plan of plans) {
+      const plandate = new Date(plan.date)
       if (
-        day.getFullYear() === plan.date.getFullYear() &&
-        day.getMonth() === plan.date.getMonth() &&
-        day.getDate() === plan.date.getDate()
+        day.getFullYear() === plandate.getFullYear() &&
+        day.getMonth() === plandate.getMonth() &&
+        day.getDate() === plandate.getDate()
       ) {
         return plan.text
       }
@@ -150,10 +201,18 @@ class Calender extends Component {
     }
     return false
   }
+  shiftstyle = str => {
+    if (str === 'x' || str === '△') {
+      return 'shiftstyle-big'
+    } else {
+      return 'shiftstyle-default'
+    }
+  }
   selectDay = day => {
     this.setState({
       selectDay: day,
     })
+    this.props.onChange(day)
   }
   //yyMMdd日付
   getintdate(day) {
@@ -166,52 +225,105 @@ class Calender extends Component {
   render() {
     return (
       <div className="calendar">
-        Calender
         <div className="calendar-header">
-          <button onClick={this.onClickPre}>＜</button>
-          {this.state.printdays.getFullYear()}/
-          {this.state.printdays.getMonth() + 1}
-          <button onClick={this.onClickBack}>＞</button>
+          <button onClick={this.onClickPre} className="calendar-monthButton">
+            ＜
+          </button>
+          <button id="calendar-printmonth" onClick={this.onClickselectMonth}>
+            {this.state.printdays.getFullYear()} /{' '}
+            {this.state.printdays.getMonth() + 1}
+          </button>
+          <button onClick={this.onClickBack} className="calendar-monthButton">
+            ＞
+          </button>
         </div>
-        <div className="calendar-weeks">
-          <div className="calendar-week" id="datepanel-sun">
-            日
+        {this.state.isSelectMonth ? (
+          <div>
+            <p className="select-explain-text">年を選択</p>
+            <span className="year-select">
+              <select
+                value={this.state.selectYear}
+                onChange={e => this.onChangeSelectYear(e)}
+              >
+                {this.state.years.map(year => (
+                  <option key={year}>{year}</option>
+                ))}
+              </select>
+            </span>
+            <p className="select-explain-text">月を選択</p>
+            <span className="year-select">
+              <select
+                value={this.state.selectMonth}
+                onChange={e => this.onChangeSelectMonth(e)}
+              >
+                {this.state.months.map(month => (
+                  <option key={month}>{month}</option>
+                ))}
+              </select>
+            </span>
+            <br />
+            <button
+              id="select-printmonth-button"
+              onClick={this.onClickDecisionMonth}
+            >
+              表示
+            </button>
           </div>
-          {this.state.weeks.map(week => (
-            <div className="calendar-week">{week}</div>
-          ))}
-          <div className="calendar-week" id="datepanel-sat">
-            土
-          </div>
-        </div>
-        <div className="calendar-days">
-          {this.state.predays.map(day => (
-            <DatePanel
-              date={day}
-              plan="null"
-              shift="X"
-              color="datepanel-unactive"
-            />
-          ))}
-          {this.state.days.map(day => (
-            <DatePanel
-              date={day.date.getDate()}
-              plan={this.serchPlans(day.date)}
-              shift={this.serchShifts(day.date)}
-              color={this.daycssReturn(day.date.getDay())}
-              onClick={() => this.selectDay(day.date)}
-              select={this.isSelect(day.date)}
-            />
-          ))}
-          {this.state.backdays.map(day => (
-            <DatePanel
-              date={day}
-              plan="null"
-              shift="X"
-              color="datepanel-unactive"
-            />
-          ))}
-        </div>
+        ) : (
+          <span>
+            <div className="calendar-weeks">
+              <div className="calendar-week" id="datepanel-sun">
+                日
+              </div>
+              {this.state.weeks.map(week => (
+                <div className="calendar-week" key={week}>
+                  {week}
+                </div>
+              ))}
+              <div className="calendar-week" id="datepanel-sat">
+                土
+              </div>
+            </div>
+            <div className="calendar-days">
+              {this.state.predays.map(day => (
+                <DatePanel
+                  date={day.getDate()}
+                  plan={this.serchPlans(day)}
+                  shift={this.serchShifts(day)}
+                  color="datepanel-unactive"
+                  shiftstyle={this.shiftstyle(this.serchShifts(day))}
+                  onClick={() => this.selectDay(day)}
+                  select={this.isSelect(day)}
+                  key={day.getDate()}
+                />
+              ))}
+              {this.state.days.map(day => (
+                <DatePanel
+                  date={day.date.getDate()}
+                  plan={this.serchPlans(day.date)}
+                  shift={this.serchShifts(day.date)}
+                  color={this.daycssReturn(day.date.getDay())}
+                  onClick={() => this.selectDay(day.date)}
+                  select={this.isSelect(day.date)}
+                  shiftstyle={this.shiftstyle(this.serchShifts(day.date))}
+                  key={day.date.getDate()}
+                />
+              ))}
+              {this.state.backdays.map(day => (
+                <DatePanel
+                  date={day.getDate()}
+                  plan={this.serchPlans(day)}
+                  shift={this.serchShifts(day)}
+                  color="datepanel-unactive"
+                  shiftstyle={this.shiftstyle(this.serchShifts(day))}
+                  onClick={() => this.selectDay(day)}
+                  select={this.isSelect(day)}
+                  key={day.getDate()}
+                />
+              ))}
+            </div>
+          </span>
+        )}
       </div>
     )
   }
@@ -227,7 +339,9 @@ const DatePanel = function(props) {
     >
       <span id={props.select ? '' : props.color}>{props.date}</span>
       <div className="datepanel-planarea">{props.plan}</div>
-      <div className="datepanel-shiftarea">{props.shift}</div>
+      <div className="datepanel-shiftarea" id={props.shiftstyle}>
+        {props.shift}
+      </div>
     </div>
   )
 }
