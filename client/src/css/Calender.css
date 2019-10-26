@@ -24,5 +24,33 @@
   background-color: gray;
 }
 .DatePanel:active {
-  background-color: aqua;
+  /*background-color: aqua;*/
+}
+#datepanel-unactive {
+  color: gray;
+}
+#datepanel-def {
+  color: black;
+}
+#datepanel-sun {
+  color: red;
+}
+#datepanel-sat {
+  color: blue;
+}
+#datepanel-select {
+  background-color: rgb(0, 102, 255);
+  color: white;
+}
+.datepanel-planarea {
+  height: 20px;
+  /*background-color: aquamarine;*/
+}
+.datepanel-shiftarea {
+  height: 45px;
+  /*background-color: cadetblue;*/
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
