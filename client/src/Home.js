@@ -189,11 +189,12 @@ class Home extends Component {
           '読み込み中'
         ) : (
           <div id="shift-holder">
-            <div id="newcalendar">
-              <NewCalender
-                receptionDate={this.state.receptionDate}
-                plans={''}
-                shifts={this.state.month_days}
+            <div id="calendar">
+              <Calendar
+                locale="ja-JP"
+                calendarType="US"
+                value={this.state.receptionDate}
+                tileContent={this.getTileContent.bind(this)}
                 onChange={value => this.dayClick(value)}
               />
             </div>
@@ -280,15 +281,14 @@ class Home extends Component {
     )
   }
   /*
-  <div id="calendar">
-              <Calendar
-                locale="ja-JP"
-                calendarType="US"
-                value={this.state.receptionDate}
-                tileContent={this.getTileContent.bind(this)}
+  <div id="newcalendar">
+              <NewCalender
+                receptionDate={this.state.receptionDate}
+                plans={''}
+                shifts={this.state.month_days}
                 onChange={value => this.dayClick(value)}
               />
-            </div>
+              </div>
   */
   //yyMMdd日付
   getintdate(year, month, day) {
@@ -412,6 +412,7 @@ class Home extends Component {
       complementdaysText: text,
     })
   }
+
   getTileContent = ({ date, view }) => {
     // 月表示のときのみ
     if (view !== 'month') {

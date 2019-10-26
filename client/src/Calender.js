@@ -21,6 +21,7 @@ class Calender extends Component {
       selectDay: this.props.receptionDate, //選択している日にち
       shifts: [], //シフトたち
       isSelectMonth: false, //月選択Bool
+      plans: this.props.plans,
     }
   }
   componentDidMount() {
@@ -128,7 +129,7 @@ class Calender extends Component {
     this.setCalendar(date)
   }
   serchPlans = day => {
-    const plans = this.props.plans
+    const plans = this.state.plans
     for (let plan of plans) {
       const plandate = new Date(plan.date)
       if (
