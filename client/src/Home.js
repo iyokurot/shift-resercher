@@ -4,6 +4,7 @@ import Calendar from 'react-calendar'
 import Modal from 'react-modal'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
+import Information from './HomeInformation'
 import NewCalender from './Calender'
 
 const customStyles = {
@@ -113,11 +114,6 @@ class Home extends Component {
       //fetch('/testgetcommentdata')
       .then(res => res.json())
       .then(data => this.setdefaultcomment(data))
-    //お知らせ３件取得
-    fetch('/informationdatathree')
-      //fetch('/testinformationdatathree')
-      .then(res => res.json())
-      .then(data => this.setState({ informations: data }))
   }
   render() {
     return (
@@ -138,33 +134,7 @@ class Home extends Component {
           {this.state.receptionDate.getDate()}日～受付中
         </h2>
         <div id="dateText">{this.state.deadline}</div>
-        <div id="infoFlameHolder">
-          <div id="infoFlame">
-            <span id="infoTitle">おしらせ</span>
-            <div>
-              <table id="infotable">
-                <tbody>
-                  {this.state.informations.map(info => (
-                    <tr key={info.id}>
-                      <td id="infotabledate">
-                        {this.slashformatDate(info.date)}
-                      </td>
-                      <td id="infotabletitle">
-                        <span>{info.title}</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <button
-              className="lightgreenbutton"
-              onClick={this.pushtoInfomation}
-            >
-              一覧へ
-            </button>
-          </div>
-        </div>
+        <Information push={this.pushtoInfomation} />
         <div className="itemholder">
           <button
             className="redbutton"
@@ -189,12 +159,11 @@ class Home extends Component {
           '読み込み中'
         ) : (
           <div id="shift-holder">
-            <div id="calendar">
-              <Calendar
-                locale="ja-JP"
-                calendarType="US"
-                value={this.state.receptionDate}
-                tileContent={this.getTileContent.bind(this)}
+            <div id="newcalendar">
+              <NewCalender
+                receptionDate={this.state.receptionDate}
+                plans={''}
+                shifts={this.state.month_days}
                 onChange={value => this.dayClick(value)}
               />
             </div>
@@ -281,14 +250,15 @@ class Home extends Component {
     )
   }
   /*
-  <div id="newcalendar">
-              <NewCalender
-                receptionDate={this.state.receptionDate}
-                plans={''}
-                shifts={this.state.month_days}
+  <div id="calendar">
+              <Calendar
+                locale="ja-JP"
+                calendarType="US"
+                value={this.state.receptionDate}
+                tileContent={this.getTileContent.bind(this)}
                 onChange={value => this.dayClick(value)}
               />
-              </div>
+            </div>
   */
   //yyMMdd日付
   getintdate(year, month, day) {

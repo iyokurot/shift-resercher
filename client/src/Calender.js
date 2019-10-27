@@ -129,27 +129,22 @@ class Calender extends Component {
     this.setCalendar(date)
   }
   serchPlans = day => {
-    const plans = this.state.plans
-    for (let plan of plans) {
-      const plandate = new Date(plan.date)
-      if (
-        day.getFullYear() === plandate.getFullYear() &&
-        day.getMonth() === plandate.getMonth() &&
-        day.getDate() === plandate.getDate()
-      ) {
-        return plan.text
-      }
+    const plans = this.props.plans
+    const datestr = this.getintdate(day)
+    if (plans[datestr] && plans[datestr].text) {
+      return plans[datestr].text
+    } else {
+      return ''
     }
-    return ''
   }
   serchShifts = day => {
     const shifts = this.props.shifts
-    for (let shift in shifts) {
-      if (this.getintdate(day) === shift) {
-        return shifts[shift].text
-      }
+    const datestr = this.getintdate(day)
+    if (shifts[datestr] && shifts[datestr].text) {
+      return shifts[datestr].text
+    } else {
+      return ''
     }
-    return ''
   }
   onClickPre = () => {
     let date = this.state.printdays

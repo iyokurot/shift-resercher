@@ -31,8 +31,17 @@ export default class Test extends Component {
     fetch('/testplandata')
       .then(res => res.json())
       .then(plans => {
-        this.setState({ plans: plans })
+        this.setlist(plans)
       })
+  }
+  setlist = plans => {
+    const list = []
+    for (let plan of plans) {
+      list[plan.date] = { text: plan.text }
+    }
+    this.setState({
+      plans: list,
+    })
   }
 
   render() {
