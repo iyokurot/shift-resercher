@@ -31,14 +31,12 @@ app.use(
     secret: 'keyboard cat',
     resave: true,
     saveUninitialized: false,
-
     store: new RedisStore({
       urll: process.env.REDIS_URL,
       client: redis.createClient({
         url: process.env.REDIS_URL,
       }),
     }),
-
     cookie: {
       maxAge: null,
       secure: false,
@@ -630,6 +628,25 @@ app.post('/updateinformationdata', async (req, res) => {
     )
     client.release()
     res.json('com update')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+//Plan
+app.get('/plandata', async (req, res) => {
+  try {
+    const client = await pool.connect()
+    const result = await client.query(
+      'SELECT * FROM plan_table order by date desc',
+    )
+    const results = { results: result ? result.rows : null }
+    if (result.rowCount == 0) {
+      res.json([])
+    } else {
+      res.json(results.results)
+    }
+    client.release()
   } catch (err) {
     console.error(err)
     res.send('Error ' + err)

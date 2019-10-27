@@ -93,6 +93,7 @@ class Home extends Component {
       isUpdateshift: [], //シフト更新
       informations: [], //おしらせ3件
       isNowLoading: true, //読み込み中(シフト)
+      plans: [], //予定リスト
     }
   }
   deadlineEarly = 10
@@ -114,6 +115,11 @@ class Home extends Component {
       //fetch('/testgetcommentdata')
       .then(res => res.json())
       .then(data => this.setdefaultcomment(data))
+    //予定データ取得
+    fetch('/plandata')
+      //fetch('/testplandata')
+      .then(res => res.json())
+      .then(plans => this.setPlans(plans))
   }
   render() {
     return (
@@ -162,7 +168,7 @@ class Home extends Component {
             <div id="newcalendar">
               <NewCalender
                 receptionDate={this.state.receptionDate}
-                plans={''}
+                plans={this.state.plans}
                 shifts={this.state.month_days}
                 onChange={value => this.dayClick(value)}
               />
@@ -283,6 +289,15 @@ class Home extends Component {
       isNowLoading: false,
     })
   }
+  setPlans = plans => {
+    const list = []
+    for (let plan of plans) {
+      list[plan.date] = { text: plan.text }
+    }
+    this.setState({
+      plans: list,
+    })
+  }
   //commentSetting
   setdefaultcomment = data => {
     if (data !== '') {
@@ -382,7 +397,7 @@ class Home extends Component {
       complementdaysText: text,
     })
   }
-
+  /*
   getTileContent = ({ date, view }) => {
     // 月表示のときのみ
     if (view !== 'month') {
@@ -397,7 +412,7 @@ class Home extends Component {
       </p>
     )
   }
-
+*/
   //スタンプ変換
   onClickstamp = value => {
     this.setState({
