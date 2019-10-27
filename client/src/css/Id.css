@@ -210,6 +210,20 @@
 #infoTablethtitle {
   width: max-content;
 }
+/*Plan*/
+#plan-addflame {
+  margin: 0 10px;
+  border-radius: 5px;
+}
+#plan-addbutton {
+  width: 70%;
+}
+#addplanTitle {
+  font-weight: bold;
+  font-size: 18px;
+  color: #5f28c4;
+  margin: 5px 0;
+}
 
 @media screen and (max-width: 480px) {
   #termbuttons::before {

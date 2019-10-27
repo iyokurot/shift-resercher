@@ -312,6 +312,36 @@
   background: #a3e7de;
   height: 30px;
 }
+/*Plan*/
+.datepicker-button {
+  border: solid 1px #5f28c4;
+  background: white;
+  width: min-content;
+  font-size: 18px;
+  color: #5f28c4;
+  margin: 3px 10px;
+  transition: 0.3s;
+  padding: 4px 10px;
+}
+.datepicker-button:hover {
+  background-color: #5f28c4;
+  color: white;
+}
+.plan-input {
+  font-size: 18px;
+  width: 70%;
+  max-width: 200px;
+  min-width: 100px;
+  border: none;
+  border-bottom: solid 1px gray;
+  padding: 3px 5px;
+  margin: 5px 10px 10px 10px;
+  text-align: center;
+}
+.plan-input:focus {
+  outline: none;
+  border-bottom: solid 1px #5f28c4;
+}
 
 @media screen and (max-width: 480px) {
   .redbutton {
