@@ -31,14 +31,14 @@ app.use(
     secret: 'keyboard cat',
     resave: true,
     saveUninitialized: false,
-
+    /*
     store: new RedisStore({
       urll: process.env.REDIS_URL,
       client: redis.createClient({
         url: process.env.REDIS_URL,
       }),
     }),
-
+*/
     cookie: {
       maxAge: null,
       secure: false,
@@ -206,7 +206,7 @@ app.post('/register', async (req, res) => {
         userId,
         worktime,
         administer,
-        0, //countResult.rows[0].count,
+        20, //countResult.rows[0].count,
       ]
       const result = await client.query(sql, values)
       req.session.username = name
@@ -654,6 +654,51 @@ app.get('/plandata', async (req, res) => {
     res.send('Error ' + err)
   }
 })
+app.post('/addplandata', async (req, res) => {
+  try {
+    const plan = req.body
+    const client = await pool.connect()
+    const result = await client.query(
+      'insert into plan_table (text,date) values($1,$2)',
+      [plan.text, plan.date],
+    )
+    client.release()
+    res.json('clear')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.post('/updateaddplandata', async (req, res) => {
+  try {
+    const plan = req.body
+    const client = await pool.connect()
+    const result = await client.query(
+      'update plan_table set text=$1 where date=$2',
+      [plan.text, parseInt(plan.date)],
+    )
+    client.release()
+    res.json('clear')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.post('/deleteplandata', async (req, res) => {
+  try {
+    const date = req.body
+    const client = await pool.connect()
+    const result = await client.query('delete from plan_table where date=$1', [
+      parseInt(date),
+    ])
+    client.release()
+    res.json('clear')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+
 //all
 app.post('/deletemember', async (req, res) => {
   if (req.session.access_token != null && req.session.administer) {
@@ -1170,7 +1215,50 @@ app.get('/testplandata', async (req, res) => {
     res.send('Error ' + err)
   }
 })
-
+app.post('/testaddplandata', async (req, res) => {
+  try {
+    const plan = req.body
+    const client = await poollocal.connect()
+    const result = await client.query(
+      'insert into plan_table (text,date) values($1,$2)',
+      [plan.text, plan.date],
+    )
+    client.release()
+    res.json('clear')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.post('/testupdateaddplandata', async (req, res) => {
+  try {
+    const plan = req.body
+    const client = await poollocal.connect()
+    const result = await client.query(
+      'update plan_table set text=$1 where date=$2',
+      [plan.text, parseInt(plan.date)],
+    )
+    client.release()
+    res.json('clear')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+app.post('/testdeleteplandata', async (req, res) => {
+  try {
+    const date = req.body
+    const client = await poollocal.connect()
+    const result = await client.query('delete from plan_table where date=$1', [
+      parseInt(date),
+    ])
+    client.release()
+    res.json('clear')
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
 //all
 app.post('/testdeletemember', async (req, res) => {
   try {

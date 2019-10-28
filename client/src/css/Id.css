@@ -214,6 +214,9 @@
 #plan-addflame {
   margin: 0 10px;
   border-radius: 5px;
+  display: inline-block;
+  width: 40%;
+  min-width: 280px;
 }
 #plan-addbutton {
   width: 70%;

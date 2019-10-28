@@ -12,22 +12,25 @@ export default class Plan extends Component {
     }
   }
   componentDidMount() {
-    //fetch('userdata')
-    fetch('testuserdata')
+    fetch('userdata')
+      //fetch('testuserdata')
       .then(res => res.json())
       .then(data => {
         if (data.administer) {
           //アクセス許可
-          //fetch('plandata')
-          fetch('testplandata')
-            .then(res => res.json())
-            .then(data => this.setPlans(data))
+          this.loadPlans()
         } else {
           //アクセス不可
           alert('アクセスできません')
           this.props.history.push('/')
         }
       })
+  }
+  loadPlans = () => {
+    fetch('plandata')
+      //fetch('testplandata')
+      .then(res => res.json())
+      .then(data => this.setPlans(data))
   }
   //Planlist作成
   setPlans = plans => {
@@ -38,7 +41,6 @@ export default class Plan extends Component {
     this.setState({
       plans: list,
     })
-    console.log(list)
   }
   //追加Date
   onChangeSelectDate = date => {
@@ -60,18 +62,77 @@ export default class Plan extends Component {
       return
     }
     const adddate = this.getFormatDate(this.state.selectdate)
-    //存在判定
-    if (this.state.plans[adddate]) {
-      console.log('存在')
-      //上書き確認
-    }
-    //追加処理
     const data = {
       text: this.state.addplanText,
       date: adddate,
     }
-    console.log(data)
+    //存在判定
+    if (this.state.plans[adddate]) {
+      //上書き確認
+      if (
+        window.confirm(
+          'すでに予定が登録されていますが、上書きしますか？\n' +
+            '予定：「' +
+            this.state.plans[adddate].text +
+            '」',
+        )
+      ) {
+        //上書き
+        fetch('/updateaddplandata', {
+          //fetch('/testupdateaddplandata', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          mode: 'cors',
+        })
+          .then(res => res.json())
+          .then(str => {
+            alert('上書きしました')
+            this.loadPlans()
+          })
+      }
+      return
+    }
+    //追加処理
     //追加fetch
+    fetch('/addplandata', {
+      //fetch('/testaddplandata', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      mode: 'cors',
+    })
+      .then(res => res.json())
+      .then(str => {
+        alert('追加しました')
+        this.loadPlans()
+      })
+  }
+  onClickDeletePlan = date => {
+    if (
+      window.confirm(
+        '削除しますか？\n予定：「' + this.state.plans[date].text + '」',
+      )
+    ) {
+      //削除
+      fetch('/deleteplandata', {
+        //fetch('/testdeleteplandata', {
+        method: 'POST',
+        body: JSON.stringify([date]),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+      })
+        .then(res => res.json())
+        .then(str => {
+          this.loadPlans()
+        })
+    }
   }
   //yyyyMMdd
   getFormatDate(date) {
@@ -109,20 +170,36 @@ export default class Plan extends Component {
             追加
           </button>
         </div>
-        <div>header</div>
+        <div>
+          <span>リスト</span>
+          <span>カレンダー</span>
+        </div>
         <div>
           <table>
             <thead>
               <tr>
                 <td>日付</td>
                 <td>予定</td>
+                <td>削除</td>
+                <td>変更</td>
               </tr>
             </thead>
             <tbody>
               {this.state.plans.map(plan => (
-                <tr>
+                <tr key={plan.date}>
                   <td>{plan.date}</td>
                   <td>{plan.text}</td>
+                  <td>
+                    <button
+                      className="redbutton"
+                      onClick={() => this.onClickDeletePlan(plan.date)}
+                    >
+                      削除
+                    </button>
+                  </td>
+                  <td>
+                    <button className="bluebutton">変更</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
