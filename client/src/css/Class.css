@@ -342,6 +342,29 @@
   outline: none;
   border-bottom: solid 1px #5f28c4;
 }
+.plantable-holder {
+  display: inline-block;
+}
+.plantable {
+  background-color: #ffffff;
+  border-radius: 10px;
+  border-collapse: collapse;
+  box-shadow: 0 0 5px gray;
+  width: 370px;
+  padding: 5px;
+  height: 280px;
+  overflow-y: scroll;
+  display: inline-block;
+}
+.plantable-tbody {
+}
+
+.plantable-head {
+  border-bottom: solid 1px gray;
+}
+.plantable-td {
+  border-right: dashed 1px gray;
+}
 
 @media screen and (max-width: 480px) {
   .redbutton {

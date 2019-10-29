@@ -1,6 +1,19 @@
-import React, { Component, useState } from 'react'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import React, { Component } from 'react'
+import SimpleDatePicker from './PlanDatePicker'
+import Modal from 'react-modal'
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+  formcontrol: {
+    fontSize: '10px',
+  },
+}
 
 export default class Plan extends Component {
   constructor(props) {
@@ -9,6 +22,10 @@ export default class Plan extends Component {
       plans: [], //予定リスト
       selectdate: new Date(), //新規Plan日付
       addplanText: '', //新規Planテキスト
+      isOpenModal: false,
+      changePlandate: '', //変更対象日付
+      changePlantext: '',
+      test: '',
     }
   }
   componentDidMount() {
@@ -52,6 +69,11 @@ export default class Plan extends Component {
   onChangeAddText = e => {
     this.setState({
       addplanText: e.target.value,
+    })
+  }
+  test = e => {
+    this.setState({
+      test: e.target.value,
     })
   }
   //追加ボタン
@@ -140,6 +162,48 @@ export default class Plan extends Component {
       '0' + date.getDate()
     ).slice(-2)}`
   }
+  openModal = date => {
+    this.setState({
+      isOpenModal: true,
+      changePlandate: date,
+      changePlantext: this.state.plans[date].text,
+    })
+  }
+  closeModal = () => {
+    this.setState({
+      isOpenModal: false,
+    })
+  }
+  onChangereplaceText = e => {
+    this.setState({
+      changePlantext: e.target.value,
+    })
+  }
+  onClickUpdatePlan = () => {
+    if (this.state.changePlantext === '') {
+      alert('空欄です')
+      return
+    }
+    const data = {
+      text: this.state.changePlantext,
+      date: this.state.changePlandate,
+    }
+    //更新Fetch
+    fetch('/updateaddplandata', {
+      //fetch('/testupdateaddplandata', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      mode: 'cors',
+    })
+      .then(res => res.json())
+      .then(str => {
+        this.loadPlans()
+      })
+    this.closeModal()
+  }
   render() {
     return (
       <div>
@@ -156,8 +220,8 @@ export default class Plan extends Component {
           <div>
             <input
               placeholder="予定を入力(４文字以内)"
-              maxLength="4"
               className="plan-input"
+              maxLength="4"
               value={this.state.addplanText}
               onChange={this.onChangeAddText}
             />
@@ -174,22 +238,22 @@ export default class Plan extends Component {
           <span>リスト</span>
           <span>カレンダー</span>
         </div>
-        <div>
-          <table>
+        <div className="plantable-holder">
+          <table className="plantable">
             <thead>
-              <tr>
+              <tr className="plantable-head">
                 <td>日付</td>
                 <td>予定</td>
                 <td>削除</td>
                 <td>変更</td>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="plantable-tbody">
               {this.state.plans.map(plan => (
                 <tr key={plan.date}>
-                  <td>{plan.date}</td>
-                  <td>{plan.text}</td>
-                  <td>
+                  <td className="plantable-td">{plan.date}</td>
+                  <td className="plantable-td">{plan.text}</td>
+                  <td className="plantable-td">
                     <button
                       className="redbutton"
                       onClick={() => this.onClickDeletePlan(plan.date)}
@@ -198,36 +262,42 @@ export default class Plan extends Component {
                     </button>
                   </td>
                   <td>
-                    <button className="bluebutton">変更</button>
+                    <button
+                      className="bluebutton"
+                      onClick={() => this.openModal(plan.date)}
+                    >
+                      変更
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        <Modal
+          isOpen={this.state.isOpenModal}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="worktime Modal"
+        >
+          <h2 className="modaltitle">変更</h2>
+          <div>
+            {this.state.changePlandate}
+            <br />
+            <input
+              value={this.state.changePlantext}
+              onChange={this.onChangereplaceText}
+              maxLength="4"
+            ></input>
+          </div>
+          <button className="redbutton" onClick={this.closeModal}>
+            閉じる
+          </button>
+          <button className="bluebutton" onClick={this.onClickUpdatePlan}>
+            変更
+          </button>
+        </Modal>
       </div>
     )
   }
-}
-const SimpleDatePicker = props => {
-  const initialDate = new Date()
-  const [startDate, setStartDate] = useState(initialDate)
-  const handleChange = date => {
-    setStartDate(date)
-    props.onChange(date)
-  }
-
-  return (
-    <DatePicker
-      dateFormat="yyyy/MM/dd"
-      selected={startDate}
-      onChange={handleChange}
-      customInput={
-        <button className="datepicker-button">{dateFormater(startDate)}</button>
-      }
-    />
-  )
-}
-const dateFormater = date => {
-  return date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate()
 }
