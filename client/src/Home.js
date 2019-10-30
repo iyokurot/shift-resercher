@@ -359,7 +359,7 @@ class Home extends Component {
         month = 0
       }
       //締め切り
-      const finaldate = new Date(year, month, 0)
+      const finaldate = new Date(year, month + 1, 0)
       receptionday =
         month + 1 + '/16～' + (month + 1) + '/' + finaldate.getDate()
       deadline = month + 1 + '/10まで(' + receptionday + ')'

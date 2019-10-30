@@ -5,7 +5,7 @@ import Home from './Home'
 import Setting from './Setting'
 import Wishlist from './Wishlist'
 import Information from './Information'
-import Plan from './Plan'
+import Plans from './Plans'
 import Test from './Test'
 import './css/Tag.css'
 import './css/Class.css'
@@ -24,7 +24,7 @@ const App = () => (
       <Route path="/Setting" component={Setting} />
       <Route path="/Wishlist" component={Wishlist} />
       <Route path="/Information" component={Information} />
-      <Route path="/Plan" component={Plan} />
+      <Route path="/Plans" component={Plans} />
       <Route path="/Test" component={Test} />
     </div>
   </BrowserRouter>

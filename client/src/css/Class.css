@@ -351,18 +351,39 @@
   border-collapse: collapse;
   box-shadow: 0 0 5px gray;
   width: 370px;
-  padding: 5px;
+  padding: 0 5px;
   height: 280px;
   overflow-y: scroll;
+  overflow-x: hidden;
   display: inline-block;
 }
-.plantable-tbody {
+.plantable thead,
+.plantable tbody {
+  display: block;
+  width: max-content;
+}
+.plantable thead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #ffffff;
+}
+
+.plantable-td-date {
+  width: 80px;
+}
+.plantable-td-text {
+  width: 70px;
+}
+.plantable-td-button {
+  width: 100px;
 }
 
 .plantable-head {
   border-bottom: solid 1px gray;
 }
-.plantable-td {
+.plantable tbody td {
   border-right: dashed 1px gray;
 }
 

@@ -407,7 +407,7 @@ class Setting extends Component {
   }
   //予定画面へ
   pushtoPlan = () => {
-    this.props.history.push('/Plan')
+    this.props.history.push('/Plans')
   }
 
   openmemberModal = () => {
