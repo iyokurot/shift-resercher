@@ -52,8 +52,8 @@ const Plans = props => {
       list[plan.date] = { text: plan.text, date: plan.date }
       array.push(plan.date)
     }
-    setPlandata(list)
     setPlanArray(array)
+    setPlandata(list)
   }
   const onClickAddPlan = () => {
     //空欄判定
