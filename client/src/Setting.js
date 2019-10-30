@@ -215,27 +215,29 @@ class Setting extends Component {
               contentLabel="Register Modal"
             >
               <h2 className="modaltitle">登録者一覧</h2>
-              {this.state.memberlist.map(member => (
-                <div key={member.userid}>
-                  {member.name}
-                  <span
-                    style={{
-                      display:
-                        member.userid !== this.state.userdata.userId
-                          ? ''
-                          : 'none',
-                    }}
-                  >
-                    <button
-                      className="redbutton"
-                      value={member.userid}
-                      onClick={e => this.onClickdeletemember(member)}
+              <div className="modalheight">
+                {this.state.memberlist.map(member => (
+                  <div key={member.userid}>
+                    {member.name}
+                    <span
+                      style={{
+                        display:
+                          member.userid !== this.state.userdata.userId
+                            ? ''
+                            : 'none',
+                      }}
                     >
-                      登録削除
-                    </button>
-                  </span>
-                </div>
-              ))}
+                      <button
+                        className="redbutton"
+                        value={member.userid}
+                        onClick={e => this.onClickdeletemember(member)}
+                      >
+                        登録削除
+                      </button>
+                    </span>
+                  </div>
+                ))}
+              </div>
               <button className="redbutton" onClick={this.closememberModal}>
                 閉じる
               </button>
@@ -247,26 +249,28 @@ class Setting extends Component {
               contentLabel="Administer Modal"
             >
               <h2 className="modaltitle">管理者一覧</h2>
-              {this.state.administerlist.map(member => (
-                <div key={member.userid}>
-                  {member.name}
-                  <span
-                    style={{
-                      display:
-                        member.userid !== this.state.userdata.userId
-                          ? ''
-                          : 'none',
-                    }}
-                  >
-                    <button
-                      className="redbutton"
-                      onClick={e => this.onClickdeleteadminister(member)}
+              <div className="modalheight">
+                {this.state.administerlist.map(member => (
+                  <div key={member.userid}>
+                    {member.name}
+                    <span
+                      style={{
+                        display:
+                          member.userid !== this.state.userdata.userId
+                            ? ''
+                            : 'none',
+                      }}
                     >
-                      解除
-                    </button>
-                  </span>
-                </div>
-              ))}
+                      <button
+                        className="redbutton"
+                        onClick={e => this.onClickdeleteadminister(member)}
+                      >
+                        解除
+                      </button>
+                    </span>
+                  </div>
+                ))}
+              </div>
               {this.state.isAddadminister &&
               this.state.nonadministerlist.length > 0 ? (
                 <span>

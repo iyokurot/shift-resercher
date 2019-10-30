@@ -106,6 +106,10 @@
 .modaltitle {
   margin: 0;
 }
+.modalheight {
+  overflow-y: scroll;
+  max-height: 250px;
+}
 .timeselect {
   border: solid 1px #5f28c4;
   width: 30%;

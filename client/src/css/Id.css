@@ -12,6 +12,7 @@
 /*Home*/
 #personalheader {
   margin-left: 60%;
+  display: flex;
 }
 
 #settingimg {
@@ -19,9 +20,13 @@
   display: inline-block;
   background-repeat: no-repeat;
   background-size: contain;
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   padding: 2px;
+  margin-right: 5px;
+}
+#setting {
+  display: flex;
 }
 
 #dateText {
