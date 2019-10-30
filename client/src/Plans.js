@@ -50,7 +50,7 @@ const Plans = props => {
     const array = []
     for (let plan of plans) {
       list[plan.date] = { text: plan.text, date: plan.date }
-      array.push(plan.date)
+      array.push({ text: plan.text, date: plan.date })
     }
     setPlanArray(array)
     setPlandata(list)
@@ -214,14 +214,14 @@ const Plans = props => {
             </tr>
           </thead>
           <tbody className="plantable-tbody">
-            {plansArray.map(date => (
-              <tr key={date}>
-                <td className="plantable-td-date">{date}</td>
-                <td className="plantable-td-text">{plans[date].text}</td>
+            {plansArray.map(plan => (
+              <tr key={plan.date}>
+                <td className="plantable-td-date">{plan.date}</td>
+                <td className="plantable-td-text">{plan.text}</td>
                 <td className="plantable-td-button">
                   <button
                     className="redbutton"
-                    onClick={() => onClickDeletePlan(date)}
+                    onClick={() => onClickDeletePlan(plan.date)}
                   >
                     削除
                   </button>
@@ -229,7 +229,7 @@ const Plans = props => {
                 <td className="plantable-td-button">
                   <button
                     className="bluebutton"
-                    onClick={() => openModal(date)}
+                    onClick={() => openModal(plan.date)}
                   >
                     変更
                   </button>
