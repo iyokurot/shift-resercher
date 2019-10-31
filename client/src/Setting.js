@@ -90,7 +90,14 @@ class Setting extends Component {
       <div>
         <h1>Settings</h1>
         {this.state.isNowloading ? (
-          <span>読み込み中</span>
+          <div className="loading">
+            <span className="loadingtext">Loading...</span>
+            <div class="orbit-spinner">
+              <div class="orbit"></div>
+              <div class="orbit"></div>
+              <div class="orbit"></div>
+            </div>
+          </div>
         ) : (
           <div>
             <div className="profileholder">

@@ -66,7 +66,14 @@ class Wishlist extends Component {
     return (
       <div>
         {this.state.nowloading ? (
-          <div>読み込み中</div>
+          <div className="loading">
+            <span className="loadingtext">Loading...</span>
+            <div class="orbit-spinner">
+              <div class="orbit"></div>
+              <div class="orbit"></div>
+              <div class="orbit"></div>
+            </div>
+          </div>
         ) : (
           <div>
             {this.state.accessable ? (

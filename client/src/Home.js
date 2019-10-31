@@ -162,7 +162,14 @@ class Home extends Component {
           </button>
         </div>
         {this.state.isNowLoading ? (
-          '読み込み中'
+          <div className="loading">
+            <span className="loadingtext">Loading...</span>
+            <div class="orbit-spinner">
+              <div class="orbit"></div>
+              <div class="orbit"></div>
+              <div class="orbit"></div>
+            </div>
+          </div>
         ) : (
           <div id="shift-holder">
             <div id="newcalendar">
