@@ -122,8 +122,8 @@ class Calender extends Component {
   }
   onClickDecisionMonth = () => {
     const date = new Date(this.state.selectYear, this.state.selectMonth - 1, 1)
+    this.props.setPrintdate(date)
     this.setState({
-      printdays: date,
       isSelectMonth: false,
     })
     this.setCalendar(date)
@@ -147,7 +147,7 @@ class Calender extends Component {
     }
   }
   onClickPre = () => {
-    let date = this.state.printdays
+    let date = this.props.receptionDate
     if (1 === date.getDate()) {
       if (0 === date.getMonth()) {
         date = new Date(date.getFullYear() - 1, 11, 16)
@@ -157,14 +157,11 @@ class Calender extends Component {
     } else {
       date = new Date(date.getFullYear(), date.getMonth(), 1)
     }
-    this.setState({
-      printdays: date,
-    })
-    //console.log(date)
+    this.props.setPrintdate(date)
     this.setCalendar(date)
   }
   onClickBack = () => {
-    let date = this.state.printdays
+    let date = this.props.receptionDate
     if (1 === date.getDate()) {
       date = new Date(date.getFullYear(), date.getMonth(), 16)
     } else {
@@ -175,10 +172,7 @@ class Calender extends Component {
       }
     }
 
-    this.setState({
-      printdays: date,
-    })
-    //console.log(date)
+    this.props.setPrintdate(date)
     this.setCalendar(date)
   }
   daycssReturn = n => {
@@ -226,8 +220,8 @@ class Calender extends Component {
             ＜
           </button>
           <button id="calendar-printmonth" onClick={this.onClickselectMonth}>
-            {this.state.printdays.getFullYear()} /{' '}
-            {this.state.printdays.getMonth() + 1}
+            {this.props.receptionDate.getFullYear()} /{' '}
+            {this.props.receptionDate.getMonth() + 1}
           </button>
           <button onClick={this.onClickBack} className="calendar-monthButton">
             ＞

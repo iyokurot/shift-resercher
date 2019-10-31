@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import Calendar from 'react-calendar'
+//import Calendar from 'react-calendar'
 import Modal from 'react-modal'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -88,6 +88,7 @@ class Home extends Component {
       comments: [], //dbから
       wishday: '', //希望日数
       comment: '', //希望コメント
+      nowprintday: new Date(),
       nowprintcommentday: '',
       modalIsOpen: false, //モーダル判定
       isUpdateshift: [], //シフト更新
@@ -174,10 +175,11 @@ class Home extends Component {
           <div id="shift-holder">
             <div id="newcalendar">
               <NewCalender
-                receptionDate={this.state.receptionDate}
+                receptionDate={this.state.nowprintday}
                 plans={this.state.plans}
                 shifts={this.state.month_days}
                 onChange={value => this.dayClick(value)}
+                setPrintdate={value => this.setPrindDay(value)}
               />
             </div>
 
@@ -388,6 +390,7 @@ class Home extends Component {
       complementdaysText: receptionday,
       deadline: deadline,
       receptionDate: new Date(setday),
+      nowprintday: new Date(setday),
     })
   }
   setComplementdays = date => {
@@ -459,6 +462,12 @@ class Home extends Component {
         }
       }
     }
+  }
+  setPrindDay = date => {
+    console.log(date)
+    this.setState({
+      nowprintday: date,
+    })
   }
   dayspreOnclick = () => {
     //前へ処理
