@@ -25,7 +25,7 @@ const App = () => (
       <Route path="/Wishlist" component={Wishlist} />
       <Route path="/Information" component={Information} />
       <Route path="/Plans" component={Plans} />
-      <Route path="/Test" component={Test} />
+      <Route path="/TestPage" component={Test} />
     </div>
   </BrowserRouter>
 )
