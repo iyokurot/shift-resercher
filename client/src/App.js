@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 import Register from './Register'
 import Home from './Home'
 import Setting from './Setting'
@@ -53,19 +53,10 @@ class Top extends Component {
     )
   }
   onClickLogin = () => {
-    fetch('/auth')
+    fetch('/auths')
       .then(res => res.json())
       .then(data => console.log(data))
   }
 }
-
-/*
-<div>
-          ------------------<br></br>
-          <Link to="/Home">HomeChecker in locals</Link>
-          <br></br>
-          -------------------------
-        </div>
- */
 
 export default App
