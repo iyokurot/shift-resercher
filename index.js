@@ -94,7 +94,7 @@ app.get('/userdata', function(req, res) {
     res.json('')
   }
 })
-
+/*
 app.get('/auth', async (req, res, next) => {
   const rParams = req.query
 
@@ -156,6 +156,7 @@ app.get('/auth', async (req, res, next) => {
     res.redirect(`${url}?${sParams.join('&')}`)
   }
 })
+*/
 app.get('/auths', async (req, res, next) => {
   // 初回アクセス時はここに来る
   const url = 'https://access.line.me/oauth2/v2.1/authorize'
@@ -206,6 +207,7 @@ app.post('/getuser', async (req, res) => {
     console.log(err)
   }
 })
+/*
 //ユーザー登録確認
 app.get('/regist', async (req, res) => {
   const userId = req.session.userId
@@ -239,6 +241,7 @@ app.get('/regist', async (req, res) => {
     res.send('Error ' + err)
   }
 })
+*/
 //ユーザー登録確認
 app.get('/regists', async (req, res) => {
   const userId = req.session.userId

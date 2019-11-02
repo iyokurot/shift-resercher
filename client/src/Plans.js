@@ -24,8 +24,8 @@ const Plans = props => {
   const [changePlandate, setChangePlandate] = useState('')
   const [changePlantext, setChangePlantext] = useState('')
   useEffect(() => {
-    fetch('userdata')
-      //fetch('testuserdata')
+    //fetch('userdata')
+    fetch('testuserdata')
       .then(res => res.json())
       .then(data => {
         if (data.administer) {
@@ -39,8 +39,8 @@ const Plans = props => {
       })
   }, [])
   const loadPlans = () => {
-    fetch('plandata')
-      //fetch('testplandata')
+    //fetch('plandata')
+    fetch('testplandata')
       .then(res => res.json())
       .then(data => setPlans(data))
   }

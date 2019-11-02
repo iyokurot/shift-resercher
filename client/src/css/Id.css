@@ -11,8 +11,13 @@
 }
 /*Home*/
 #personalheader {
+  margin-top: 20px;
   margin-left: 60%;
   display: flex;
+}
+#HomeTitle {
+  margin-top: 0px;
+  margin-bottom: 10px;
 }
 
 #settingimg {

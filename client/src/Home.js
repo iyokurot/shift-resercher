@@ -133,7 +133,7 @@ class Home extends Component {
             <span className="redbutton">ログアウト</span>
           </a>
         </div>
-        <h1>Home</h1>
+        <h1 id="HomeTitle">Home</h1>
         ようこそ！{this.state.userdata.username}さん
         <h2 className="reception">
           {this.state.receptionDate.getFullYear()}{' '}
