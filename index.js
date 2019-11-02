@@ -31,14 +31,14 @@ app.use(
     secret: 'keyboard cat',
     resave: true,
     saveUninitialized: false,
-
+    /*
     store: new RedisStore({
       urll: process.env.REDIS_URL,
       client: redis.createClient({
         url: process.env.REDIS_URL,
       }),
     }),
-
+*/
     cookie: {
       maxAge: null,
       secure: false,
@@ -156,6 +156,56 @@ app.get('/auth', async (req, res, next) => {
     res.redirect(`${url}?${sParams.join('&')}`)
   }
 })
+app.get('/auths', async (req, res, next) => {
+  // 初回アクセス時はここに来る
+  const url = 'https://access.line.me/oauth2/v2.1/authorize'
+  const sParams = [
+    'response_type=code',
+    `client_id=${process.env.LINE_LOGIN_CHANNEL_ID}`,
+    `redirect_uri=${process.env.LINE_LOGIN_CALLBACK_URL}`,
+    `state=${RandomMaker()}`,
+    'scope=profile',
+    'nonce=my%20shift-resercher',
+  ]
+
+  // 認証画面へリダイレクト(認可コード取得)
+  res.redirect(`${url}?${sParams.join('&')}`)
+})
+app.post('/getuser', async (req, res) => {
+  try {
+    const auth = req.body
+    // アクセストークン取得
+    const token = await getToken({
+      uri: 'https://api.line.me/oauth2/v2.1/token',
+      form: {
+        grant_type: 'authorization_code',
+        code: auth.code,
+        redirect_uri: process.env.LINE_LOGIN_CALLBACK_URL,
+        client_id: process.env.LINE_LOGIN_CHANNEL_ID,
+        client_secret: process.env.LINE_LOGIN_CHANNEL_SECRET,
+      },
+      json: true,
+    })
+    req.session.access_token = token.access_token
+    //res.send(token.access_token);
+    //ユーザー
+    const profile = await getProfile({
+      uri: 'https://api.line.me/v2/profile/',
+      headers: {
+        Authorization: 'Bearer ' + token.access_token,
+      },
+      json: true,
+    })
+    //userId,displayName,pictureUrl
+    //登録済みユーザーか確認
+    req.session.userId = profile.userId
+    req.session.displayName = profile.displayName
+    req.session.picture = profile.pictureUrl
+    res.json(['clear'])
+  } catch (err) {
+    console.log(err)
+  }
+})
 //ユーザー登録確認
 app.get('/regist', async (req, res) => {
   const userId = req.session.userId
@@ -187,6 +237,39 @@ app.get('/regist', async (req, res) => {
     client.release()
   } catch (err) {
     res.send('Error ' + err)
+  }
+})
+//ユーザー登録確認
+app.get('/regists', async (req, res) => {
+  const userId = req.session.userId
+  const displayName = req.session.displayName
+  const picture = req.session.picture
+  try {
+    const client = await pool.connect()
+    const result = await client.query(
+      'SELECT * FROM user_table where userId=$1 limit 1',
+      [userId],
+    )
+    const results = { results: result ? result.rows : null }
+    if (result.rowCount == 0) {
+      //未登録
+      console.log('未登録ユーザー')
+      console.log('displayName : ' + displayName)
+      console.log(userId)
+      req.session.regist = false
+      res.json(['new'])
+    } else {
+      //登録ユーザー
+      req.session.username = results.results[0].name
+      req.session.worktime = results.results[0].worktime
+      req.session.administer = results.results[0].administer
+      console.log('userログイン')
+      console.log(req.session.username)
+      res.json(['user'])
+    }
+    client.release()
+  } catch (err) {
+    res.json(['error' + err])
   }
 })
 //ユーザー登録

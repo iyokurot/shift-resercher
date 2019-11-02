@@ -7,6 +7,7 @@ import Wishlist from './Wishlist'
 import Information from './Information'
 import Plans from './Plans'
 import Test from './Test'
+import Callback from './Callback'
 import './css/Tag.css'
 import './css/Class.css'
 import './css/Id.css'
@@ -26,6 +27,7 @@ const App = () => (
       <Route path="/Information" component={Information} />
       <Route path="/Plans" component={Plans} />
       <Route path="/TestPage" component={Test} />
+      <Route exact path="/Callback" component={Callback}></Route>
     </div>
   </BrowserRouter>
 )

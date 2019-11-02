@@ -46,6 +46,14 @@ export default class Test extends Component {
               shifts={this.state.shifts}
               onChange={value => console.log(value)}
             />
+            <form action="/auths" method="GET">
+              <input type="submit" className="login_button" value="" />
+            </form>
+            <form action="/Callback" method="GET">
+              <input name="code" id="say" value="cooode"></input>
+              <input name="state" id="say" value="sttaate"></input>
+              <input type="submit" className="login_button" value="" />
+            </form>
           </div>
         </div>
       </div>
