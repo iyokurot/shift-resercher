@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import Calendar from 'react-calendar'
 import NewCalender from './Calender'
+import request from 'superagent'
 export default class Test extends Component {
   constructor(props) {
     super(props)
@@ -11,29 +10,7 @@ export default class Test extends Component {
       shifts: [],
     }
   }
-  componentDidMount() {
-    fetch('/test')
-      .then(res => res.json())
-      .then(res => console.log(res))
-    const list = []
-    list[20191016] = { text: 'X' }
-    list[20191022] = { text: '17:00-23:00' }
-    list[20191027] = { text: '△' }
-    list[20191030] = { text: '10:00-22:00' }
-    const planlist = [
-      { date: '2019/10/17', text: '早出' },
-      { date: '2019/10/21', text: 'アイナナ' },
-      { date: '2019/10/30', text: '棚卸し' },
-    ]
-    this.setState({
-      shifts: list,
-    })
-    fetch('/testplandata')
-      .then(res => res.json())
-      .then(plans => {
-        this.setlist(plans)
-      })
-  }
+  componentDidMount() {}
   setlist = plans => {
     const list = []
     for (let plan of plans) {
@@ -43,11 +20,24 @@ export default class Test extends Component {
       plans: list,
     })
   }
+  onClick = () => {
+    request
+      .get('/auth')
+      //.send({ name: name, text: text })
+      .end(function(err, res) {
+        console.log(res.body)
+      })
+  }
 
   render() {
     return (
       <div>
         <h1>Test</h1>
+        <div>
+          <button className="bluebutton" onClick={this.onClick}>
+            auth
+          </button>
+        </div>
         <div id="top">
           <div id="testcalendar">
             <NewCalender
@@ -58,13 +48,6 @@ export default class Test extends Component {
             />
           </div>
         </div>
-        <br />
-        <Calendar
-          locale="ja-JP"
-          calendarType="US"
-          value={this.state.receptionDate}
-          onChange={value => console.log(value)}
-        />
       </div>
     )
   }
