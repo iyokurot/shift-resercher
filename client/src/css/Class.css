@@ -184,6 +184,22 @@
   background: #130331;
   color: #c5b8dd;
 }
+.manualdiv {
+  display: inline-block;
+  color: rgb(58, 58, 58);
+  border: none;
+  border-radius: 5px;
+  background-color: white;
+  padding: 5px;
+  margin: 5px;
+  box-shadow: 0 0 8px gray;
+}
+.outlinkButton {
+  display: flex;
+  color: rgb(58, 58, 58);
+  justify-content: center;
+  width: 100px;
+}
 /*Wishlist*/
 .shittablediv {
   display: inline-block;

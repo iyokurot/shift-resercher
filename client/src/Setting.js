@@ -4,6 +4,7 @@ import Modal from 'react-modal'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
+import shareIcon from './images/share.svg'
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -175,6 +176,18 @@ class Setting extends Component {
                 </button>
               </div>
             </div>
+            <div className="manualdiv">
+              <a
+                href="https://docs.google.com/presentation/d/1d4WBzpo-So3vK8kw5eVjB_fQ_LBcnjHPEuaHL-7Q_1g/edit?usp=sharing"
+                target="_blank"
+              >
+                <span className="outlinkButton">
+                  使い方
+                  <img src={shareIcon} id="shareIcon" />
+                </span>
+                <p id="sharesubtitle">＊外部ページが開きます</p>
+              </a>
+            </div>
             <div
               style={{ display: this.state.userdata.administer ? '' : 'none' }}
               className="administerview"
@@ -320,6 +333,7 @@ class Setting extends Component {
     if ('' === data || '' === data.username) {
       //読み込み中(error)
       alert('読み込みエラーが発生しました')
+      this.props.history.push('/')
     } else {
       this.setState({
         isNowloading: false,

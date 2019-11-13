@@ -464,7 +464,6 @@ class Home extends Component {
     }
   }
   setPrindDay = date => {
-    console.log(date)
     this.setState({
       nowprintday: date,
     })
@@ -595,6 +594,7 @@ class Home extends Component {
     }
     this.setState({
       comments: comment,
+      isNowLoading: true,
     })
     const defshift = this.state.default_month_days
     const newshift = this.state.month_days
@@ -627,7 +627,7 @@ class Home extends Component {
     if (newshiftdata.length > 0) {
       this.setState({ isUpdateshift: this.state.isUpdateshift.concat('add') })
       this.dbUpdater('/addshiftdata', newshiftdata)
-      //this.dbUpdater('/testaddshiftdata', newshiftdata);
+      //this.dbUpdater('/testaddshiftdata', newshiftdata)
     }
     //delete
     if (deleteshiftdata.length > 0) {

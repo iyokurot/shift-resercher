@@ -278,7 +278,10 @@ class Wishlist extends Component {
             shiftday <= printfinaldate.getDate()
           ) {
             //表示する情報
-            myshift[shiftday - printdate.getDate()] = shift.detail
+            if (shift.detail !== '') {
+              //nullデータでない
+              myshift[shiftday - printdate.getDate()] = shift.detail
+            }
           }
         }
       }
