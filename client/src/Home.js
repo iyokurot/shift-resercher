@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 //import Calendar from 'react-calendar'
 import Modal from 'react-modal'
-import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
+//import { withStyles } from '@material-ui/core/styles'
+//import TextField from '@material-ui/core/TextField'
 import Information from './HomeInformation'
 import NewCalender from './Calender'
+import Comment from './HomeComment'
+import { GetDateByNum, GetFormatDate } from './DateHandler'
 
 const customStyles = {
   content: {
@@ -20,6 +22,7 @@ const customStyles = {
     fontSize: '10px',
   },
 }
+/*
 const CssTextField = withStyles({
   root: {
     '& label.Mui-focused': {
@@ -32,6 +35,7 @@ const CssTextField = withStyles({
     },
   },
 })(TextField)
+*/
 
 Modal.setAppElement('#root')
 
@@ -82,19 +86,23 @@ class Home extends Component {
       ], //選択可能時間
       startTime: '09:00',
       endTime: '09:00',
-      complementdaysText: '',
-      wishdays: ['', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], //選択希望日数
-      default_comments: [], //defaultのコメント
-      comments: [], //dbから
-      wishday: '', //希望日数
-      comment: '', //希望コメント
+      //complementdaysText: '',
+      //wishdays: ['', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], //選択希望日数
+      //default_comments: [], //defaultのコメント
+      //comments: [], //dbから
+      //wishday: '', //希望日数
+      //comment: '', //希望コメント
       nowprintday: new Date(),
-      nowprintcommentday: '',
+      //nowprintcommentday: '',
       modalIsOpen: false, //モーダル判定
       isUpdateshift: [], //シフト更新
       informations: [], //おしらせ3件
       isNowLoading: true, //読み込み中(シフト)
       plans: [], //予定リスト
+      registModal: false, //登録後モーダル
+      newregistshift: [], //新規登録シフトリスト
+      updateregistshift: [], //更新登録シフトリスト
+      deleteregistshift: [], //削除登録シフトリスト
     }
   }
   deadlineEarly = 10
@@ -106,16 +114,7 @@ class Home extends Component {
       //fetch('/testuserdata')
       .then(res => res.json())
       .then(data => this.setState({ userdata: data }))
-    //シフトデータ取得
-    fetch('/shiftdata')
-      //fetch('/testshiftdata')
-      .then(res => res.json())
-      .then(data => this.setdefaultshifts(data))
-    //コメントデータ取得
-    fetch('/getcommentdata')
-      //fetch('/testgetcommentdata')
-      .then(res => res.json())
-      .then(data => this.setdefaultcomment(data))
+    this.loadShiftAndComment()
     //予定データ取得
     fetch('/plandata')
       //fetch('/testplandata')
@@ -165,10 +164,10 @@ class Home extends Component {
         {this.state.isNowLoading ? (
           <div className="loading">
             <span className="loadingtext">Loading...</span>
-            <div class="orbit-spinner">
-              <div class="orbit"></div>
-              <div class="orbit"></div>
-              <div class="orbit"></div>
+            <div className="orbit-spinner">
+              <div className="orbit"></div>
+              <div className="orbit"></div>
+              <div className="orbit"></div>
             </div>
           </div>
         ) : (
@@ -183,46 +182,11 @@ class Home extends Component {
               />
             </div>
 
-            <div className="flameholder">
-              <div className="flame">
-                補足希望:{this.state.complementdaysText}
-                <span id="termbuttons">
-                  <button onClick={this.dayspreOnclick} className="bluebutton">
-                    ◁
-                  </button>
-                  <button onClick={this.daysbackOnclick} className="bluebutton">
-                    ▷
-                  </button>
-                </span>
-                <br />
-                <div id="wishday">
-                  希望出勤日数：
-                  <select
-                    onChange={this.wishdayOnchange}
-                    value={this.state.wishday}
-                  >
-                    {this.state.wishdays.map(days => (
-                      <option key={days}>{days}</option>
-                    ))}
-                  </select>
-                  日
-                </div>
-                <div>
-                  <CssTextField
-                    id="outlined-name"
-                    label="追記"
-                    value={this.state.comment}
-                    onChange={this.commentOnchange}
-                    margin="normal"
-                    variant="outlined"
-                    placeholder="希望を記入"
-                  />
-                </div>
-              </div>
-              <button id="submit_shiftdata" onClick={this.addDataOnClick}>
-                登録
-              </button>
-            </div>
+            <Comment
+              //complementdaysText={this.state.complementdaysText}
+              receptionDate={this.state.receptionDate}
+              addbutton={this.addDataOnClick}
+            />
           </div>
         )}
         <Modal
@@ -261,6 +225,35 @@ class Home extends Component {
             決定
           </button>
         </Modal>
+        <Modal
+          isOpen={this.state.registModal}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeRegistModal}
+          style={customStyles}
+          contentLabel="worktime Modal"
+        >
+          <h2 className="modaltitle">登録しました</h2>
+          <div className="modalheight">
+            {this.state.newregistshift.map(shift => (
+              <div key={shift.date} id="newshiftregist">
+                {GetDateByNum(shift.date) + ' '} {shift.text + ' '}登録
+              </div>
+            ))}
+            {this.state.updateregistshift.map(shift => (
+              <div key={shift.date} id="updateshiftregist">
+                {GetDateByNum(shift.date) + ' '} {shift.text + ' '}更新
+              </div>
+            ))}
+            {this.state.deleteregistshift.map(shift => (
+              <div key={shift.date} id="deleteshiftregist">
+                {GetDateByNum(shift.date) + ' '}削除
+              </div>
+            ))}
+          </div>
+          <button className="redbutton" onClick={this.closeRegistModal}>
+            閉じる
+          </button>
+        </Modal>
       </div>
     )
   }
@@ -274,17 +267,62 @@ class Home extends Component {
                 onChange={value => this.dayClick(value)}
               />
             </div>
+            /////////////////comment
+            <div className="flameholder">
+              <div className="flame">
+                補足希望:{this.state.complementdaysText}
+                <span id="termbuttons">
+                  <button onClick={this.dayspreOnclick} className="bluebutton">
+                    ◁
+                  </button>
+                  <button onClick={this.daysbackOnclick} className="bluebutton">
+                    ▷
+                  </button>
+                </span>
+                <br />
+                <div id="wishday">
+                  希望出勤日数：
+                  <select
+                    onChange={this.wishdayOnchange}
+                    value={this.state.wishday}
+                  >
+                    {this.state.wishdays.map(days => (
+                      <option key={days}>{days}</option>
+                    ))}
+                  </select>
+                  日
+                </div>
+                <div>
+                  <CssTextField
+                    id="outlined-name"
+                    label="追記"
+                    value={this.state.comment}
+                    onChange={this.commentOnchange}
+                    margin="normal"
+                    variant="outlined"
+                    placeholder="希望を記入"
+                  />
+                </div>
+              </div>
+
+              <button id="submit_shiftdata" onClick={this.addDataOnClick}>
+                登録
+              </button>
+            </div>
   */
-  //yyMMdd日付
-  getintdate(year, month, day) {
-    return year + ('0' + (month + 1)).slice(-2) + ('0' + day).slice(-2)
-  }
-  //yyyy/mm/dd
-  slashformatDate(str) {
-    const date = new Date(str)
-    return (
-      date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate()
-    )
+  loadShiftAndComment = () => {
+    //シフトデータ取得
+    fetch('/shiftdata')
+      //fetch('/testshiftdata')
+      .then(res => res.json())
+      .then(data => this.setdefaultshifts(data))
+    //コメントデータ取得
+    //fetch('/getcommentdata')
+    /*
+    fetch('/testgetcommentdata')
+      .then(res => res.json())
+      .then(data => this.setdefaultcomment(data))
+      */
   }
   //json変換
   setdefaultshifts = data => {
@@ -308,6 +346,7 @@ class Home extends Component {
     })
   }
   //commentSetting
+  /*
   setdefaultcomment = data => {
     if (data !== '') {
       const list = []
@@ -341,11 +380,14 @@ class Home extends Component {
       this.setComplementdays(recepdate)
     }
   }
+  */
+  /*
   getFormatDate(date) {
     return `${date.getFullYear()}${('0' + (date.getMonth() + 1)).slice(-2)}${(
       '0' + date.getDate()
     ).slice(-2)}`
   }
+  */
   //受付中日にち
   getDateReception = () => {
     let year = this.state.date.getFullYear()
@@ -393,6 +435,7 @@ class Home extends Component {
       nowprintday: new Date(setday),
     })
   }
+  /*
   setComplementdays = date => {
     const month = date.getMonth() + 1
     const day = date.getDate()
@@ -407,6 +450,7 @@ class Home extends Component {
       complementdaysText: text,
     })
   }
+  */
   /*
   getTileContent = ({ date, view }) => {
     // 月表示のときのみ
@@ -434,10 +478,7 @@ class Home extends Component {
     //受付中か
     if (this.state.receptionDate <= value) {
       const dayslist = this.state.month_days
-      const clickday =
-        value.getFullYear() +
-        ('0' + (value.getMonth() + 1)).slice(-2) +
-        ('0' + value.getDate()).slice(-2)
+      const clickday = GetFormatDate(value)
       this.setState({ clickdate: clickday })
       //空or重複判定
       if (null == dayslist[clickday] || '' === dayslist[clickday].text) {
@@ -468,6 +509,7 @@ class Home extends Component {
       nowprintday: date,
     })
   }
+  /*
   dayspreOnclick = () => {
     //前へ処理
     this.dayspreback('pre')
@@ -542,16 +584,19 @@ class Home extends Component {
       nowprintcommentday: this.getintdate(year, month, day),
     })
   }
+  */
   wishdayOnchange = e => {
     this.setState({
       wishday: e.target.value,
     })
   }
+  /*
   commentOnchange = e => {
     this.setState({
       comment: e.target.value,
     })
   }
+  */
 
   //モーダル関連
   openModal = () => {
@@ -586,32 +631,43 @@ class Home extends Component {
     })
   }
   //登録ボタン
-  addDataOnClick = () => {
+  addDataOnClick = async () => {
+    /*
     const comment = this.state.comments
     comment[this.state.nowprintcommentday] = {
       comment: this.state.comment,
       wishday: this.state.wishday,
     }
+    */
+    const results = [] //PromiseList
     this.setState({
-      comments: comment,
+      //comments: comment,
       isNowLoading: true,
     })
     const defshift = this.state.default_month_days
     const newshift = this.state.month_days
+
     const newshiftdata = []
     //追加されたシフト情報
     for (const shiftday in newshift) {
-      if (defshift[shiftday] == null) {
-        newshiftdata[shiftday] = { text: newshift[shiftday].text }
+      if (defshift[shiftday] == null && newshift[shiftday].text !== '') {
+        newshiftdata.push({ date: shiftday, text: newshift[shiftday].text })
       }
     }
+    this.setState({
+      newregistshift: newshiftdata,
+    })
+
     //削除されたシフト情報
     const deleteshiftdata = []
     for (const shiftday in defshift) {
       if (newshift[shiftday].text === '') {
-        deleteshiftdata[shiftday] = { text: defshift[shiftday].text }
+        deleteshiftdata.push({ date: shiftday, text: defshift[shiftday].text })
       }
     }
+    this.setState({
+      deleteregistshift: deleteshiftdata,
+    })
     //更新されたシフト情報
     const updateshiftdata = []
     for (const shiftday in newshift) {
@@ -620,33 +676,37 @@ class Home extends Component {
         newshift[shiftday].text !== '' &&
         defshift[shiftday].text !== newshift[shiftday].text
       ) {
-        updateshiftdata[shiftday] = { text: newshift[shiftday].text }
+        updateshiftdata.push({ date: shiftday, text: newshift[shiftday].text })
       }
     }
+    this.setState({
+      updateregistshift: updateshiftdata,
+    })
     //add
     if (newshiftdata.length > 0) {
-      this.setState({ isUpdateshift: this.state.isUpdateshift.concat('add') })
-      this.dbUpdater('/addshiftdata', newshiftdata)
-      //this.dbUpdater('/testaddshiftdata', newshiftdata)
+      results.push(
+        this.dbUpdater('/addshiftdata', newshiftdata),
+        //this.dbUpdater('/testaddshiftdata', newshiftdata),
+      )
     }
+
     //delete
     if (deleteshiftdata.length > 0) {
-      this.setState({
-        isUpdateshift: this.state.isUpdateshift.concat('delete'),
-      })
-      this.dbUpdater('/deleteshiftdata', deleteshiftdata)
-      //this.dbUpdater('/testdeleteshiftdata', deleteshiftdata);
+      results.push(
+        this.dbUpdater('/deleteshiftdata', deleteshiftdata),
+        //this.dbUpdater('/testdeleteshiftdata', deleteshiftdata),
+      )
     }
     //update
     if (updateshiftdata.length > 0) {
-      this.setState({
-        isUpdateshift: this.state.isUpdateshift.concat('update'),
-      })
-      this.dbUpdater('/updateshiftdata', updateshiftdata)
-      //this.dbUpdater('/testupdateshiftdata', updateshiftdata);
+      results.push(
+        this.dbUpdater('/updateshiftdata', updateshiftdata),
+        //this.dbUpdater('/testupdateshiftdata', updateshiftdata),
+      )
     }
     //コメント更新
     //差分配列add＆update配列生成のちfetch
+    /*
     const addcommentdata = []
     for (const com in this.state.comments) {
       if (this.state.default_comments[com] == null) {
@@ -672,8 +732,9 @@ class Home extends Component {
         })
       }
     }
-    fetch('/updatecommentdata', {
-      //fetch('/testupdatecommentdata', {
+
+    await //fetch('/updatecommentdata', {
+    fetch('/testupdatecommentdata', {
       method: 'POST',
       body: JSON.stringify(updatecommentdata),
       headers: {
@@ -681,36 +742,51 @@ class Home extends Component {
       },
       mode: 'cors',
     }).then(res => res.json())
-    fetch('/addcommentdata', {
-      //fetch('/testaddcommentdata', {
+    //fetch('/addcommentdata', {
+    await fetch('/testaddcommentdata', {
       method: 'POST',
       body: JSON.stringify(addcommentdata),
       headers: {
         'Content-Type': 'application/json',
       },
       mode: 'cors',
+    }).then(res => res.json())
+    */
+    //.then(str => alert('登録しました'))
+    await Promise.all(results)
+    this.loadShiftAndComment()
+    //登録確認モーダル
+    //alert('登録しました')
+    this.setState({
+      registModal: true,
     })
-      .then(res => res.json())
-      .then(str => alert('登録しました'))
-    this.shiftupdateChecker('')
+  }
+  closeRegistModal = () => {
+    this.setState({
+      registModal: false,
+      newregistshift: [],
+      updateregistshift: [],
+      deleteregistshift: [],
+    })
   }
   //shiftDB更新用fetch
   dbUpdater = (url, data) => {
+    /*
     let postdata = []
     for (const shift in data) {
       postdata.push({ date: shift, text: data[shift].text })
     }
+    */
     fetch(url, {
       method: 'POST',
-      body: JSON.stringify(postdata),
+      body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
       },
       mode: 'cors',
-    })
-      .then(res => res.json())
-      .then(str => this.shiftupdateChecker(str))
+    }).then(res => res.json())
   }
+  /*
   shiftupdateChecker = str => {
     if (str !== '') {
       const list = []
@@ -720,33 +796,16 @@ class Home extends Component {
         }
       }
       if (list.length <= 0) {
-        //シフトデータ取得
-        fetch('/shiftdata')
-          //fetch('/testshiftdata')
-          .then(res => res.json())
-          .then(data => this.setdefaultshifts(data))
-        //コメントデータ取得
-        fetch('/getcommentdata')
-          //fetch('/testgetcommentdata')
-          .then(res => res.json())
-          .then(data => this.setdefaultcomment(data))
+        this.loadShiftAndComment()
       }
       this.setState({ isUpdateshift: list })
     } else {
       if (this.state.isUpdateshift.length <= 0) {
-        //シフトデータ取得
-        fetch('/shiftdata')
-          //fetch('/testshiftdata')
-          .then(res => res.json())
-          .then(data => this.setdefaultshifts(data))
-        //コメントデータ取得
-        fetch('/getcommentdata')
-          //fetch('/testgetcommentdata')
-          .then(res => res.json())
-          .then(data => this.setdefaultcomment(data))
+        this.loadShiftAndComment()
       }
     }
   }
+  */
   pushtoInfomation = () => {
     this.props.history.push('/Information')
   }

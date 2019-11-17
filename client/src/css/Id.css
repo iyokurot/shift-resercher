@@ -96,7 +96,15 @@
 #submit_shiftdata:hover {
   background: #261050;
 }
-
+#newshiftregist {
+  color: #5f28c4;
+}
+#updateshiftregist {
+  color: #1dbea9;
+}
+#deleteshiftregist {
+  color: #e73a3a;
+}
 /*Setting*/
 #profileimage {
   width: 100px;
