@@ -444,6 +444,11 @@ class Home extends Component {
     this.setState({
       isNowLoading: true,
     })
+    await new Promise(resolve => setTimeout(resolve, 0))
+    this.registMethod()
+  }
+  //登録処理関数
+  registMethod = async () => {
     const results = [] //PromiseList
     const defshift = this.state.default_month_days.slice()
     const newshift = this.state.month_days.slice()
