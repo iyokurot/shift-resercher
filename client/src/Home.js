@@ -267,48 +267,6 @@ class Home extends Component {
                 onChange={value => this.dayClick(value)}
               />
             </div>
-            /////////////////comment
-            <div className="flameholder">
-              <div className="flame">
-                補足希望:{this.state.complementdaysText}
-                <span id="termbuttons">
-                  <button onClick={this.dayspreOnclick} className="bluebutton">
-                    ◁
-                  </button>
-                  <button onClick={this.daysbackOnclick} className="bluebutton">
-                    ▷
-                  </button>
-                </span>
-                <br />
-                <div id="wishday">
-                  希望出勤日数：
-                  <select
-                    onChange={this.wishdayOnchange}
-                    value={this.state.wishday}
-                  >
-                    {this.state.wishdays.map(days => (
-                      <option key={days}>{days}</option>
-                    ))}
-                  </select>
-                  日
-                </div>
-                <div>
-                  <CssTextField
-                    id="outlined-name"
-                    label="追記"
-                    value={this.state.comment}
-                    onChange={this.commentOnchange}
-                    margin="normal"
-                    variant="outlined"
-                    placeholder="希望を記入"
-                  />
-                </div>
-              </div>
-
-              <button id="submit_shiftdata" onClick={this.addDataOnClick}>
-                登録
-              </button>
-            </div>
   */
   loadShiftAndComment = () => {
     //シフトデータ取得
@@ -316,13 +274,6 @@ class Home extends Component {
       //fetch('/testshiftdata')
       .then(res => res.json())
       .then(data => this.setdefaultshifts(data))
-    //コメントデータ取得
-    //fetch('/getcommentdata')
-    /*
-    fetch('/testgetcommentdata')
-      .then(res => res.json())
-      .then(data => this.setdefaultcomment(data))
-      */
   }
   //json変換
   setdefaultshifts = data => {
@@ -345,49 +296,6 @@ class Home extends Component {
       plans: list,
     })
   }
-  //commentSetting
-  /*
-  setdefaultcomment = data => {
-    if (data !== '') {
-      const list = []
-      for (const comment of data) {
-        const date = new Date(comment.date)
-        const num =
-          date.getFullYear() +
-          ('0' + (date.getMonth() + 1)).slice(-2) +
-          ('0' + date.getDate()).slice(-2)
-        list[num] = { comment: comment.text, wishday: comment.wishday }
-      }
-      //締め切りの初期コメント設定
-      const recepdate = this.state.receptionDate
-      const firstdate =
-        recepdate.getFullYear() +
-        ('0' + (recepdate.getMonth() + 1)).slice(-2) +
-        ('0' + recepdate.getDate()).slice(-2)
-      let com = ''
-      let wish = ''
-      if (list[firstdate] != null) {
-        com = list[firstdate].comment
-        wish = list[firstdate].wishday
-      }
-      this.setState({
-        default_comments: list.slice(), //deflist,
-        comments: list,
-        comment: com,
-        wishday: wish,
-        nowprintcommentday: firstdate,
-      })
-      this.setComplementdays(recepdate)
-    }
-  }
-  */
-  /*
-  getFormatDate(date) {
-    return `${date.getFullYear()}${('0' + (date.getMonth() + 1)).slice(-2)}${(
-      '0' + date.getDate()
-    ).slice(-2)}`
-  }
-  */
   //受付中日にち
   getDateReception = () => {
     let year = this.state.date.getFullYear()
@@ -435,22 +343,6 @@ class Home extends Component {
       nowprintday: new Date(setday),
     })
   }
-  /*
-  setComplementdays = date => {
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    let text = ''
-    if (day === 1) {
-      text = month + '/1～' + month + '/15'
-    } else if (day === 16) {
-      const finaldate = new Date(date.getFullYear(), month, 0)
-      text = month + '/16～' + month + '/' + finaldate.getDate()
-    }
-    this.setState({
-      complementdaysText: text,
-    })
-  }
-  */
   /*
   getTileContent = ({ date, view }) => {
     // 月表示のときのみ
@@ -509,94 +401,11 @@ class Home extends Component {
       nowprintday: date,
     })
   }
-  /*
-  dayspreOnclick = () => {
-    //前へ処理
-    this.dayspreback('pre')
-  }
-  daysbackOnclick = () => {
-    //後へ処理
-    this.dayspreback('back')
-  }
-  dayspreback = str => {
-    const comment = this.state.comments
-    comment[this.state.nowprintcommentday] = {
-      comment: this.state.comment,
-      wishday: this.state.wishday,
-    }
-    this.setState({
-      comments: comment,
-    })
-    //nowprintcommentday
-    const printday = this.state.nowprintcommentday
-    const datearr = (
-      printday.substr(0, 4) +
-      '/' +
-      printday.substr(4, 2) +
-      '/' +
-      printday.substr(6, 2)
-    ).split('/')
-    const nowdate = new Date(datearr[0], datearr[1] - 1, datearr[2])
-    let year = nowdate.getFullYear()
-    let month = nowdate.getMonth()
-    let day = nowdate.getDate()
-    if (str === 'pre') {
-      if (day === 16) {
-        day = 1
-      } else {
-        if (month === 0) {
-          year--
-          month = 11
-          day = 16
-        } else {
-          month--
-          day = 16
-        }
-      }
-    } else if (str === 'back') {
-      if (day === 1) {
-        day = 16
-      } else {
-        if (month === 11) {
-          year++
-          month = 0
-          day = 1
-        } else {
-          month++
-          day = 1
-        }
-      }
-    }
-    if (this.state.comments[this.getintdate(year, month, day)] == null) {
-      const comments = this.state.comments
-      comments[this.getintdate(year, month, day)] = {
-        comment: '',
-        wishday: '',
-      }
-      this.setState({
-        comments: comments,
-      })
-    }
-    this.setComplementdays(new Date(year, month, day))
-    this.setState({
-      comment: this.state.comments[this.getintdate(year, month, day)].comment,
-      wishday: this.state.comments[this.getintdate(year, month, day)].wishday,
-      nowprintcommentday: this.getintdate(year, month, day),
-    })
-  }
-  */
   wishdayOnchange = e => {
     this.setState({
       wishday: e.target.value,
     })
   }
-  /*
-  commentOnchange = e => {
-    this.setState({
-      comment: e.target.value,
-    })
-  }
-  */
 
   //モーダル関連
   openModal = () => {
@@ -632,21 +441,12 @@ class Home extends Component {
   }
   //登録ボタン
   addDataOnClick = async () => {
-    /*
-    const comment = this.state.comments
-    comment[this.state.nowprintcommentday] = {
-      comment: this.state.comment,
-      wishday: this.state.wishday,
-    }
-    */
-    const results = [] //PromiseList
     this.setState({
-      //comments: comment,
       isNowLoading: true,
     })
-    const defshift = this.state.default_month_days
-    const newshift = this.state.month_days
-
+    const results = [] //PromiseList
+    const defshift = this.state.default_month_days.slice()
+    const newshift = this.state.month_days.slice()
     const newshiftdata = []
     //追加されたシフト情報
     for (const shiftday in newshift) {
@@ -663,11 +463,14 @@ class Home extends Component {
     for (const shiftday in defshift) {
       if (newshift[shiftday].text === '') {
         deleteshiftdata.push({ date: shiftday, text: defshift[shiftday].text })
+        delete newshift[shiftday]
       }
     }
     this.setState({
       deleteregistshift: deleteshiftdata,
+      default_month_days: newshift,
     })
+
     //更新されたシフト情報
     const updateshiftdata = []
     for (const shiftday in newshift) {
@@ -682,6 +485,7 @@ class Home extends Component {
     this.setState({
       updateregistshift: updateshiftdata,
     })
+
     //add
     if (newshiftdata.length > 0) {
       results.push(
@@ -704,61 +508,14 @@ class Home extends Component {
         //this.dbUpdater('/testupdateshiftdata', updateshiftdata),
       )
     }
-    //コメント更新
-    //差分配列add＆update配列生成のちfetch
-    /*
-    const addcommentdata = []
-    for (const com in this.state.comments) {
-      if (this.state.default_comments[com] == null) {
-        addcommentdata.push({
-          date: com,
-          comment: this.state.comments[com].comment,
-          wishday: this.state.comments[com].wishday,
-        })
-      }
-    }
-    const updatecommentdata = []
-    for (const com in this.state.default_comments) {
-      if (
-        this.state.comments[com].comment !==
-          this.state.default_comments[com].comment ||
-        this.state.comments[com].wishday !==
-          this.state.default_comments[com].wishday
-      ) {
-        updatecommentdata.push({
-          date: com,
-          comment: this.state.comments[com].comment,
-          wishday: this.state.comments[com].wishday,
-        })
-      }
-    }
-
-    await //fetch('/updatecommentdata', {
-    fetch('/testupdatecommentdata', {
-      method: 'POST',
-      body: JSON.stringify(updatecommentdata),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      mode: 'cors',
-    }).then(res => res.json())
-    //fetch('/addcommentdata', {
-    await fetch('/testaddcommentdata', {
-      method: 'POST',
-      body: JSON.stringify(addcommentdata),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      mode: 'cors',
-    }).then(res => res.json())
-    */
-    //.then(str => alert('登録しました'))
-    await Promise.all(results)
-    this.loadShiftAndComment()
     //登録確認モーダル
-    //alert('登録しました')
     this.setState({
       registModal: true,
+    })
+
+    //非同期処理後、Reload
+    await Promise.all(results).then(value => {
+      this.loadShiftAndComment()
     })
   }
   closeRegistModal = () => {
@@ -771,12 +528,6 @@ class Home extends Component {
   }
   //shiftDB更新用fetch
   dbUpdater = (url, data) => {
-    /*
-    let postdata = []
-    for (const shift in data) {
-      postdata.push({ date: shift, text: data[shift].text })
-    }
-    */
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -786,26 +537,6 @@ class Home extends Component {
       mode: 'cors',
     }).then(res => res.json())
   }
-  /*
-  shiftupdateChecker = str => {
-    if (str !== '') {
-      const list = []
-      for (const data of this.state.isUpdateshift) {
-        if (data !== str) {
-          list.push(data)
-        }
-      }
-      if (list.length <= 0) {
-        this.loadShiftAndComment()
-      }
-      this.setState({ isUpdateshift: list })
-    } else {
-      if (this.state.isUpdateshift.length <= 0) {
-        this.loadShiftAndComment()
-      }
-    }
-  }
-  */
   pushtoInfomation = () => {
     this.props.history.push('/Information')
   }
