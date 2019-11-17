@@ -845,7 +845,7 @@ app.post('/deleteuser', async (req, res) => {
   }
 })
 
-////テストルート---------------------------------------
+////テストルート---------------------------------------------------------------------
 app.post('/testregister', async (req, res) => {
   const name = req.body.username
   const userId = req.session.userId
@@ -1055,12 +1055,14 @@ app.post('/testaddshiftdata', async (req, res) => {
   try {
     const adddata = req.body
     const client = await poollocal.connect()
+
     for (let data of adddata) {
       const result = await client.query(
         'insert into shift_table (userid,date,detail) values($1,$2,$3)',
         [req.session.userId, data.date, data.text],
       )
     }
+
     client.release()
     res.json('add')
   } catch (err) {
@@ -1068,6 +1070,7 @@ app.post('/testaddshiftdata', async (req, res) => {
     res.send('Error ' + err)
   }
 })
+
 app.post('/testdeleteshiftdata', async (req, res) => {
   try {
     const deldata = req.body

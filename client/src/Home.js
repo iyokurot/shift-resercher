@@ -22,21 +22,6 @@ const customStyles = {
     fontSize: '10px',
   },
 }
-/*
-const CssTextField = withStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: '#5f28c4',
-    },
-    '& .MuiOutlinedInput-root': {
-      '&.Mui-focused fieldset': {
-        borderColor: '#5f28c4',
-      },
-    },
-  },
-})(TextField)
-*/
-
 Modal.setAppElement('#root')
 
 class Home extends Component {
@@ -86,12 +71,6 @@ class Home extends Component {
       ], //選択可能時間
       startTime: '09:00',
       endTime: '09:00',
-      //complementdaysText: '',
-      //wishdays: ['', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], //選択希望日数
-      //default_comments: [], //defaultのコメント
-      //comments: [], //dbから
-      //wishday: '', //希望日数
-      //comment: '', //希望コメント
       nowprintday: new Date(),
       //nowprintcommentday: '',
       modalIsOpen: false, //モーダル判定
@@ -491,6 +470,13 @@ class Home extends Component {
       updateregistshift: updateshiftdata,
     })
 
+    //update
+    if (updateshiftdata.length > 0) {
+      results.push(
+        this.dbUpdater('/updateshiftdata', updateshiftdata),
+        //this.dbUpdater('/testupdateshiftdata', updateshiftdata),
+      )
+    }
     //add
     if (newshiftdata.length > 0) {
       results.push(
@@ -506,22 +492,19 @@ class Home extends Component {
         //this.dbUpdater('/testdeleteshiftdata', deleteshiftdata),
       )
     }
-    //update
-    if (updateshiftdata.length > 0) {
-      results.push(
-        this.dbUpdater('/updateshiftdata', updateshiftdata),
-        //this.dbUpdater('/testupdateshiftdata', updateshiftdata),
-      )
-    }
+
     //登録確認モーダル
     this.setState({
       registModal: true,
     })
 
     //非同期処理後、Reload
-    await Promise.all(results).then(value => {
-      this.loadShiftAndComment()
-    })
+    //const start = performance.now()
+    await Promise.all(results)
+    //const end = performance.now()
+    //console.log(end - start)
+    await new Promise(resolve => setTimeout(resolve, 500))
+    this.loadShiftAndComment()
   }
   closeRegistModal = () => {
     this.setState({

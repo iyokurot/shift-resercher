@@ -79,11 +79,11 @@ const HomeComment = props => {
     setComplementdaysText(text)
   }
   const dayspreOnclick = () => {
-    //
+    //あと
     dayspreback('pre')
   }
   const daysbackOnclick = () => {
-    //
+    //前
     dayspreback('back')
   }
   const dayspreback = str => {
@@ -183,28 +183,32 @@ const HomeComment = props => {
       }
     }
 
-    results.push(
-      fetch('/updatecommentdata', {
-        //fetch('/testupdatecommentdata', {
-        method: 'POST',
-        body: JSON.stringify(updatecommentdata),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        mode: 'cors',
-      }).then(res => res.json()),
-    )
-    results.push(
-      fetch('/addcommentdata', {
-        //fetch('/testaddcommentdata', {
-        method: 'POST',
-        body: JSON.stringify(addcommentdata),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        mode: 'cors',
-      }).then(res => res.json()),
-    )
+    if (updatecommentdata.length > 0) {
+      results.push(
+        fetch('/updatecommentdata', {
+          //fetch('/testupdatecommentdata', {
+          method: 'POST',
+          body: JSON.stringify(updatecommentdata),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          mode: 'cors',
+        }).then(res => res.json()),
+      )
+    }
+    if (addcommentdata.length > 0) {
+      results.push(
+        fetch('/addcommentdata', {
+          //fetch('/testaddcommentdata', {
+          method: 'POST',
+          body: JSON.stringify(addcommentdata),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          mode: 'cors',
+        }).then(res => res.json()),
+      )
+    }
 
     await Promise.all(results)
   }
