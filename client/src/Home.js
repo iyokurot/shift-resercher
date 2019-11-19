@@ -82,6 +82,7 @@ class Home extends Component {
       newregistshift: [], //新規登録シフトリスト
       updateregistshift: [], //更新登録シフトリスト
       deleteregistshift: [], //削除登録シフトリスト
+      isNotSaveShift: false, //未登録シフト存在
     }
   }
   deadlineEarly = 10
@@ -99,14 +100,18 @@ class Home extends Component {
       //fetch('/testplandata')
       .then(res => res.json())
       .then(plans => this.setPlans(plans))
+    window.addEventListener('beforeunload', this.beforeUnload)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.beforeUnload)
   }
   render() {
     return (
       <div>
         <div id="personalheader">
-          <Link to="/Setting" id="setting">
+          <span id="setting" onClick={e => this.pushtoSetting()}>
             <div id="settingimg"></div>
-          </Link>
+          </span>
           <a href="/logout">
             <span className="redbutton">ログアウト</span>
           </a>
@@ -162,7 +167,6 @@ class Home extends Component {
             </div>
 
             <Comment
-              //complementdaysText={this.state.complementdaysText}
               receptionDate={this.state.receptionDate}
               addbutton={this.addDataOnClick}
             />
@@ -374,6 +378,12 @@ class Home extends Component {
         }
       }
     }
+    //未保存判定
+    if (!this.state.isNotSaveShift) {
+      this.setState({
+        isNotSaveShift: true,
+      })
+    }
   }
   setPrindDay = date => {
     this.setState({
@@ -422,6 +432,7 @@ class Home extends Component {
   addDataOnClick = async () => {
     this.setState({
       isNowLoading: true,
+      isNotSaveShift: false,
     })
     await new Promise(resolve => setTimeout(resolve, 0))
     this.registMethod()
@@ -526,7 +537,33 @@ class Home extends Component {
     }).then(res => res.json())
   }
   pushtoInfomation = () => {
-    this.props.history.push('/Information')
+    if (this.state.isNotSaveShift) {
+      if (window.confirm('未保存のシフトがありますが移動しますか？')) {
+        this.props.history.push('/Information')
+      }
+    } else {
+      this.props.history.push('/Information')
+    }
+  }
+  pushtoSetting = () => {
+    if (this.state.isNotSaveShift) {
+      if (window.confirm('未保存のシフトがありますが移動しますか？')) {
+        this.props.history.push('/Setting')
+      }
+    } else {
+      this.props.history.push('/Setting')
+    }
+  }
+  //未保存アラート
+  beforeUnload = e => {
+    //未登録shiftがあるか
+    let message = ''
+    if (this.state.isNotSaveShift) {
+      e.preventDefault()
+      message = '未保存のシフトがありますが移動しますか？'
+      e.returnValue = message
+    }
+    return message
   }
 }
 
