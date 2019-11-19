@@ -25,6 +25,7 @@ const config = {
   channelSecret: process.env.SECRET_KEY || 'key',
 }
 const client = new line.Client(config)
+const TestRouter = require('./testrouter')
 
 app.use(
   session({
@@ -846,6 +847,7 @@ app.post('/deleteuser', async (req, res) => {
 })
 
 ////テストルート---------------------------------------------------------------------
+app.use('/test', TestRouter())
 app.post('/testregister', async (req, res) => {
   const name = req.body.username
   const userId = req.session.userId
@@ -874,44 +876,9 @@ app.post('/testregister', async (req, res) => {
     res.send('Error ' + err)
   }
 })
-app.get('/test', async (req, res, next) => {
-  try {
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'SELECT * FROM user_table where userId=$1',
-      ['sampleId'],
-    )
-    const results = { results: result ? result.rows : null }
-    if (result.rowCount == 0) {
-      res.send('no rows')
-    } else {
-      req.session.userId = 'addlister' //results.results[0].userid
-      req.session.displayName = 'LINE名前'
-      req.session.picture = 'sample.jpg'
-      req.session.username = results.results[0].name
-      req.session.worktime = results.results[0].worktime
-      req.session.administer = results.results[0].administer
-      req.session.regist = false
-      req.session.access_token = 'test_token'
-      var data = {
-        userId: req.session.userId,
-        displayName: req.session.displayName,
-        picture: req.session.picture,
-        username: req.session.username,
-        worktime: req.session.worktime,
-        administer: req.session.administer,
-        regist: req.session.regist,
-      }
-      res.json(data)
-    }
-    client.release()
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
 //Home local
 //user
+/*
 app.get('/testuserdata', async (req, res) => {
   try {
     const client = await poollocal.connect()
@@ -1123,6 +1090,7 @@ app.get('/testallshiftdata', async (req, res) => {
     res.send('Error ' + err)
   }
 })
+*/
 //comment
 app.get('/testgetcommentdata', async (req, res) => {
   try {

@@ -87,16 +87,17 @@ class Home extends Component {
   }
   deadlineEarly = 10
   deadlineLate = 24
+  testrouter = '' //'/test'//testroute
   componentDidMount() {
     this.getDateReception()
     //ユーザーデータ取得
-    fetch('/userdata')
-      //fetch('/testuserdata')
+    fetch(this.testrouter + '/userdata')
+      //fetch('/test/userdata')
       .then(res => res.json())
       .then(data => this.setState({ userdata: data }))
     this.loadShiftAndComment()
     //予定データ取得
-    fetch('/plandata')
+    fetch(this.testrouter + '/plandata')
       //fetch('/testplandata')
       .then(res => res.json())
       .then(plans => this.setPlans(plans))
@@ -253,7 +254,7 @@ class Home extends Component {
   */
   loadShiftAndComment = () => {
     //シフトデータ取得
-    fetch('/shiftdata')
+    fetch(this.testrouter + '/shiftdata')
       //fetch('/testshiftdata')
       .then(res => res.json())
       .then(data => this.setdefaultshifts(data))
@@ -484,14 +485,14 @@ class Home extends Component {
     //update
     if (updateshiftdata.length > 0) {
       results.push(
-        this.dbUpdater('/updateshiftdata', updateshiftdata),
+        this.dbUpdater(this.testrouter + '/updateshiftdata', updateshiftdata),
         //this.dbUpdater('/testupdateshiftdata', updateshiftdata),
       )
     }
     //add
     if (newshiftdata.length > 0) {
       results.push(
-        this.dbUpdater('/addshiftdata', newshiftdata),
+        this.dbUpdater(this.testrouter + '/addshiftdata', newshiftdata),
         //this.dbUpdater('/testaddshiftdata', newshiftdata),
       )
     }
@@ -499,7 +500,7 @@ class Home extends Component {
     //delete
     if (deleteshiftdata.length > 0) {
       results.push(
-        this.dbUpdater('/deleteshiftdata', deleteshiftdata),
+        this.dbUpdater(this.testrouter + '/deleteshiftdata', deleteshiftdata),
         //this.dbUpdater('/testdeleteshiftdata', deleteshiftdata),
       )
     }
