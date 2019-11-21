@@ -27,9 +27,9 @@ class Information extends Component {
       selectinfo: [],
     }
   }
+  testroute = ''
   componentDidMount() {
-    fetch('/userdata')
-      //fetch('/testuserdata')
+    fetch(this.testroute + '/userdata')
       .then(res => res.json())
       .then(data => this.setState({ userdata: data }))
     this.fetchInfodata()
@@ -213,8 +213,7 @@ class Information extends Component {
   }
   //infoFetch
   fetchInfodata = () => {
-    fetch('/informationdata')
-      //fetch('/testinformationdata')
+    fetch(this.testroute + '/informationdata')
       .then(res => res.json())
       .then(data => this.setState({ informations: data }))
   }
@@ -253,8 +252,7 @@ class Information extends Component {
         message: this.state.message,
       }
       console.log(data)
-      fetch('/addinformationdata', {
-        //fetch('/testaddinformationdata', {
+      fetch(this.testroute + '/addinformationdata', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -336,8 +334,7 @@ class Information extends Component {
       //変更なし
     } else {
       //更新処理
-      fetch('/updateinformationdata', {
-        //fetch('/testupdateinformationdata', {
+      fetch(this.testroute + '/updateinformationdata', {
         method: 'POST',
         body: JSON.stringify(after),
         headers: {
@@ -357,8 +354,7 @@ class Information extends Component {
   deleteInfo = e => {
     if (window.confirm('削除しますか？')) {
       //削除処理
-      fetch('/deleteinformationdata', {
-        //fetch('/testdeleteinformationdata', {
+      fetch(this.testroute + '/deleteinformationdata', {
         method: 'POST',
         body: JSON.stringify([e.target.value]),
         headers: {

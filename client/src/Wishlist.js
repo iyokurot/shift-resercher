@@ -17,11 +17,11 @@ class Wishlist extends Component {
       printdays: [], //表示する期間
     }
   }
+  testroute = ''
   componentDidMount() {
     //アクセス判定
     //ユーザーデータ取得
-    //fetch('/testuserdata')
-    fetch('/userdata')
+    fetch(this.testroute + '/userdata')
       .then(res => res.json())
       .then(data => {
         if (data.administer) {
@@ -31,22 +31,19 @@ class Wishlist extends Component {
           })
           this.setdefaultDays()
           //全ユーザー取得
-          //fetch('/testmemberlist')
-          fetch('/memberlist')
+          fetch(this.testroute + '/memberlist')
             .then(res => res.json())
             .then(list => {
               this.setState({ memberlist: list })
               //全シフト情報取得
-              //fetch('/testallshiftdata')
-              fetch('/allshiftdata')
+              fetch(this.testroute + '/allshiftdata')
                 .then(res => res.json())
                 .then(data => {
                   this.setState({ allshiftdata: data })
                   this.sortmembershift(list, data, this.state.startdate)
                 })
               //全コメント取得
-              //fetch('/testallcommentdata')
-              fetch('/allcommentdata')
+              fetch(this.testroute + '/allcommentdata')
                 .then(res => res.json())
                 .then(data => {
                   this.setState({

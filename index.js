@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-//const co = require('co');
 const line = require('@line/bot-sdk')
 const request = require('request')
 const path = require('path')
@@ -13,11 +12,6 @@ const { Pool } = require('pg')
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: true,
-})
-//local
-const poollocal = new Pool({
-  connectionString:
-    'postgres://postgres:kayopile@localhost:5432/shift_reserch_test',
 })
 //LINE Bot
 const config = {
@@ -95,69 +89,6 @@ app.get('/userdata', function(req, res) {
     res.json('')
   }
 })
-/*
-app.get('/auth', async (req, res, next) => {
-  const rParams = req.query
-
-  if (rParams.code) {
-    // 認可コード取得のコールバックでここに来る
-    try {
-      const auth = {
-        code: rParams.code,
-        state: rParams.state,
-      }
-      // アクセストークン取得
-      const token = await getToken({
-        uri: 'https://api.line.me/oauth2/v2.1/token',
-        form: {
-          grant_type: 'authorization_code',
-          code: auth.code,
-          redirect_uri: process.env.LINE_LOGIN_CALLBACK_URL,
-          client_id: process.env.LINE_LOGIN_CHANNEL_ID,
-          client_secret: process.env.LINE_LOGIN_CHANNEL_SECRET,
-        },
-        json: true,
-      })
-      req.session.access_token = token.access_token
-      //res.send(token.access_token);
-      //ユーザー
-      const profile = await getProfile({
-        uri: 'https://api.line.me/v2/profile/',
-        headers: {
-          Authorization: 'Bearer ' + token.access_token,
-        },
-        json: true,
-      })
-      //userId,displayName,pictureUrl
-      //登録済みユーザーか確認
-      req.session.userId = profile.userId
-      req.session.displayName = profile.displayName
-      req.session.picture = profile.pictureUrl
-      res.redirect('/regist')
-      //res.json(displayName)
-    } catch (err) {
-      console.log(err)
-    }
-  } else if (rParams.access_token) {
-    // アクセストークン取得後のコールバックでここに来る
-    res.send(rParams)
-  } else {
-    // 初回アクセス時はここに来る
-    const url = 'https://access.line.me/oauth2/v2.1/authorize'
-    const sParams = [
-      'response_type=code',
-      `client_id=${process.env.LINE_LOGIN_CHANNEL_ID}`,
-      `redirect_uri=${process.env.LINE_LOGIN_CALLBACK_URL}`,
-      `state=${RandomMaker()}`,
-      'scope=profile',
-      'nonce=my%20shift-resercher',
-    ]
-
-    // 認証画面へリダイレクト(認可コード取得)
-    res.redirect(`${url}?${sParams.join('&')}`)
-  }
-})
-*/
 app.get('/auths', async (req, res, next) => {
   // 初回アクセス時はここに来る
   const url = 'https://access.line.me/oauth2/v2.1/authorize'
@@ -208,41 +139,6 @@ app.post('/getuser', async (req, res) => {
     console.log(err)
   }
 })
-/*
-//ユーザー登録確認
-app.get('/regist', async (req, res) => {
-  const userId = req.session.userId
-  const displayName = req.session.displayName
-  const picture = req.session.picture
-  try {
-    const client = await pool.connect()
-    const result = await client.query(
-      'SELECT * FROM user_table where userId=$1 limit 1',
-      [userId],
-    )
-    const results = { results: result ? result.rows : null }
-    if (result.rowCount == 0) {
-      //未登録
-      console.log('未登録ユーザー')
-      console.log('displayName : ' + displayName)
-      console.log(userId)
-      req.session.regist = false
-      res.redirect('/Register')
-    } else {
-      //登録ユーザー
-      req.session.username = results.results[0].name
-      req.session.worktime = results.results[0].worktime
-      req.session.administer = results.results[0].administer
-      console.log('userログイン')
-      console.log(req.session.username)
-      res.redirect('/Home')
-    }
-    client.release()
-  } catch (err) {
-    res.send('Error ' + err)
-  }
-})
-*/
 //ユーザー登録確認
 app.get('/regists', async (req, res) => {
   const userId = req.session.userId
@@ -262,6 +158,7 @@ app.get('/regists', async (req, res) => {
       console.log(userId)
       req.session.regist = false
       res.json(['new'])
+      writeLog(client, userId, '未登録ユーザーログイン', displayName)
     } else {
       //登録ユーザー
       req.session.username = results.results[0].name
@@ -269,6 +166,7 @@ app.get('/regists', async (req, res) => {
       req.session.administer = results.results[0].administer
       console.log('userログイン')
       console.log(req.session.username)
+      writeLog(client, userId, 'ユーザーログイン', req.session.username)
       res.json(['user'])
     }
     client.release()
@@ -303,6 +201,7 @@ app.post('/register', async (req, res) => {
       req.session.regist = true
       console.log('new user Regist!')
       res.json('regist')
+      writeLog(client, userId, '新規登録', name)
       client.release()
     } catch (err) {
       console.error(err)
@@ -366,10 +265,10 @@ app.post('/updateusername', async (req, res) => {
         'update user_table set name=$1 where userid=$2',
         [name, req.session.userId],
       )
-
-      client.release()
       req.session.username = name
       res.json('name update')
+      writeLog(client, req.session.userId, 'ユーザー名変更', name)
+      client.release()
     } catch (err) {
       console.error(err)
       res.send('Error ' + err)
@@ -387,9 +286,9 @@ app.post('/updateworktime', async (req, res) => {
         'update user_table set worktime=$1 where userid=$2',
         [worktime, req.session.userId],
       )
-
-      client.release()
       res.json('name update')
+      writeLog(client, req.session.userId, '勤務区分変更', worktime)
+      client.release()
     } catch (err) {
       console.error(err)
       res.send('Error ' + err)
@@ -407,9 +306,9 @@ app.post('/deleteadminister', async (req, res) => {
         'update user_table set administer=$1 where userid=$2',
         ['f', id],
       )
-
-      client.release()
       res.json('delete administer')
+      writeLog(client, req.session.userId, '管理者剥奪', id)
+      client.release()
     } catch (err) {
       console.error(err)
       res.send('Error ' + err)
@@ -427,8 +326,9 @@ app.post('/addadminister', async (req, res) => {
         'update user_table set administer=$1 where userid=$2',
         ['t', id],
       )
-      client.release()
       res.json('add administer')
+      writeLog(client, req.session.userId, '管理者追加', id)
+      client.release()
     } catch (err) {
       console.error(err)
       res.send('Error ' + err)
@@ -471,9 +371,15 @@ app.post('/addshiftdata', async (req, res) => {
           'insert into shift_table (userid,date,detail) values($1,$2,$3)',
           [req.session.userId, data.date, data.text],
         )
+        writeLog(
+          client,
+          req.session.userId,
+          'シフト追加',
+          data.date + ':' + data.text,
+        )
       }
-      client.release()
       res.json('add')
+      client.release()
     } catch (err) {
       console.error(err)
       res.send('Error ' + err)
@@ -492,9 +398,10 @@ app.post('/deleteshiftdata', async (req, res) => {
           'delete from shift_table where date=$1',
           [data.date],
         )
+        writeLog(client, req.session.userId, 'シフト削除', data.date)
       }
-      client.release()
       res.json('delete')
+      client.release()
     } catch (err) {
       console.error(err)
       res.send('Error ' + err)
@@ -513,9 +420,15 @@ app.post('/updateshiftdata', async (req, res) => {
           'update shift_table set detail=$1 where userid=$2 and date=$3',
           [data.text, req.session.userId, data.date],
         )
+        writeLog(
+          client,
+          req.session.userId,
+          'シフト更新',
+          data.date + ':' + data.text,
+        )
       }
-      client.release()
       res.json('update')
+      client.release()
     } catch (err) {
       console.error(err)
       res.send('Error ' + err)
@@ -584,9 +497,19 @@ app.post('/updatecommentdata', async (req, res) => {
             comment[com].date,
           ],
         )
+        writeLog(
+          client,
+          req.session.userId,
+          'コメント更新',
+          comment[com].date +
+            ':' +
+            comment[com].wishday +
+            ':' +
+            comment[com].comment,
+        )
       }
-      client.release()
       res.json('com update')
+      client.release()
     } catch (err) {
       console.error(err)
       res.send('Error ' + err)
@@ -610,9 +533,19 @@ app.post('/addcommentdata', async (req, res) => {
             comment[com].wishday,
           ],
         )
+        writeLog(
+          client,
+          req.session.userId,
+          'コメント追加',
+          comment[com].date +
+            ':' +
+            comment[com].wishday +
+            ':' +
+            comment[com].comment,
+        )
       }
-      client.release()
       res.json(['com add'])
+      client.release()
     } catch (err) {
       console.error(err)
       res.send('Error ' + err)
@@ -686,8 +619,9 @@ app.post('/addinformationdata', async (req, res) => {
       'insert into information_table (title,message,date) values($1,$2,CURRENT_DATE)',
       [info.title, info.message],
     )
-    client.release()
     res.json('com add')
+    writeLog(client, req.session.userId, 'おしらせ追加', info.title)
+    client.release()
   } catch (err) {
     console.error(err)
     res.send('Error ' + err)
@@ -701,8 +635,9 @@ app.post('/deleteinformationdata', async (req, res) => {
       'delete from information_table where id=$1',
       [id],
     )
-    client.release()
     res.json('delete')
+    writeLog(client, req.session.userId, 'おしらせ削除', id)
+    client.release()
   } catch (err) {
     console.error(err)
     res.send('Error ' + err)
@@ -716,8 +651,15 @@ app.post('/updateinformationdata', async (req, res) => {
       'update information_table set title=$1,message=$2  where id=$3',
       [info.title, info.message, info.id],
     )
-    client.release()
+
     res.json('com update')
+    writeLog(
+      client,
+      req.session.userId,
+      'おしらせ更新',
+      info.id + ':' + info.title,
+    )
+    client.release()
   } catch (err) {
     console.error(err)
     res.send('Error ' + err)
@@ -750,8 +692,15 @@ app.post('/addplandata', async (req, res) => {
       'insert into plan_table (text,date) values($1,$2)',
       [plan.text, plan.date],
     )
-    client.release()
+
     res.json('clear')
+    writeLog(
+      client,
+      req.session.userId,
+      '予定追加',
+      plan.date + ':' + plan.text,
+    )
+    client.release()
   } catch (err) {
     console.error(err)
     res.send('Error ' + err)
@@ -765,8 +714,15 @@ app.post('/updateaddplandata', async (req, res) => {
       'update plan_table set text=$1 where date=$2',
       [plan.text, parseInt(plan.date)],
     )
-    client.release()
+
     res.json('clear')
+    writeLog(
+      client,
+      req.session.userId,
+      '予定更新',
+      plan.date + ':' + plan.text,
+    )
+    client.release()
   } catch (err) {
     console.error(err)
     res.send('Error ' + err)
@@ -779,8 +735,9 @@ app.post('/deleteplandata', async (req, res) => {
     const result = await client.query('delete from plan_table where date=$1', [
       parseInt(date),
     ])
-    client.release()
     res.json('clear')
+    writeLog(client, req.session.userId, '予定削除', parseInt(date))
+    client.release()
   } catch (err) {
     console.error(err)
     res.send('Error ' + err)
@@ -805,9 +762,9 @@ app.post('/deletemember', async (req, res) => {
         'delete from user_table where userid=$1',
         [id],
       )
-
-      client.release()
       res.json('delete user')
+      writeLog(client, req.session.userId, 'ユーザー削除', id)
+      client.release()
     } catch (err) {
       console.error(err)
       res.send('Error ' + err)
@@ -834,9 +791,9 @@ app.post('/deleteuser', async (req, res) => {
         'delete from user_table where userid=$1',
         [id],
       )
-
-      client.release()
       res.json('json')
+      writeLog(client, req.session.username, 'ユーザー退会', id)
+      client.release()
     } catch (err) {
       console.error(err)
       res.send('Error ' + err)
@@ -848,524 +805,7 @@ app.post('/deleteuser', async (req, res) => {
 
 ////テストルート---------------------------------------------------------------------
 app.use('/test', TestRouter())
-app.post('/testregister', async (req, res) => {
-  const name = req.body.username
-  const userId = req.session.userId
-  const worktime = req.body.worktime
-  const administer = false
-  const sql = 'INSERT INTO user_table values($1,$2,$3,$4,$5)'
-  try {
-    const client = await poollocal.connect()
-    const countResult = await client.query('select count(*) from user_table')
-    const values = [
-      name,
-      userId,
-      worktime,
-      administer,
-      countResult.rows[0].count,
-    ]
-    const result = await client.query(sql, values)
-    req.session.username = name
-    req.session.worktime = worktime
-    req.session.administer = administer
-    req.session.regist = true
-    res.json('regist')
-    client.release()
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-//Home local
-//user
-/*
-app.get('/testuserdata', async (req, res) => {
-  try {
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'SELECT * FROM user_table where userId=$1',
-      ['sampleId'],
-    )
-    const results = { results: result ? result.rows : null }
-    if (result.rowCount == 0) {
-      res.send('no rows')
-    } else {
-      req.session.userId = results.results[0].userid
-      req.session.displayName = 'LINE名前'
-      req.session.picture = 'sample.jpg'
-      req.session.username = results.results[0].name
-      req.session.worktime = results.results[0].worktime
-      req.session.administer = results.results[0].administer
-      req.session.regist = false
-      req.session.access_token = 'test_token'
-      var data = {
-        userId: req.session.userId,
-        displayName: req.session.displayName,
-        picture: req.session.picture,
-        username: req.session.username,
-        worktime: req.session.worktime,
-        administer: req.session.administer,
-        regist: req.session.regist,
-      }
-      console.log(req.session)
-      res.json(data)
-    }
-    client.release()
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.get('/testmemberlist', async (req, res) => {
-  try {
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'SELECT * FROM user_table order by userno asc',
-    )
-    const results = { results: result ? result.rows : null }
-    if (result.rowCount == 0) {
-      res.send('no rows')
-    } else {
-      res.json(results.results)
-    }
-    client.release()
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testupdateusername', async (req, res) => {
-  try {
-    const name = req.body[0]
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'update user_table set name=$1 where userid=$2',
-      [name, req.session.userId],
-    )
 
-    client.release()
-    res.json('name update')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testupdateworktime', async (req, res) => {
-  try {
-    const worktime = req.body[0]
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'update user_table set worktime=$1 where userid=$2',
-      [worktime, req.session.userId],
-    )
-
-    client.release()
-    res.json('name update')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testdeleteadminister', async (req, res) => {
-  try {
-    const id = req.body[0]
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'update user_table set administer=$1 where userid=$2',
-      ['f', id],
-    )
-
-    client.release()
-    res.json('delete administer')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testaddadminister', async (req, res) => {
-  try {
-    const id = req.body[0]
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'update user_table set administer=$1 where userid=$2',
-      ['t', id],
-    )
-
-    client.release()
-    res.json('add administer')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-//shift
-app.get('/testshiftdata', async (req, res) => {
-  try {
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'SELECT * FROM shift_table where userid=$1',
-      [req.session.userId],
-    )
-    const results = { results: result ? result.rows : null }
-    if (result.rowCount == 0) {
-      res.send('no rows')
-    } else {
-      res.json(results.results)
-    }
-    client.release()
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testaddshiftdata', async (req, res) => {
-  try {
-    const adddata = req.body
-    const client = await poollocal.connect()
-
-    for (let data of adddata) {
-      const result = await client.query(
-        'insert into shift_table (userid,date,detail) values($1,$2,$3)',
-        [req.session.userId, data.date, data.text],
-      )
-    }
-
-    client.release()
-    res.json('add')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-
-app.post('/testdeleteshiftdata', async (req, res) => {
-  try {
-    const deldata = req.body
-    const client = await poollocal.connect()
-    for (let data of deldata) {
-      const result = await client.query(
-        'delete from shift_table where date=$1',
-        [data.date],
-      )
-    }
-
-    client.release()
-    res.json('delete')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testupdateshiftdata', async (req, res) => {
-  try {
-    const deldata = req.body
-    const client = await poollocal.connect()
-    for (let data of deldata) {
-      const result = await client.query(
-        'update shift_table set detail=$1 where userid=$2 and date=$3',
-        [data.text, req.session.userId, data.date],
-      )
-    }
-
-    client.release()
-    res.json('update')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.get('/testallshiftdata', async (req, res) => {
-  try {
-    const client = await poollocal.connect()
-    const result = await client.query('SELECT * FROM shift_table')
-    const results = { results: result ? result.rows : null }
-    if (result.rowCount == 0) {
-      res.send('no rows')
-    } else {
-      res.json(results.results)
-    }
-    client.release()
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-*/
-//comment
-app.get('/testgetcommentdata', async (req, res) => {
-  try {
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'SELECT * FROM comment_table where userid=$1',
-      [req.session.userId],
-    )
-    const results = { results: result ? result.rows : null }
-    if (result.rowCount == 0) {
-      //const create = await client.query('insert into comment_table (userid) values($1)', [req.session.userId]);
-      res.json('')
-    } else {
-      res.json(results.results)
-    }
-    client.release()
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testupdatecommentdata', async (req, res) => {
-  try {
-    const comment = req.body
-    const client = await poollocal.connect()
-    for (const com in comment) {
-      const result = await client.query(
-        'update comment_table set text=$1,wishday=$2  where userid=$3 and date=$4',
-        [
-          comment[com].comment,
-          comment[com].wishday,
-          req.session.userId,
-          comment[com].date,
-        ],
-      )
-    }
-    client.release()
-    res.json('com update')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testaddcommentdata', async (req, res) => {
-  try {
-    const comment = req.body
-    const client = await poollocal.connect()
-    for (const com in comment) {
-      const result = await client.query(
-        'insert into comment_table (userid,date,text,wishday) values($1,$2,$3,$4)',
-        [
-          req.session.userId,
-          comment[com].date,
-          comment[com].comment,
-          comment[com].wishday,
-        ],
-      )
-    }
-    client.release()
-    res.json('com add')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.get('/testallcommentdata', async (req, res) => {
-  try {
-    const client = await poollocal.connect()
-    const result = await client.query('SELECT * FROM comment_table')
-    const results = { results: result ? result.rows : null }
-    if (result.rowCount == 0) {
-      res.send('no')
-    } else {
-      res.json(results.results)
-    }
-    client.release()
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-//information
-app.get('/testinformationdata', async (req, res) => {
-  try {
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'SELECT * FROM information_table order by date desc',
-    )
-    const results = { results: result ? result.rows : null }
-    if (result.rowCount == 0) {
-      res.json([])
-    } else {
-      res.json(results.results)
-    }
-    client.release()
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.get('/testinformationdatathree', async (req, res) => {
-  try {
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'SELECT * FROM information_table order by date desc limit 3',
-    )
-    const results = { results: result ? result.rows : null }
-    if (result.rowCount == 0) {
-      res.json([])
-    } else {
-      res.json(results.results)
-    }
-    client.release()
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testaddinformationdata', async (req, res) => {
-  try {
-    const info = req.body
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'insert into information_table (title,message,date) values($1,$2,CURRENT_DATE)',
-      [info.title, info.message],
-    )
-    client.release()
-    res.json('com add')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testdeleteinformationdata', async (req, res) => {
-  try {
-    const id = parseInt(req.body)
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'delete from information_table where id=$1',
-      [id],
-    )
-    client.release()
-    res.json('delete')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testupdateinformationdata', async (req, res) => {
-  try {
-    const info = req.body
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'update information_table set title=$1,message=$2  where id=$3',
-      [info.title, info.message, info.id],
-    )
-    client.release()
-    res.json('com update')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-//plan
-app.get('/testplandata', async (req, res) => {
-  try {
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'SELECT * FROM plan_table order by date desc',
-    )
-    const results = { results: result ? result.rows : null }
-    if (result.rowCount == 0) {
-      res.json([])
-    } else {
-      res.json(results.results)
-    }
-    client.release()
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testaddplandata', async (req, res) => {
-  try {
-    const plan = req.body
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'insert into plan_table (text,date) values($1,$2)',
-      [plan.text, plan.date],
-    )
-    client.release()
-    res.json('clear')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testupdateaddplandata', async (req, res) => {
-  try {
-    const plan = req.body
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'update plan_table set text=$1 where date=$2',
-      [plan.text, parseInt(plan.date)],
-    )
-    client.release()
-    res.json('clear')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testdeleteplandata', async (req, res) => {
-  try {
-    const date = req.body
-    const client = await poollocal.connect()
-    const result = await client.query('delete from plan_table where date=$1', [
-      parseInt(date),
-    ])
-    client.release()
-    res.json('clear')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-//all
-app.post('/testdeletemember', async (req, res) => {
-  try {
-    const id = req.body[0]
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'delete from shift_table where userid=$1',
-      [id],
-    )
-    const result1 = await client.query(
-      'delete from comment_table where userid=$1',
-      [id],
-    )
-    const result2 = await client.query(
-      'delete from user_table where userid=$1',
-      [id],
-    )
-
-    client.release()
-    res.json('delete user')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
-app.post('/testdeleteuser', async (req, res) => {
-  try {
-    const id = req.session.userId
-    const client = await poollocal.connect()
-    const result = await client.query(
-      'delete from shift_table where userid=$1',
-      [id],
-    )
-    const result1 = await client.query(
-      'delete from comment_table where userid=$1',
-      [id],
-    )
-    const result2 = await client.query(
-      'delete from user_table where userid=$1',
-      [id],
-    )
-
-    client.release()
-    res.json('json')
-  } catch (err) {
-    console.error(err)
-    res.send('Error ' + err)
-  }
-})
 ///テストルート終了---------------------------------------
 
 //react
@@ -1436,4 +876,16 @@ async function echoman(ev) {
   });
   */
   return
+}
+//LogDB書き込み
+writeLog = async (client, userid, key, detail) => {
+  try {
+    const result = await client.query(
+      'insert into log_table (date,userid,key,detail)values(current_date,$1,$2,$3)',
+      [userid, key, detail],
+    )
+    const results = { results: result ? result.rows : null }
+  } catch (err) {
+    console.error(err)
+  }
 }

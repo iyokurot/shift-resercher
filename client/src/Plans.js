@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import SimpleDatePicker from './PlanDatePicker'
+import Calender from './Calender'
+import { GetFormatDate } from './DateHandler'
 const customStyles = {
   content: {
     top: '50%',
@@ -23,9 +25,10 @@ const Plans = props => {
   const [isOpenModal, setOpenModal] = useState(false)
   const [changePlandate, setChangePlandate] = useState('')
   const [changePlantext, setChangePlantext] = useState('')
+  const [printDate, setPrintdate] = useState(new Date('2019', '11', '01'))
+  const testroute = ''
   useEffect(() => {
-    fetch('userdata')
-      //fetch('testuserdata')
+    fetch(testroute + '/userdata')
       .then(res => res.json())
       .then(data => {
         if (data.administer) {
@@ -39,8 +42,7 @@ const Plans = props => {
       })
   }, [])
   const loadPlans = () => {
-    fetch('plandata')
-      //fetch('testplandata')
+    fetch(testroute + '/plandata')
       .then(res => res.json())
       .then(data => setPlans(data))
   }
@@ -61,7 +63,7 @@ const Plans = props => {
       alert('予定を入力してください')
       return
     }
-    const adddate = getFormatDate(selectdate)
+    const adddate = GetFormatDate(selectdate)
     const data = {
       text: addplanText,
       date: adddate,
@@ -78,8 +80,7 @@ const Plans = props => {
         )
       ) {
         //上書き
-        fetch('/updateaddplandata', {
-          //fetch('/testupdateaddplandata', {
+        fetch(testroute + '/updateaddplandata', {
           method: 'POST',
           body: JSON.stringify(data),
           headers: {
@@ -97,8 +98,7 @@ const Plans = props => {
     }
     //追加処理
     //追加fetch
-    fetch('/addplandata', {
-      //fetch('/testaddplandata', {
+    fetch(testroute + '/addplandata', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -115,8 +115,7 @@ const Plans = props => {
   const onClickDeletePlan = date => {
     if (window.confirm('削除しますか？\n予定：「' + plans[date].text + '」')) {
       //削除
-      fetch('/deleteplandata', {
-        //fetch('/testdeleteplandata', {
+      fetch(testroute + '/deleteplandata', {
         method: 'POST',
         body: JSON.stringify([date]),
         headers: {
@@ -129,12 +128,6 @@ const Plans = props => {
           loadPlans()
         })
     }
-  }
-  //yyyyMMdd
-  const getFormatDate = date => {
-    return `${date.getFullYear()}${('0' + (date.getMonth() + 1)).slice(-2)}${(
-      '0' + date.getDate()
-    ).slice(-2)}`
   }
   const openModal = date => {
     setOpenModal(true)
@@ -157,8 +150,7 @@ const Plans = props => {
       date: changePlandate,
     }
     //更新Fetch
-    fetch('/updateaddplandata', {
-      //fetch('/testupdateaddplandata', {
+    fetch(testroute + '/updateaddplandata', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -180,7 +172,10 @@ const Plans = props => {
         <span id="namesubtitle">各日付につき１件のみ</span>
         <div>
           日付
-          <SimpleDatePicker onChange={date => setSelectDate(date)} />
+          <SimpleDatePicker
+            onChange={date => setSelectDate(date)}
+            selectdate={selectdate}
+          />
         </div>
         <div>
           <input
@@ -238,6 +233,15 @@ const Plans = props => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div>
+        <Calender
+          receptionDate={printDate}
+          plans={plans}
+          shifts={[]}
+          onChange={value => {}}
+          setPrintdate={value => setPrintdate(value)}
+        />
       </div>
       <Modal
         isOpen={isOpenModal}

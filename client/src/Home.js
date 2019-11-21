@@ -1,9 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-//import Calendar from 'react-calendar'
 import Modal from 'react-modal'
-//import { withStyles } from '@material-ui/core/styles'
-//import TextField from '@material-ui/core/TextField'
 import Information from './HomeInformation'
 import NewCalender from './Calender'
 import Comment from './HomeComment'
@@ -75,7 +71,7 @@ class Home extends Component {
       //nowprintcommentday: '',
       modalIsOpen: false, //モーダル判定
       isUpdateshift: [], //シフト更新
-      informations: [], //おしらせ3件
+      //informations: [], //おしらせ3件
       isNowLoading: true, //読み込み中(シフト)
       plans: [], //予定リスト
       registModal: false, //登録後モーダル
@@ -87,18 +83,16 @@ class Home extends Component {
   }
   deadlineEarly = 10
   deadlineLate = 24
-  testrouter = '' //'/test'//testroute
+  testrouter = '' //testroute
   componentDidMount() {
     this.getDateReception()
     //ユーザーデータ取得
     fetch(this.testrouter + '/userdata')
-      //fetch('/test/userdata')
       .then(res => res.json())
       .then(data => this.setState({ userdata: data }))
     this.loadShiftAndComment()
     //予定データ取得
     fetch(this.testrouter + '/plandata')
-      //fetch('/testplandata')
       .then(res => res.json())
       .then(plans => this.setPlans(plans))
     window.addEventListener('beforeunload', this.beforeUnload)
@@ -255,7 +249,6 @@ class Home extends Component {
   loadShiftAndComment = () => {
     //シフトデータ取得
     fetch(this.testrouter + '/shiftdata')
-      //fetch('/testshiftdata')
       .then(res => res.json())
       .then(data => this.setdefaultshifts(data))
   }
@@ -486,14 +479,12 @@ class Home extends Component {
     if (updateshiftdata.length > 0) {
       results.push(
         this.dbUpdater(this.testrouter + '/updateshiftdata', updateshiftdata),
-        //this.dbUpdater('/testupdateshiftdata', updateshiftdata),
       )
     }
     //add
     if (newshiftdata.length > 0) {
       results.push(
         this.dbUpdater(this.testrouter + '/addshiftdata', newshiftdata),
-        //this.dbUpdater('/testaddshiftdata', newshiftdata),
       )
     }
 
@@ -501,7 +492,6 @@ class Home extends Component {
     if (deleteshiftdata.length > 0) {
       results.push(
         this.dbUpdater(this.testrouter + '/deleteshiftdata', deleteshiftdata),
-        //this.dbUpdater('/testdeleteshiftdata', deleteshiftdata),
       )
     }
 

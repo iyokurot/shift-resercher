@@ -7,10 +7,10 @@ export default class HomeInformation extends Component {
       informations: [],
     }
   }
+  testrouter = ''
   componentDidMount() {
     //お知らせ３件取得
-    fetch('/informationdatathree')
-      //fetch('/testinformationdatathree')
+    fetch(this.testrouter + '/informationdatathree')
       .then(res => res.json())
       .then(data => this.setState({ informations: data }))
   }

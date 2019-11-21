@@ -46,10 +46,10 @@ class Setting extends Component {
       isNowloading: true, //読み込み中
     }
   }
+  testroute = ''
   componentDidMount() {
     //ユーザーデータ取得
-    //fetch('/testuserdata')
-    fetch('/userdata')
+    fetch(this.testroute + '/userdata')
       .then(res => res.json())
       .then(data => {
         this.isNowloading(data)
@@ -65,8 +65,7 @@ class Setting extends Component {
       })
   }
   loadmemberlist = () => {
-    //fetch('/testmemberlist')
-    fetch('/memberlist')
+    fetch(this.testroute + '/memberlist')
       .then(res => res.json())
       .then(list => {
         this.setState({ memberlist: list })
@@ -93,10 +92,10 @@ class Setting extends Component {
         {this.state.isNowloading ? (
           <div className="loading">
             <span className="loadingtext">Loading...</span>
-            <div class="orbit-spinner">
-              <div class="orbit"></div>
-              <div class="orbit"></div>
-              <div class="orbit"></div>
+            <div className="orbit-spinner">
+              <div className="orbit"></div>
+              <div className="orbit"></div>
+              <div className="orbit"></div>
             </div>
           </div>
         ) : (
@@ -180,10 +179,11 @@ class Setting extends Component {
               <a
                 href="https://docs.google.com/presentation/d/1d4WBzpo-So3vK8kw5eVjB_fQ_LBcnjHPEuaHL-7Q_1g/edit?usp=sharing"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 <span className="outlinkButton">
                   使い方
-                  <img src={shareIcon} id="shareIcon" />
+                  <img src={shareIcon} id="shareIcon" alt="使い方アイコン" />
                 </span>
                 <p id="sharesubtitle">＊外部ページが開きます</p>
               </a>
@@ -355,8 +355,7 @@ class Setting extends Component {
         alert('ユーザー名は10文字以内で入力してください')
       } else {
         //更新fetch
-        //fetch('/testupdateusername', {
-        fetch('/updateusername', {
+        fetch(this.testroute + '/updateusername', {
           method: 'POST',
           body: JSON.stringify([this.state.username]),
           headers: {
@@ -386,8 +385,7 @@ class Setting extends Component {
   setworktime = () => {
     if (this.state.userdata.worktime !== this.state.worktime) {
       //更新fetch
-      //fetch('/testupdateworktime', {
-      fetch('/updateworktime', {
+      fetch(this.testroute + '/updateworktime', {
         method: 'POST',
         body: JSON.stringify([this.state.worktime]),
         headers: {
@@ -409,8 +407,7 @@ class Setting extends Component {
   onClickunsubsribe = () => {
     //退会確認
     if (window.confirm('退会しますか？\n全ユーザーデータが削除されます')) {
-      //fetch('/testdeleteuser', {
-      fetch('/deleteuser', {
+      fetch(this.testroute + '/deleteuser', {
         method: 'POST',
         //body: "sub",
         headers: {
@@ -450,8 +447,7 @@ class Setting extends Component {
       )
     ) {
       //削除処理
-      //fetch('/testdeletemember', {
-      fetch('/deletemember', {
+      fetch(this.testroute + '/deletemember', {
         method: 'POST',
         body: JSON.stringify([member.userid]),
         headers: {
@@ -472,8 +468,7 @@ class Setting extends Component {
   onClickdeleteadminister = member => {
     if (window.confirm(member.name + 'の管理者権限を剥奪しますか？')) {
       //解除処理
-      //fetch('/testdeleteadminister', {
-      fetch('/deleteadminister', {
+      fetch(this.testroute + '/deleteadminister', {
         method: 'POST',
         body: JSON.stringify([member.userid]),
         headers: {
@@ -511,8 +506,7 @@ class Setting extends Component {
     const member = this.state.addministeroption
     if (window.confirm(member.name + 'に管理者権限を授与しますか？')) {
       //管理者登録処理
-      //fetch('/testaddadminister', {
-      fetch('/addadminister', {
+      fetch(this.testroute + '/addadminister', {
         method: 'POST',
         body: JSON.stringify([member.userid]),
         headers: {

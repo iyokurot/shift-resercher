@@ -24,11 +24,10 @@ const HomeComment = props => {
   const [comments, setComments] = useState([])
   const [nowprintcommentday, setNowprintcommentday] = useState('')
   const [complementdaysText, setComplementdaysText] = useState('')
+  const testrouter = ''
   useEffect(() => {
-    //setRecepdate(props.receptionDate)
     //コメントデータ取得
-    fetch('/getcommentdata')
-      //fetch('/testgetcommentdata')
+    fetch(testrouter + '/getcommentdata')
       .then(res => res.json())
       .then(data => setdefaultcomment(data))
   }, [])
@@ -185,8 +184,7 @@ const HomeComment = props => {
 
     if (updatecommentdata.length > 0) {
       results.push(
-        fetch('/updatecommentdata', {
-          //fetch('/testupdatecommentdata', {
+        fetch(testrouter + '/updatecommentdata', {
           method: 'POST',
           body: JSON.stringify(updatecommentdata),
           headers: {
@@ -198,8 +196,7 @@ const HomeComment = props => {
     }
     if (addcommentdata.length > 0) {
       results.push(
-        fetch('/addcommentdata', {
-          //fetch('/testaddcommentdata', {
+        fetch(testrouter + '/addcommentdata', {
           method: 'POST',
           body: JSON.stringify(addcommentdata),
           headers: {
