@@ -62,11 +62,11 @@ const Log = props => {
   //detailのFont
   const detailFont = (key, detail) => {
     if (key.search(/ログイン/) !== -1) {
-      return 'logtable-td-login'
+      return 'logtable-td-login-detail'
     } else if (key.search(/削除|剥奪|退会/) !== -1) {
-      return 'logtable-td-delete'
+      return 'logtable-td-delete-detail'
     } else if (key.search(/変更|更新/) !== -1) {
-      return 'logtable-td-update'
+      return 'logtable-td-update-detail'
     } else return 'logtable-td-detail'
   }
   return (

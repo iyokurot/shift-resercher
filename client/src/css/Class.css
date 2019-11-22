@@ -465,9 +465,22 @@
 .logtable-td-login {
   color: #38a5ff;
 }
+.logtable-td-delete-detail {
+  color: #fd3535;
+  text-align: left;
+}
+.logtable-td-update-detail {
+  color: #d1ce2f;
+  text-align: left;
+}
+.logtable-td-login-detail {
+  color: #38a5ff;
+  text-align: left;
+}
 .logtable-td-detail {
   width: max-content;
   min-width: 125px;
+  text-align: left;
   color: #2dca61;
 }
 /*Loadincss*/
