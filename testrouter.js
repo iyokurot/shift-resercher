@@ -191,7 +191,7 @@ module.exports = function() {
           client,
           req.session.userId,
           'シフト追加',
-          data.date + ':' + data.text,
+          data.date + '[' + data.text + ']',
         )
       }
 
@@ -235,7 +235,7 @@ module.exports = function() {
           client,
           req.session.userId,
           'シフト更新',
-          data.date + ':' + data.text,
+          data.date + '[' + data.text + ']',
         )
       }
 
@@ -302,10 +302,11 @@ module.exports = function() {
           req.session.userId,
           'コメント更新',
           comment[com].date +
-            ':' +
+            '~日数[' +
             comment[com].wishday +
-            ':' +
-            comment[com].comment,
+            ']希望[' +
+            comment[com].comment +
+            ']',
         )
       }
       client.release()
@@ -334,10 +335,11 @@ module.exports = function() {
           req.session.userId,
           'コメント追加',
           comment[com].date +
-            ':' +
+            '~日数[' +
             comment[com].wishday +
-            ':' +
-            comment[com].comment,
+            ']希望[' +
+            comment[com].comment +
+            ']',
         )
       }
       client.release()
@@ -448,7 +450,7 @@ module.exports = function() {
         client,
         req.session.userId,
         'おしらせ更新',
-        info.id + ':' + info.title,
+        info.id + '[' + info.title + ']',
       )
       client.release()
     } catch (err) {
@@ -489,7 +491,7 @@ module.exports = function() {
         client,
         req.session.userId,
         '予定追加',
-        plan.date + ':' + plan.text,
+        plan.date + '[' + plan.text + ']',
       )
       client.release()
     } catch (err) {
@@ -511,7 +513,7 @@ module.exports = function() {
         client,
         req.session.userId,
         '予定更新',
-        plan.date + ':' + plan.text,
+        plan.date + '[' + plan.text + ']',
       )
       client.release()
     } catch (err) {
@@ -530,6 +532,25 @@ module.exports = function() {
 
       res.json('clear')
       writeLog(client, req.session.userId, '予定削除', parseInt(date))
+      client.release()
+    } catch (err) {
+      console.error(err)
+      res.send('Error ' + err)
+    }
+  })
+  //Logs
+  router.get('/getlogdata', async (req, res) => {
+    try {
+      const client = await poollocal.connect()
+      const result = await client.query(
+        'SELECT * FROM log_table order by id desc',
+      )
+      const results = { results: result ? result.rows : null }
+      if (result.rowCount == 0) {
+        res.json([])
+      } else {
+        res.json(results.results)
+      }
       client.release()
     } catch (err) {
       console.error(err)
@@ -579,7 +600,7 @@ module.exports = function() {
         [id],
       )
       res.json('json')
-      writeLog(client, req.session.username, 'ユーザー削除', id)
+      writeLog(client, id, 'ユーザー削除', req.session.username)
       client.release()
     } catch (err) {
       console.error(err)
@@ -599,4 +620,3 @@ module.exports = function() {
   }
   return router
 }
-//module.exports = TestRouter

@@ -216,6 +216,14 @@ class Setting extends Component {
               </button>
               <br />
               <button
+                onClick={this.pushtoLogs}
+                className="administerbutton"
+                style={{ width: '250px' }}
+              >
+                ユーザーログ
+              </button>
+              <br />
+              <button
                 onClick={this.openmemberModal}
                 className="administerbutton"
               >
@@ -430,6 +438,10 @@ class Setting extends Component {
   //予定画面へ
   pushtoPlan = () => {
     this.props.history.push('/Plans')
+  }
+  //ログ画面へ
+  pushtoLogs = () => {
+    this.props.history.push('/Log')
   }
 
   openmemberModal = () => {

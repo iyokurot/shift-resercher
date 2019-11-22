@@ -406,7 +406,70 @@
 .plantable tbody td {
   border-right: dashed 1px gray;
 }
-
+/*Log*/
+.black-background {
+  background-color: #000000;
+}
+.logtitle {
+  color: #ffffff;
+  padding-top: 10px;
+  font-size: 18px;
+}
+.logtable {
+  background-color: #000000;
+  border-collapse: collapse;
+  box-shadow: 0 0 5px gray;
+  width: 90%;
+  min-width: 360px;
+  height: 450px;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  display: inline-block;
+  font-size: 12px;
+  margin-bottom: 30px;
+}
+.logtable thead,
+.logtable tbody {
+  display: block;
+  width: max-content;
+}
+.logtable thead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  background: #000000;
+  color: #2dca61;
+  border-bottom: solid 1px #2dca61;
+}
+.logtable-td-date {
+  width: 65px;
+  color: #2dca61;
+  padding: 3px 0;
+}
+.logtable-td-user {
+  width: 80px;
+  color: #2dca61;
+}
+.logtable-td-key {
+  width: 100px;
+  color: #2dca61;
+  overflow: hidden;
+}
+.logtable-td-delete {
+  color: #fd3535;
+}
+.logtable-td-update {
+  color: #d1ce2f;
+}
+.logtable-td-login {
+  color: #38a5ff;
+}
+.logtable-td-detail {
+  width: max-content;
+  min-width: 125px;
+  color: #2dca61;
+}
 /*Loadincss*/
 .loading {
   display: flex;

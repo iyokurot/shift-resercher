@@ -375,7 +375,7 @@ app.post('/addshiftdata', async (req, res) => {
           client,
           req.session.userId,
           'シフト追加',
-          data.date + ':' + data.text,
+          data.date + '[' + data.text + ']',
         )
       }
       res.json('add')
@@ -424,7 +424,7 @@ app.post('/updateshiftdata', async (req, res) => {
           client,
           req.session.userId,
           'シフト更新',
-          data.date + ':' + data.text,
+          data.date + '[' + data.text + ']',
         )
       }
       res.json('update')
@@ -502,10 +502,11 @@ app.post('/updatecommentdata', async (req, res) => {
           req.session.userId,
           'コメント更新',
           comment[com].date +
-            ':' +
+            '~日数[' +
             comment[com].wishday +
-            ':' +
-            comment[com].comment,
+            ']希望[' +
+            comment[com].comment +
+            ']',
         )
       }
       res.json('com update')
@@ -538,10 +539,11 @@ app.post('/addcommentdata', async (req, res) => {
           req.session.userId,
           'コメント追加',
           comment[com].date +
-            ':' +
+            '~日数[' +
             comment[com].wishday +
-            ':' +
-            comment[com].comment,
+            ']希望[' +
+            comment[com].comment +
+            ']',
         )
       }
       res.json(['com add'])
@@ -657,7 +659,7 @@ app.post('/updateinformationdata', async (req, res) => {
       client,
       req.session.userId,
       'おしらせ更新',
-      info.id + ':' + info.title,
+      info.id + '[' + info.title + ']',
     )
     client.release()
   } catch (err) {
@@ -698,7 +700,7 @@ app.post('/addplandata', async (req, res) => {
       client,
       req.session.userId,
       '予定追加',
-      plan.date + ':' + plan.text,
+      plan.date + '[' + plan.text + ']',
     )
     client.release()
   } catch (err) {
@@ -720,7 +722,7 @@ app.post('/updateaddplandata', async (req, res) => {
       client,
       req.session.userId,
       '予定更新',
-      plan.date + ':' + plan.text,
+      plan.date + '[' + plan.text + ']',
     )
     client.release()
   } catch (err) {
@@ -737,6 +739,25 @@ app.post('/deleteplandata', async (req, res) => {
     ])
     res.json('clear')
     writeLog(client, req.session.userId, '予定削除', parseInt(date))
+    client.release()
+  } catch (err) {
+    console.error(err)
+    res.send('Error ' + err)
+  }
+})
+//Logs
+app.get('/getlogdata', async (req, res) => {
+  try {
+    const client = await pool.connect()
+    const result = await client.query(
+      'SELECT * FROM log_table order by id desc',
+    )
+    const results = { results: result ? result.rows : null }
+    if (result.rowCount == 0) {
+      res.json([])
+    } else {
+      res.json(results.results)
+    }
     client.release()
   } catch (err) {
     console.error(err)
@@ -792,7 +813,7 @@ app.post('/deleteuser', async (req, res) => {
         [id],
       )
       res.json('json')
-      writeLog(client, req.session.username, 'ユーザー退会', id)
+      writeLog(client, id, 'ユーザー退会', req.session.username)
       client.release()
     } catch (err) {
       console.error(err)
