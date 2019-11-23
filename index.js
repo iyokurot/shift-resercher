@@ -26,14 +26,14 @@ app.use(
     secret: 'keyboard cat',
     resave: true,
     saveUninitialized: false,
-
+    /*
     store: new RedisStore({
       urll: process.env.REDIS_URL,
       client: redis.createClient({
         url: process.env.REDIS_URL,
       }),
     }),
-
+*/
     cookie: {
       maxAge: null,
       secure: false,

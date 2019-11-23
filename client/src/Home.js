@@ -495,6 +495,7 @@ class Home extends Component {
       )
     }
 
+    await Promise.all(results)
     //登録確認モーダル
     this.setState({
       registModal: true,
@@ -502,7 +503,7 @@ class Home extends Component {
 
     //非同期処理後、Reload
     //const start = performance.now()
-    await Promise.all(results)
+
     //const end = performance.now()
     //console.log(end - start)
     await new Promise(resolve => setTimeout(resolve, 500))
