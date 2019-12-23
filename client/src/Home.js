@@ -309,7 +309,12 @@ class Home extends Component {
       }
       //締め切り
       receptionday = month + 1 + '/1～' + (month + 1) + '/15'
-      deadline = month + '/24まで(' + receptionday + ')'
+      if (month === 0) {
+        deadline = '12/24まで(' + receptionday + ')'
+      } else {
+        deadline = month + '/24まで(' + receptionday + ')'
+      }
+
       //来月1～15まで
       setday = year + '/' + (month + 1) + '/1'
     }

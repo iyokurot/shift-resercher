@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import NewCalender from './Calender'
 import request from 'superagent'
-export default class Test extends Component {
+import { ThemeContext } from './components/Themes'
+class Test extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -60,3 +61,46 @@ export default class Test extends Component {
     )
   }
 }
+function TestPage(props) {
+  const { state, dispatch } = React.useContext(ThemeContext)
+  React.useEffect(() => {
+    document.body.style.backgroundColor = state.color.back
+    document.body.style.color = state.color.text
+  }, [state.color])
+  const resetColor = () =>
+    dispatch({
+      type: 'reset-color',
+    })
+
+  // "chnage-color"をdispatchしてテーマ変更を行うハンドラ関数
+  // payloadには変更する値が入る
+  const setColor = color => () =>
+    dispatch({
+      type: 'change-color',
+      payload: {
+        color: { name: color.name, back: color.back },
+      },
+    })
+  return (
+    <div>
+      <h1>TestPage</h1>
+      <p>現在の情報</p>
+      <ul>
+        <li>テーマ名: {state.color.name}</li>
+        <li>文字色: {state.color.text}</li>
+        <li>背景色: {state.color.back}</li>
+      </ul>
+      <button
+        onClick={setColor({
+          name: 'Dark',
+          text: '#ffffff',
+          back: '#000000',
+        })}
+      >
+        変更
+      </button>
+      <button onClick={resetColor}>初期テーマにリセット</button>
+    </div>
+  )
+}
+export default TestPage
