@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import NewCalender from './Calender'
 import request from 'superagent'
-import { ThemeContext } from './components/Themes'
+import { UserContext } from './components/User'
 class Test extends Component {
   constructor(props) {
     super(props)
@@ -62,23 +62,22 @@ class Test extends Component {
   }
 }
 function TestPage(props) {
-  const { state, dispatch } = React.useContext(ThemeContext)
+  const { state, dispatch } = React.useContext(UserContext)
   React.useEffect(() => {
-    document.body.style.backgroundColor = state.color.back
-    document.body.style.color = state.color.text
-  }, [state.color])
+    //
+  }, [state.user])
   const resetColor = () =>
     dispatch({
-      type: 'reset-color',
+      type: 'reset-user',
     })
 
   // "chnage-color"をdispatchしてテーマ変更を行うハンドラ関数
   // payloadには変更する値が入る
   const setColor = color => () =>
     dispatch({
-      type: 'change-color',
+      type: 'set-user',
       payload: {
-        color: { name: color.name, back: color.back },
+        user: { username: 'name', userId: 'sampleId', picture: 'http://' },
       },
     })
   return (
@@ -86,9 +85,9 @@ function TestPage(props) {
       <h1>TestPage</h1>
       <p>現在の情報</p>
       <ul>
-        <li>テーマ名: {state.color.name}</li>
-        <li>文字色: {state.color.text}</li>
-        <li>背景色: {state.color.back}</li>
+        <li>テーマ名: {state.user.username}</li>
+        <li>文字色: {state.user.userId}</li>
+        <li>背景色: {state.user.picture}</li>
       </ul>
       <button
         onClick={setColor({

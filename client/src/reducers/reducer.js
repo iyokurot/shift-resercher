@@ -1,11 +1,11 @@
-import { initialState } from '../components/Themes'
+import { initialState } from '../components/User'
 
 // reducer関数
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'change-color':
+    case 'set-user':
       return { ...state, ...action.payload }
-    case 'reset-color':
+    case 'reset-user':
       return initialState
     default:
       return state

@@ -65,10 +65,10 @@ class Wishlist extends Component {
         {this.state.nowloading ? (
           <div className="loading">
             <span className="loadingtext">Loading...</span>
-            <div class="orbit-spinner">
-              <div class="orbit"></div>
-              <div class="orbit"></div>
-              <div class="orbit"></div>
+            <div className="orbit-spinner">
+              <div className="orbit"></div>
+              <div className="orbit"></div>
+              <div className="orbit"></div>
             </div>
           </div>
         ) : (
@@ -157,7 +157,7 @@ class Wishlist extends Component {
       startdate = new Date(year, month, 16)
     } else if (day >= this.state.deallinelate) {
       if (month === 11) {
-        startdate = new Date(year + 1, month + 1, 1)
+        startdate = new Date(year, month + 1, 1)
       } else {
         startdate = new Date(year, month + 1, 1)
       }
@@ -262,6 +262,7 @@ class Wishlist extends Component {
     for (const member of members) {
       const myshift = shiftlist.slice()
       myshift.fill('/')
+
       for (const shift of shifts) {
         if (shift.userid === member.userid) {
           const sd = String(shift.date)
@@ -277,6 +278,7 @@ class Wishlist extends Component {
             //表示する情報
             if (shift.detail !== '') {
               //nullデータでない
+
               myshift[shiftday - printdate.getDate()] = shift.detail
             }
           }
@@ -287,7 +289,6 @@ class Wishlist extends Component {
         shift: myshift,
       })
     }
-
     this.setState({
       printlist: membertoshift,
     })
