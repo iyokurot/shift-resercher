@@ -82,7 +82,7 @@ class Home extends Component {
     }
   }
   deadlineEarly = 10
-  deadlineLate = 24
+  deadlineLate = 25
   testrouter = '' //testroute
   componentDidMount() {
     this.getDateReception()
