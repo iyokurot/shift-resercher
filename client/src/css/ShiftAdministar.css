@@ -4,3 +4,18 @@
   font-size: 18px;
   margin: 10px 0px;
 }
+#explain {
+  border: solid 2px #c5b8dd;
+  border-radius: 5px;
+  margin: 5px;
+  background-color: #130331;
+  color: #c5b8dd;
+}
+#userselect {
+  border: solid 1px #130331;
+  margin: 2px;
+  padding: 3px;
+  font-size: 18px;
+  color: #130331;
+  background-color: #c5b8dd;
+}
