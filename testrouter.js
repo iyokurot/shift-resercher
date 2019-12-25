@@ -177,6 +177,27 @@ module.exports = function() {
       res.send('Error ' + err)
     }
   })
+  router.post('/shiftdatabyid', async (req, res) => {
+    try {
+      const id = req.body[0]
+      const client = await poollocal.connect()
+
+      const result = await client.query(
+        'select * from shift_table where userid=$1',
+        [id],
+      )
+      const results = { results: result ? result.rows : null }
+      if (result.rowCount == 0) {
+        res.send([])
+      } else {
+        res.json(results.results)
+      }
+      client.release()
+    } catch (err) {
+      console.error(err)
+      res.send('Error ' + err)
+    }
+  })
   router.post('/addshiftdata', async (req, res) => {
     try {
       const adddata = req.body
@@ -202,17 +223,62 @@ module.exports = function() {
       res.send('Error ' + err)
     }
   })
-
+  router.post('/addshiftdatabyid', async (req, res) => {
+    try {
+      const data = req.body
+      const id = data.id
+      const shifts = data.shift
+      const client = await poollocal.connect()
+      for (let shift of shifts) {
+        const result = await client.query(
+          'insert into shift_table (userid,date,detail) values($1,$2,$3)',
+          [id, shift.date, shift.text],
+        )
+        writeLog(
+          client,
+          id,
+          '管理者によるシフト追加',
+          shift.date + '[' + shift.text + ']',
+        )
+      }
+      client.release()
+      res.json('add')
+    } catch (err) {
+      console.error(err)
+      res.send('Error ' + err)
+    }
+  })
   router.post('/deleteshiftdata', async (req, res) => {
     try {
       const deldata = req.body
       const client = await poollocal.connect()
       for (let data of deldata) {
         const result = await client.query(
-          'delete from shift_table where date=$1',
-          [data.date],
+          'delete from shift_table where date=$1 and userid=$2',
+          [data.date, req.session.userId],
         )
         writeLog(client, req.session.userId, 'シフト削除', data.date)
+      }
+
+      client.release()
+      res.json('delete')
+    } catch (err) {
+      console.error(err)
+      res.send('Error ' + err)
+    }
+  })
+  router.post('/deleteshiftdatabyid', async (req, res) => {
+    try {
+      const data = req.body
+      const id = data.id
+      const shifts = data.shift
+      const client = await poollocal.connect()
+      for (let shift of shifts) {
+        const result = await client.query(
+          'delete from shift_table where date=$1 and userid=$2',
+          [shift.date, id],
+        )
+        writeLog(client, id, '管理者によるシフト削除', shift.date)
       }
 
       client.release()
@@ -236,6 +302,32 @@ module.exports = function() {
           req.session.userId,
           'シフト更新',
           data.date + '[' + data.text + ']',
+        )
+      }
+
+      client.release()
+      res.json('update')
+    } catch (err) {
+      console.error(err)
+      res.send('Error ' + err)
+    }
+  })
+  router.post('/updateshiftdatabyid', async (req, res) => {
+    try {
+      const data = req.body
+      const id = data.id
+      const shifts = data.shift
+      const client = await poollocal.connect()
+      for (let shift of shifts) {
+        const result = await client.query(
+          'update shift_table set detail=$1 where userid=$2 and date=$3',
+          [shift.text, id, shift.date],
+        )
+        writeLog(
+          client,
+          id,
+          '管理者によるシフト更新',
+          shift.date + '[' + shift.text + ']',
         )
       }
 

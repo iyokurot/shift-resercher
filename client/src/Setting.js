@@ -200,6 +200,14 @@ class Setting extends Component {
               </Link>
               <br />
               <button
+                onClick={() => this.props.history.push('/ShiftAdministar')}
+                className="administerbutton"
+                style={{ width: '250px' }}
+              >
+                シフト変更登録
+              </button>
+              <br />
+              <button
                 onClick={this.pushtoInformation}
                 className="administerbutton"
                 style={{ width: '250px' }}

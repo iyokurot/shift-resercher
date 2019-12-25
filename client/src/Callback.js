@@ -82,10 +82,10 @@ const CallBack = props => {
       <h1>Loading</h1>
       <div className="loading">
         <span className="loadingtext">Loading...</span>
-        <div class="orbit-spinner">
-          <div class="orbit"></div>
-          <div class="orbit"></div>
-          <div class="orbit"></div>
+        <div className="orbit-spinner">
+          <div className="orbit"></div>
+          <div className="orbit"></div>
+          <div className="orbit"></div>
         </div>
       </div>
     </div>

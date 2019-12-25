@@ -235,17 +235,6 @@ class Home extends Component {
       </div>
     )
   }
-  /*
-  <div id="calendar">
-              <Calendar
-                locale="ja-JP"
-                calendarType="US"
-                value={this.state.receptionDate}
-                tileContent={this.getTileContent.bind(this)}
-                onChange={value => this.dayClick(value)}
-              />
-            </div>
-  */
   loadShiftAndComment = () => {
     //シフトデータ取得
     fetch(this.testrouter + '/shiftdata')
@@ -325,22 +314,6 @@ class Home extends Component {
       nowprintday: new Date(setday),
     })
   }
-  /*
-  getTileContent = ({ date, view }) => {
-    // 月表示のときのみ
-    if (view !== 'month') {
-      return null
-    }
-    const day = this.getFormatDate(date)
-    return (
-      <p className="calendaritem">
-        {this.state.month_days[day] && this.state.month_days[day].text
-          ? this.state.month_days[day].text
-          : '  '}
-      </p>
-    )
-  }
-*/
   //スタンプ変換
   onClickstamp = value => {
     this.setState({
