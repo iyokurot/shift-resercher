@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Modal from 'react-modal'
 import SimpleDatePicker from './PlanDatePicker'
 import Calender from './Calender'
 import { GetFormatDate } from './DateHandler'
+import { UserContext } from './components/User'
 const customStyles = {
   content: {
     top: '50%',
@@ -18,6 +19,7 @@ const customStyles = {
 }
 
 const Plans = props => {
+  const { state, dispatch } = useContext(UserContext)
   const [plans, setPlandata] = useState([])
   const [plansArray, setPlanArray] = useState([])
   const [selectdate, setSelectDate] = useState(new Date())
@@ -28,18 +30,42 @@ const Plans = props => {
   const [printDate, setPrintdate] = useState(new Date('2019', '11', '01'))
   const testroute = ''
   useEffect(() => {
+    /*
     fetch(testroute + '/userdata')
       .then(res => res.json())
       .then(data => {
-        if (data.administer) {
-          //アクセス許可
-          loadPlans()
-        } else {
-          //アクセス不可
-          alert('アクセスできません')
-          props.history.push('/')
-        }
-      })
+      */
+    if (state.user.userId !== '') {
+      if (state.user.administer) {
+        //アクセス許可
+        loadPlans()
+      } else {
+        //アクセス不可
+        alert('アクセスできません')
+        props.history.push('/')
+      }
+    } else {
+      //state無しfetch
+      fetch(testroute + '/userdata')
+        .then(res => res.json())
+        .then(data => {
+          dispatch({
+            type: 'set-user',
+            payload: {
+              user: data,
+            },
+          })
+          if (data.administer) {
+            //アクセス許可
+            loadPlans()
+          } else {
+            //アクセス不可
+            alert('アクセスできません')
+            props.history.push('/')
+          }
+        })
+    }
+    //})
   }, [])
   const loadPlans = () => {
     fetch(testroute + '/plandata')

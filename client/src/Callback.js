@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import LoadingComponent from './reactComponents/loading'
 
 const CallBack = props => {
   const [code, setCode] = useState('')
@@ -80,14 +81,7 @@ const CallBack = props => {
   return (
     <div>
       <h1>Loading</h1>
-      <div className="loading">
-        <span className="loadingtext">Loading...</span>
-        <div className="orbit-spinner">
-          <div className="orbit"></div>
-          <div className="orbit"></div>
-          <div className="orbit"></div>
-        </div>
-      </div>
+      <LoadingComponent />
     </div>
   )
 }

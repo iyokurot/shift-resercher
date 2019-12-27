@@ -1,31 +1,48 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { GetSlashFormatDate } from './DateHandler'
+import LoadingComponent from './reactComponents/loading'
+import { UserContext } from './components/User'
 
 const Log = props => {
+  const { state, dispatch } = useContext(UserContext)
   const [isNowloading, setIsNowloading] = useState(true)
   const [userlist, setUserlist] = useState([])
   const [logdata, setLogdata] = useState([])
   const testroute = ''
   useEffect(() => {
-    fetch(testroute + '/userdata')
-      .then(res => res.json())
-      .then(res => {
-        if (res !== [] && res.administer) {
-          //管理者
-          fetch(testroute + '/memberlist')
-            .then(res => res.json())
-            .then(data => setUserlist(data))
-          fetch(testroute + '/getlogdata')
-            .then(res => res.json())
-            .then(data => setLogdata(data))
-          setIsNowloading(false)
-        } else {
-          //Not管理者
-          alert('ページを開けません')
-          props.history.push('/')
-        }
-      })
-  }, [])
+    if (state.user.userId !== '') {
+      firstLoad(state.user)
+    } else {
+      //state無しfetch
+      fetch(testroute + '/userdata')
+        .then(res => res.json())
+        .then(res => {
+          dispatch({
+            type: 'set-user',
+            payload: {
+              user: res,
+            },
+          })
+          firstLoad(res)
+        })
+    }
+  }, [props])
+  const firstLoad = user => {
+    if (user.administer) {
+      //管理者
+      fetch(testroute + '/memberlist')
+        .then(res => res.json())
+        .then(data => setUserlist(data))
+      fetch(testroute + '/getlogdata')
+        .then(res => res.json())
+        .then(data => setLogdata(data))
+      setIsNowloading(false)
+    } else {
+      //Not管理者
+      alert('ページを開けません')
+      props.history.push('/')
+    }
+  }
   //idからユーザー名取得
   const getNameById = id => {
     for (const user of userlist) {
@@ -73,14 +90,7 @@ const Log = props => {
     <div>
       <h1>Logs</h1>
       {isNowloading ? (
-        <div className="loading">
-          <span className="loadingtext">Loading...</span>
-          <div className="orbit-spinner">
-            <div className="orbit"></div>
-            <div className="orbit"></div>
-            <div className="orbit"></div>
-          </div>
-        </div>
+        <LoadingComponent />
       ) : (
         <div className="black-background">
           <p className="logtitle">ユーザーログリスト</p>

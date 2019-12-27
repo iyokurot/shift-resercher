@@ -4,6 +4,7 @@ import Calendar from './Calender'
 import Modal from 'react-modal'
 import LoadingComponent from './reactComponents/loading'
 import { GetFormatDate } from './DateHandler'
+import { getWishReceptionDate } from './components/ReceptionDate'
 import './css/ShiftAdministar.css'
 const customStyles = {
   content: {
@@ -66,48 +67,51 @@ function ShiftAdministar(props) {
     '23:30',
     '23:45',
   ] //選択可能時間
-  const deade = 10
-  const deadl = 25
 
   const testroute = ''
   useEffect(() => {
-    setReceptionDate(setPrintDate())
+    setReceptionDate(getWishReceptionDate())
     //user取得
+    /*
     fetch(testroute + '/userdata')
       .then(res => res.json())
       .then(data => {
-        //admin確認
-        if (data.administer) {
-          //アクセス許可
-          //登録ユーザー
-          fetch(testroute + '/memberlist')
-            .then(res => res.json())
-            .then(list => {
-              setUserlist(list)
-            })
-          //シフト
-          setPrintUser(data.username)
-          getShiftbyId(data.userId)
-        } else {
-          //アクセス不可
-          props.history.push('/')
-        }
-      })
-
-    //console.log(state.user)
-  }, [state.user])
-  //日付表示判定
-  const setPrintDate = () => {
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = today.getMonth()
-    const date = today.getDate()
-    if (deade < date && deadl > date) {
-      return new Date(year, month, 16)
-    } else if (deade >= date) {
-      return new Date(year, month, 1)
+      */
+    if (state.user.userId !== '') {
+      firstLoading(state.user)
     } else {
-      return new Date(year, month + 1, 1)
+      //state無しfetch
+      fetch(testroute + '/userdata')
+        .then(res => res.json())
+        .then(data => {
+          dispatch({
+            type: 'set-user',
+            payload: {
+              user: data,
+            },
+          })
+          firstLoading(data)
+        })
+    }
+    //})
+  }, [state.user])
+  //初期読み込み
+  const firstLoading = user => {
+    //admin確認
+    if (user.administer) {
+      //アクセス許可
+      //登録ユーザー
+      fetch(testroute + '/memberlist')
+        .then(res => res.json())
+        .then(list => {
+          setUserlist(list)
+        })
+      //シフト
+      setPrintUser(user.username)
+      getShiftbyId(user.userId)
+    } else {
+      //アクセス不可
+      props.history.push('/')
     }
   }
   //shiftゲッター

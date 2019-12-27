@@ -8,6 +8,14 @@ export function GetDateByNum(str) {
   const text = str.substr(4, 2) + '/' + str.substr(6, 2)
   return text
 }
+//yymmdd=>Date
+export function GetNewDateByNum(str) {
+  return new Date(
+    str.substr(0, 4),
+    parseInt(str.substr(4, 2)) - 1,
+    str.substr(6, 2),
+  )
+}
 //yyyy,MM,dd,=>yyMMdd
 export function GetIntDate(year, month, day) {
   return year + ('0' + (month + 1)).slice(-2) + ('0' + day).slice(-2)

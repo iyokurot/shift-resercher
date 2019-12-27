@@ -65,6 +65,7 @@ function TestPage(props) {
   const { state, dispatch } = React.useContext(UserContext)
   React.useEffect(() => {
     //
+    console.log(state)
   }, [state.user])
   const resetColor = () =>
     dispatch({

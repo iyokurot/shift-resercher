@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-
+import LoadingComponent from './reactComponents/loading'
+import {
+  getWishReceptionDate,
+  getPreReceptionDate,
+  getBackReceptionDate,
+} from './components/ReceptionDate'
 class Wishlist extends Component {
   constructor(props) {
     super(props)
@@ -11,8 +16,6 @@ class Wishlist extends Component {
       allcommentdata: [], //全コメント情報
       printlist: [], //表示するリスト
       printcommentlist: [], //表示するコメントリスト
-      deadlineearly: 10, //締め切り日１
-      deallinelate: 24, //締め切り日２
       startdate: '',
       printdays: [], //表示する期間
     }
@@ -63,19 +66,15 @@ class Wishlist extends Component {
     return (
       <div>
         {this.state.nowloading ? (
-          <div className="loading">
-            <span className="loadingtext">Loading...</span>
-            <div className="orbit-spinner">
-              <div className="orbit"></div>
-              <div className="orbit"></div>
-              <div className="orbit"></div>
-            </div>
-          </div>
+          <LoadingComponent />
         ) : (
           <div>
             {this.state.accessable ? (
               <div>
                 <h1>Wishlist</h1>
+                <div>
+                  <button>ユーザー並び替え</button>
+                </div>
                 シフト希望一覧
                 <button
                   className="bluebutton"
@@ -146,35 +145,16 @@ class Wishlist extends Component {
   //初期
   setdefaultDays = () => {
     //表示する期間開始日を計算
-    const date = new Date()
-    const year = date.getFullYear()
-    const month = date.getMonth()
-    const day = date.getDate()
-    let startdate = ''
-    if (day < this.state.deadlineearly) {
-      startdate = new Date(year, month, 1)
-    } else if (day < this.state.deallinelate) {
-      startdate = new Date(year, month, 16)
-    } else if (day >= this.state.deallinelate) {
-      if (month === 11) {
-        startdate = new Date(year, month + 1, 1)
-      } else {
-        startdate = new Date(year, month + 1, 1)
-      }
-    }
-    //date確認用
-    //startdate = new Date(2019, 7, 16);
-    this.setprintDays(startdate)
+    this.setprintDays(getWishReceptionDate())
   }
   //表示期間前後ボタン
   onClickchangeterm = e => {
     const startdate = this.state.startdate
-    let year = startdate.getFullYear()
-    let month = startdate.getMonth()
-    let day = startdate.getDate()
     const str = e.target.value
-
+    let newstartdate = getWishReceptionDate()
     if (str === 'pre') {
+      newstartdate = getPreReceptionDate(startdate)
+      /*
       if (day === 16) {
         day = 1
       } else if (day === 1) {
@@ -187,7 +167,10 @@ class Wishlist extends Component {
           day = 16
         }
       }
+      */
     } else if (str === 'back') {
+      newstartdate = getBackReceptionDate(startdate)
+      /*
       if (day === 1) {
         day = 16
       } else if (day === 16) {
@@ -200,8 +183,9 @@ class Wishlist extends Component {
           day = 1
         }
       }
+      */
     }
-    const newstartdate = new Date(year, month, day)
+    //const newstartdate = new Date(year, month, day)
     this.setState({ startdate: newstartdate })
     this.setprintDays(newstartdate)
     this.sortmembershift(

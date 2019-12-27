@@ -4,6 +4,13 @@ import Information from './HomeInformation'
 import NewCalender from './Calender'
 import Comment from './HomeComment'
 import { GetDateByNum, GetFormatDate } from './DateHandler'
+import {
+  getNowDeadline,
+  receptionText,
+  getReceptionDate,
+} from './components/ReceptionDate'
+import SetReducerState from './reactComponents/SetReducerState'
+import LoadingComponent from './reactComponents/loading'
 
 const customStyles = {
   content: {
@@ -25,10 +32,9 @@ class Home extends Component {
     super(props)
     this.state = {
       userdata: [], //ユーザー情報
-      date: new Date(), //today
       receptionDate: new Date(), //受付中
       stamp: 'x', //シフトに記入する文字
-      stamptime: '', //時間希望
+      //stamptime: '', //時間希望
       deadline: '', //締め切り
       default_month_days: [], //defaultのシフト情報
       month_days: [], //更新されるシフト情報
@@ -81,8 +87,6 @@ class Home extends Component {
       isNotSaveShift: false, //未登録シフト存在
     }
   }
-  deadlineEarly = 10
-  deadlineLate = 25
   testrouter = '' //testroute
   componentDidMount() {
     this.getDateReception()
@@ -103,6 +107,7 @@ class Home extends Component {
   render() {
     return (
       <div>
+        <SetReducerState userdata={this.state.userdata} />
         <div id="personalheader">
           <span id="setting" onClick={e => this.pushtoSetting()}>
             <div id="settingimg"></div>
@@ -141,14 +146,7 @@ class Home extends Component {
           </button>
         </div>
         {this.state.isNowLoading ? (
-          <div className="loading">
-            <span className="loadingtext">Loading...</span>
-            <div className="orbit-spinner">
-              <div className="orbit"></div>
-              <div className="orbit"></div>
-              <div className="orbit"></div>
-            </div>
-          </div>
+          <LoadingComponent />
         ) : (
           <div id="shift-holder">
             <div id="newcalendar">
@@ -264,54 +262,14 @@ class Home extends Component {
   }
   //受付中日にち
   getDateReception = () => {
-    let year = this.state.date.getFullYear()
-    let month = this.state.date.getMonth() + 1
-    const day = this.state.date.getDate()
-    let receptionday = ''
-    let deadline = ''
-    let setday = ''
-    if (day <= this.deadlineEarly) {
-      //締め切り
-      const finaldate = new Date(year, month, 0)
-      receptionday = month + '/16～' + month + '/' + finaldate.getDate()
-      deadline = month + '/10まで(' + receptionday + ')'
-      //今月16～末日まで
-      setday = year + '/' + month + '/16'
-    } else if (day > this.deadlineLate) {
-      //年越し処理
-      if (month === 12) {
-        year++
-        month = 0
-      }
-      //締め切り
-      const finaldate = new Date(year, month + 1, 0)
-      receptionday =
-        month + 1 + '/16～' + (month + 1) + '/' + finaldate.getDate()
-      deadline = month + 1 + '/10まで(' + receptionday + ')'
-      //来月16～末日
-      setday = year + '/' + (month + 1) + '/16'
-    } else {
-      //年越し処理
-      if (month === 12) {
-        year++
-        month = 0
-      }
-      //締め切り
-      receptionday = month + 1 + '/1～' + (month + 1) + '/15'
-      if (month === 0) {
-        deadline = '12/24まで(' + receptionday + ')'
-      } else {
-        deadline = month + '/24まで(' + receptionday + ')'
-      }
-
-      //来月1～15まで
-      setday = year + '/' + (month + 1) + '/1'
-    }
+    const setday = getReceptionDate()
+    const receptionday = receptionText(setday)
+    const deadline = getNowDeadline() + 'まで(' + receptionText(setday) + ')'
     this.setState({
       complementdaysText: receptionday,
       deadline: deadline,
-      receptionDate: new Date(setday),
-      nowprintday: new Date(setday),
+      receptionDate: setday,
+      nowprintday: setday,
     })
   }
   //スタンプ変換

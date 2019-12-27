@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
-import { GetIntDate } from './DateHandler'
+import { GetNewDateByNum, GetFormatDate } from './DateHandler'
+import {
+  receptionText,
+  getPreReceptionDate,
+  getBackReceptionDate,
+} from './components/ReceptionDate'
 const CssTextField = withStyles({
   root: {
     '& label.Mui-focused': {
@@ -38,19 +43,13 @@ const HomeComment = props => {
     if (data !== '') {
       for (const comment of data) {
         const date = new Date(comment.date)
-        const num =
-          date.getFullYear() +
-          ('0' + (date.getMonth() + 1)).slice(-2) +
-          ('0' + date.getDate()).slice(-2)
+        const num = GetFormatDate(date)
         list[num] = { comment: comment.text, wishday: comment.wishday }
       }
     }
     //締め切りの初期コメント設定
     const recepdate = props.receptionDate
-    const firstdate =
-      recepdate.getFullYear() +
-      ('0' + (recepdate.getMonth() + 1)).slice(-2) +
-      ('0' + recepdate.getDate()).slice(-2)
+    const firstdate = GetFormatDate(recepdate)
     let com = ''
     let wish = ''
     if (list[firstdate] != null) {
@@ -62,20 +61,7 @@ const HomeComment = props => {
     setComment(com)
     setWishday(wish)
     setNowprintcommentday(firstdate)
-    setComplementdays(recepdate)
-  }
-
-  const setComplementdays = date => {
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    let text = ''
-    if (day === 1) {
-      text = month + '/1～' + month + '/15'
-    } else if (day === 16) {
-      const finaldate = new Date(date.getFullYear(), month, 0)
-      text = month + '/16～' + month + '/' + finaldate.getDate()
-    }
-    setComplementdaysText(text)
+    setComplementdaysText(receptionText(recepdate))
   }
   const dayspreOnclick = () => {
     //あと
@@ -92,60 +78,29 @@ const HomeComment = props => {
       wishday: wishday,
     }
     setComments(commentlist)
-    //nowprintcommentday
     const printday = nowprintcommentday
-    const datearr = (
-      printday.substr(0, 4) +
-      '/' +
-      printday.substr(4, 2) +
-      '/' +
-      printday.substr(6, 2)
-    ).split('/')
-    const nowdate = new Date(datearr[0], datearr[1] - 1, datearr[2])
-    let year = nowdate.getFullYear()
-    let month = nowdate.getMonth()
-    let day = nowdate.getDate()
+    const nowdate = GetNewDateByNum(printday)
+    let nextdate = new Date()
     if (str === 'pre') {
-      if (day === 16) {
-        day = 1
-      } else {
-        if (month === 0) {
-          year--
-          month = 11
-          day = 16
-        } else {
-          month--
-          day = 16
-        }
-      }
+      nextdate = getPreReceptionDate(nowdate)
     } else if (str === 'back') {
-      if (day === 1) {
-        day = 16
-      } else {
-        if (month === 11) {
-          year++
-          month = 0
-          day = 1
-        } else {
-          month++
-          day = 1
-        }
-      }
+      nextdate = getBackReceptionDate(nowdate)
     }
 
-    if (comments[GetIntDate(year, month, day)] == null) {
+    if (comments[GetFormatDate(nextdate)] == null) {
       const printcomments = comments
-      printcomments[GetIntDate(year, month, day)] = {
+      printcomments[GetFormatDate(nextdate)] = {
         comment: '',
         wishday: '',
       }
       setComments(printcomments)
     }
-    setComplementdays(new Date(year, month, day))
+    //setComplementdays(new Date(year, month, day))
+    setComplementdaysText(receptionText(nextdate))
 
-    setComment(comments[GetIntDate(year, month, day)].comment)
-    setWishday(comments[GetIntDate(year, month, day)].wishday)
-    setNowprintcommentday(GetIntDate(year, month, day))
+    setComment(comments[GetFormatDate(nextdate)].comment)
+    setWishday(comments[GetFormatDate(nextdate)].wishday)
+    setNowprintcommentday(GetFormatDate(nextdate))
   }
   const addComment = async () => {
     //登録ボタン

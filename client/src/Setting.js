@@ -5,6 +5,7 @@ import Modal from 'react-modal'
 import { makeStyles } from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
 import shareIcon from './images/share.svg'
+import LoadingComponent from './reactComponents/loading'
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -90,14 +91,7 @@ class Setting extends Component {
       <div>
         <h1>Settings</h1>
         {this.state.isNowloading ? (
-          <div className="loading">
-            <span className="loadingtext">Loading...</span>
-            <div className="orbit-spinner">
-              <div className="orbit"></div>
-              <div className="orbit"></div>
-              <div className="orbit"></div>
-            </div>
-          </div>
+          <LoadingComponent />
         ) : (
           <div>
             <div className="profileholder">
