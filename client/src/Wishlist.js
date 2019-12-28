@@ -4,6 +4,7 @@ import {
   getWishReceptionDate,
   getPreReceptionDate,
   getBackReceptionDate,
+  receptionText,
 } from './components/ReceptionDate'
 class Wishlist extends Component {
   constructor(props) {
@@ -75,7 +76,12 @@ class Wishlist extends Component {
                 <div>
                   <button>ユーザー並び替え</button>
                 </div>
-                シフト希望一覧
+                シフト希望一覧　
+                <span>
+                  {this.state.startdate.getFullYear()}-
+                  {receptionText(this.state.startdate)}
+                </span>
+                <br />
                 <button
                   className="bluebutton"
                   value="pre"

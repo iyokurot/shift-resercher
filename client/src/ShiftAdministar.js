@@ -130,6 +130,7 @@ function ShiftAdministar(props) {
         for (const shift of data) {
           list[shift.date] = { text: shift.detail }
         }
+
         setDefshift(list)
         setShifts(list.slice())
         setLoading(false)

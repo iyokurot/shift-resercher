@@ -3,6 +3,7 @@ import { UserContext } from '../components/User'
 
 export default function SetReducerState(props) {
   const { state, dispatch } = useContext(UserContext)
+  const number = 0
 
   useEffect(() => {
     if (props.userdata.length !== 0 && props.userdata.userId !== '') {
@@ -18,6 +19,6 @@ export default function SetReducerState(props) {
         })
       }
     }
-  }, [props.userdata])
+  }, [number])
   return <span></span>
 }

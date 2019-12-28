@@ -1,6 +1,6 @@
 //締切日や表示開始日
-const deadlineEarly = 10
-const deadlineLate = 25
+const deadlineEarly = 9
+const deadlineLate = 23
 const today = new Date()
 export function DeadEarly() {
   return deadlineEarly
