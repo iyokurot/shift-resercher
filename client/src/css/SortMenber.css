@@ -1,0 +1,74 @@
+#explain {
+  border: solid 2px #c5b8dd;
+  border-radius: 5px;
+  margin: 5px 20px;
+  background-color: #130331;
+  color: #c5b8dd;
+}
+
+.sortdiv {
+  display: inline-block;
+  width: 100%;
+  color: rgb(53, 53, 53);
+}
+.sorttable {
+  display: inline-block;
+  position: relative;
+  width: 95%;
+  max-width: min-content;
+  overflow-y: scroll;
+  text-align: center;
+  border-collapse: collapse;
+  background-color: white;
+  margin: 10px;
+  max-height: 380px;
+  border-collapse: collapse;
+  box-shadow: 0 0 8px gray;
+  border-radius: 10px;
+}
+.sorttable thead,
+.sorttable tbody {
+  display: block;
+  width: max-content;
+}
+
+.sorttable thead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #ffffff;
+}
+.sorttable thead th.blank {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 100px;
+  background: #ffffff;
+}
+.sorttable tbody tr:nth-child(odd),
+.sorttable tbody tr:nth-child(odd) th {
+  background: #937ac2;
+}
+.sorttable th,
+.sorttable td {
+  display: inline-block;
+  padding: 10px 5px;
+  min-width: 80px;
+}
+.sorttable td {
+  width: 80px;
+}
+.sortselect {
+  font-size: 20px;
+  border: solid 1px #cacaca;
+  border-radius: 5px;
+  height: max-content;
+  width: max-content;
+}
+#reloadsortmenber {
+  width: 80%;
+  height: 40px;
+}

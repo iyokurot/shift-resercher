@@ -157,6 +157,24 @@ module.exports = function() {
       res.send('Error ' + err)
     }
   })
+  router.post('/updateuserno', async (req, res) => {
+    try {
+      const id = req.body[0].id
+      const no = req.body[0].no
+      const client = await poollocal.connect()
+      const result = await client.query(
+        'update user_table set userno=$1 where userid=$2',
+        [no, id],
+      )
+
+      res.json('update userno')
+      writeLog(client, id, 'ユーザー番号変更', no)
+      client.release()
+    } catch (err) {
+      console.error(err)
+      res.send('Error ' + err)
+    }
+  })
   //shift
   router.get('/shiftdata', async (req, res) => {
     try {

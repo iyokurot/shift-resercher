@@ -10,6 +10,7 @@ import Test from './Test'
 import Callback from './Callback'
 import Logs from './Log'
 import ShiftAdministar from './ShiftAdministar'
+import SortMenber from './SortMenber'
 import './css/Tag.css'
 import './css/Class.css'
 import './css/Id.css'
@@ -31,6 +32,7 @@ const App = () => (
       <Route path="/TestPage" component={Test} />
       <Route path="/Log" component={Logs} />
       <Route path="/ShiftAdministar" component={ShiftAdministar} />
+      <Route path="/SortMenber" component={SortMenber} />
       <Route exact path="/Callback" component={Callback}></Route>
     </div>
   </BrowserRouter>

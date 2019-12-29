@@ -74,7 +74,13 @@ class Wishlist extends Component {
               <div>
                 <h1>Wishlist</h1>
                 <div>
-                  <button>ユーザー並び替え</button>
+                  <button
+                    className="redbutton"
+                    style={{ width: '250px' }}
+                    onClick={e => this.props.history.push('/SortMenber')}
+                  >
+                    ユーザー並び替え
+                  </button>
                 </div>
                 シフト希望一覧　
                 <span>
