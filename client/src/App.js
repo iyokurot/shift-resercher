@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Register from './Register'
 import Home from './Home'
+import RenewHome from './RenewHome'
 import Setting from './Setting'
 import Wishlist from './Wishlist'
 import Information from './Information'
@@ -25,6 +26,7 @@ const App = () => (
       <Route exact path="/" component={Top} />
       <Route path="/Register" component={Register} />
       <Route path="/Home" component={Home} />
+      <Route path="/RenewHome" component={RenewHome} />
       <Route path="/Setting" component={Setting} />
       <Route path="/Wishlist" component={Wishlist} />
       <Route path="/Information" component={Information} />

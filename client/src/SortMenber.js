@@ -17,8 +17,18 @@ function SortMenber(props) {
           .then(list => {
             setMenbers(list)
             const menberslist = []
+            let maxNo = 0
             for (const i in list) {
               menberslist.push(i)
+              if (maxNo < list[i].userno) {
+                maxNo = list[i].userno
+              }
+            }
+            //usernoのOverflow
+            if (maxNo >= list.length) {
+              for (let i = list.length; i <= maxNo; i++) {
+                menberslist.push(i)
+              }
             }
             setMenberlength(menberslist)
           })

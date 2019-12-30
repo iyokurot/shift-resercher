@@ -87,7 +87,7 @@ class Home extends Component {
       isNotSaveShift: false, //未登録シフト存在
     }
   }
-  testrouter = '' //testroute
+  testrouter = ''
   componentDidMount() {
     this.getDateReception()
     //ユーザーデータ取得

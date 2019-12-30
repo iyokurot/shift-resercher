@@ -21,21 +21,18 @@ const CssTextField = withStyles({
 })(TextField)
 
 const HomeComment = props => {
-  //const [recepdate, setRecepdate] = useState(new Date())
-  const [wishday, setWishday] = useState('')
+  const [wishday, setWishday] = useState('') //現在の希望日数
   const wishdays = ['', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-  const [comment, setComment] = useState('')
-  const [default_comments, setdefaultcomments] = useState([])
-  const [comments, setComments] = useState([])
-  const [nowprintcommentday, setNowprintcommentday] = useState('')
-  const [complementdaysText, setComplementdaysText] = useState('')
+  const [comment, setComment] = useState('') //現在のコメント
+  const [comments, setComments] = useState([]) //コメントリスト
+  const [nowprintcommentday, setNowprintcommentday] = useState('') //表示中期間日付
   const testrouter = ''
   useEffect(() => {
     //コメントデータ取得
     fetch(testrouter + '/getcommentdata')
       .then(res => res.json())
       .then(data => setdefaultcomment(data))
-  }, [])
+  }, [testrouter])
 
   //commentSetting
   const setdefaultcomment = data => {
@@ -56,12 +53,10 @@ const HomeComment = props => {
       com = list[firstdate].comment
       wish = list[firstdate].wishday
     }
-    setdefaultcomments(list.slice())
     setComments(list)
     setComment(com)
     setWishday(wish)
     setNowprintcommentday(firstdate)
-    setComplementdaysText(receptionText(recepdate))
   }
   const dayspreOnclick = () => {
     //あと
@@ -72,12 +67,6 @@ const HomeComment = props => {
     dayspreback('back')
   }
   const dayspreback = str => {
-    const commentlist = comments
-    commentlist[nowprintcommentday] = {
-      comment: comment,
-      wishday: wishday,
-    }
-    setComments(commentlist)
     const printday = nowprintcommentday
     const nowdate = GetNewDateByNum(printday)
     let nextdate = new Date()
@@ -88,86 +77,68 @@ const HomeComment = props => {
     }
 
     if (comments[GetFormatDate(nextdate)] == null) {
-      const printcomments = comments
-      printcomments[GetFormatDate(nextdate)] = {
-        comment: '',
-        wishday: '',
-      }
-      setComments(printcomments)
+      setComment('')
+      setWishday('')
+    } else {
+      setComment(comments[GetFormatDate(nextdate)].comment)
+      setWishday(comments[GetFormatDate(nextdate)].wishday)
     }
-    //setComplementdays(new Date(year, month, day))
-    setComplementdaysText(receptionText(nextdate))
-
-    setComment(comments[GetFormatDate(nextdate)].comment)
-    setWishday(comments[GetFormatDate(nextdate)].wishday)
     setNowprintcommentday(GetFormatDate(nextdate))
   }
-  const addComment = async () => {
-    //登録ボタン
-    const results = []
-    results.push(props.addbutton())
-    const newcomments = comments
-    newcomments[nowprintcommentday] = {
-      comment: comment,
-      wishday: wishday,
-    }
-    //コメント更新
-    //差分配列add＆update配列生成のちfetch
-    const addcommentdata = []
-    for (const com in newcomments) {
-      if (default_comments[com] == null) {
-        addcommentdata.push({
-          date: com,
-          comment: newcomments[com].comment,
-          wishday: newcomments[com].wishday,
-        })
-      }
-    }
-    const updatecommentdata = []
-    for (const com in default_comments) {
-      if (
-        newcomments[com].comment !== default_comments[com].comment ||
-        newcomments[com].wishday !== default_comments[com].wishday
-      ) {
-        updatecommentdata.push({
-          date: com,
-          comment: newcomments[com].comment,
-          wishday: newcomments[com].wishday,
-        })
-      }
-    }
-
-    if (updatecommentdata.length > 0) {
-      results.push(
-        fetch(testrouter + '/updatecommentdata', {
-          method: 'POST',
-          body: JSON.stringify(updatecommentdata),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          mode: 'cors',
-        }).then(res => res.json()),
+  const registComment = () => {
+    //addもしくはupdate
+    if (comments[nowprintcommentday] == null) {
+      //add
+      comments[nowprintcommentday] = { comment: comment, wishday: '' }
+      dbRegister('/addcommentdata', nowprintcommentday, comment, '')
+      //追加DB
+    } else if (comment !== comments[nowprintcommentday]) {
+      //update
+      comments[nowprintcommentday].comment = comment
+      dbRegister(
+        '/updatecommentdata',
+        nowprintcommentday,
+        comment,
+        comments[nowprintcommentday].wishday,
       )
     }
-    if (addcommentdata.length > 0) {
-      results.push(
-        fetch(testrouter + '/addcommentdata', {
-          method: 'POST',
-          body: JSON.stringify(addcommentdata),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          mode: 'cors',
-        }).then(res => res.json()),
+    setComments(comments)
+  }
+  const registWishday = day => {
+    setWishday(day)
+    //追加
+    if (comments[nowprintcommentday] == null) {
+      comments[nowprintcommentday] = { comment: '', wishday: day }
+      dbRegister('/addcommentdata', nowprintcommentday, '', day)
+      //更新
+    } else if (day !== comments[nowprintcommentday].wishday) {
+      comments[nowprintcommentday].wishday = day
+      dbRegister(
+        '/updatecommentdata',
+        nowprintcommentday,
+        comments[nowprintcommentday].comment,
+        day,
       )
     }
-
-    await Promise.all(results)
+    setComments(comments)
+  }
+  //dbHandler関数
+  const dbRegister = (path, date, comment, wishday) => {
+    fetch(testrouter + path, {
+      method: 'POST',
+      body: JSON.stringify([
+        { date: date, comment: comment, wishday: wishday },
+      ]),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      mode: 'cors',
+    }).then(res => res.json())
   }
   return (
     <div className="flameholder">
       <div className="flame">
-        補足希望:{complementdaysText}
+        補足希望:{receptionText(GetNewDateByNum(nowprintcommentday))}
         <span id="termbuttons">
           <button onClick={dayspreOnclick} className="bluebutton">
             ◁
@@ -179,7 +150,7 @@ const HomeComment = props => {
         <br />
         <div id="wishday">
           希望出勤日数：
-          <select onChange={e => setWishday(e.target.value)} value={wishday}>
+          <select onChange={e => registWishday(e.target.value)} value={wishday}>
             {wishdays.map(days => (
               <option key={days}>{days}</option>
             ))}
@@ -195,13 +166,10 @@ const HomeComment = props => {
             margin="normal"
             variant="outlined"
             placeholder="希望を記入"
-            onBlur={() => console.log('out')}
+            onBlur={() => registComment()}
           />
         </div>
       </div>
-      <button id="submit_shiftdata" onClick={addComment}>
-        登録
-      </button>
     </div>
   )
 }
