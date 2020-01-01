@@ -226,14 +226,6 @@ class Setting extends Component {
               </button>
               <br />
               <button
-                onClick={() => this.props.history.push('/RenewHome')}
-                className="administerbutton"
-                style={{ width: '250px' }}
-              >
-                新ホーム画面
-              </button>
-              <br />
-              <button
                 onClick={this.openmemberModal}
                 className="administerbutton"
               >

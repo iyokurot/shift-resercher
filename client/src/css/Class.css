@@ -13,6 +13,11 @@
   background: url(../line/btn_login_press.png) left top no-repeat;
 }
 /*Home*/
+.infotext {
+  font-size: 14px;
+  color: #b93892;
+  font-weight: bold;
+}
 .reception {
   padding: 10px;
   padding-bottom: 0;
