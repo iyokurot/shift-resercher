@@ -249,7 +249,7 @@ function RenewSetting(props) {
             <div className="profilesetting">
               <div className="profilecard">
                 <img
-                  src={state.user.userdata}
+                  src={state.user.picture}
                   id="profileimage"
                   alt="profile"
                 ></img>
