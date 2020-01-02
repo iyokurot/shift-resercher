@@ -1,3 +1,5 @@
+//作り変え済み　未使用
+
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Modal from 'react-modal'

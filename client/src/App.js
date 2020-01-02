@@ -3,7 +3,8 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import Register from './Register'
 //import Home from './Home'
 import RenewHome from './RenewHome'
-import Setting from './Setting'
+//import Setting from './Setting'
+import RenewSetting from './RenewSetting'
 import Wishlist from './Wishlist'
 import Information from './Information'
 import Plans from './Plans'
@@ -26,7 +27,7 @@ const App = () => (
       <Route exact path="/" component={Top} />
       <Route path="/Register" component={Register} />
       <Route path="/Home" component={RenewHome} />
-      <Route path="/Setting" component={Setting} />
+      <Route path="/Setting" component={RenewSetting} />
       <Route path="/Wishlist" component={Wishlist} />
       <Route path="/Information" component={Information} />
       <Route path="/Plans" component={Plans} />
