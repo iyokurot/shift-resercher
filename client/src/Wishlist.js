@@ -166,36 +166,8 @@ class Wishlist extends Component {
     let newstartdate = getWishReceptionDate()
     if (str === 'pre') {
       newstartdate = getPreReceptionDate(startdate)
-      /*
-      if (day === 16) {
-        day = 1
-      } else if (day === 1) {
-        if (month === 0) {
-          year--
-          month = 11
-          day = 16
-        } else {
-          month--
-          day = 16
-        }
-      }
-      */
     } else if (str === 'back') {
       newstartdate = getBackReceptionDate(startdate)
-      /*
-      if (day === 1) {
-        day = 16
-      } else if (day === 16) {
-        if (month === 11) {
-          year++
-          month = 0
-          day = 1
-        } else {
-          month++
-          day = 1
-        }
-      }
-      */
     }
     //const newstartdate = new Date(year, month, day)
     this.setState({ startdate: newstartdate })

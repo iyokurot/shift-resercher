@@ -26,6 +26,7 @@ const HomeComment = props => {
   const [comment, setComment] = useState('') //現在のコメント
   const [comments, setComments] = useState([]) //コメントリスト
   const [nowprintcommentday, setNowprintcommentday] = useState('') //表示中期間日付
+  const [textareaRow, setTextareaRow] = useState(2)
   const testrouter = ''
   useEffect(() => {
     //コメントデータ取得
@@ -84,6 +85,16 @@ const HomeComment = props => {
       setWishday(comments[GetFormatDate(nextdate)].wishday)
     }
     setNowprintcommentday(GetFormatDate(nextdate))
+  }
+  const onChangeComment = value => {
+    setComment(value)
+    //行数＋
+    if (value.length / 15 > textareaRow - 1) {
+      setTextareaRow(textareaRow + 1)
+      //桁数--
+    } else if (textareaRow > 2 && value.length / 15 + 2 <= textareaRow) {
+      setTextareaRow(textareaRow - 1)
+    }
   }
   const registComment = () => {
     //addもしくはupdate
@@ -158,7 +169,24 @@ const HomeComment = props => {
           日
         </div>
         <div>
-          <CssTextField
+          <div id="commentareadiv">
+            <span id="textareatitle">追記</span>
+            <textarea
+              id="testarea"
+              rows={textareaRow}
+              cols="30"
+              value={comment}
+              placeholder="希望を記入"
+              onChange={e => onChangeComment(e.target.value)}
+              onBlur={() => registComment()}
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+/*<CssTextField
             id="outlined-name"
             label="追記"
             value={comment}
@@ -167,11 +195,6 @@ const HomeComment = props => {
             variant="outlined"
             placeholder="希望を記入"
             onBlur={() => registComment()}
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
+          /> */
 
 export default HomeComment
