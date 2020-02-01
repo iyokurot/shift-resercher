@@ -717,6 +717,43 @@ module.exports = function() {
       res.send('Error ' + err)
     }
   })
+
+  router.post('/sendmail', async (req, res) => {
+    console.log(req.body)
+    var receiverEmailAddress = 'shiftresercher@gmail.com'
+    var senderEmailAddress = 'shiftresercher@gmail.com'
+
+    var nodemailer = require('nodemailer')
+    var transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // SSL
+      auth: {
+        type: 'OAuth2',
+        user: senderEmailAddress,
+        clientId:
+          '467833761077-l0epkhdmmvlq6e1pdgq0g9flupnp7q9v.apps.googleusercontent.com',
+        clientSecret: 'pwriA5eQCQEYT7TPwJcJNXVH',
+        refreshToken:
+          '1//04pDUKXzg2s1qCgYIARAAGAQSNwF-L9Ir7y2jAHs8K3Pu7KHOtGy6czTdj5RkpRig1vAMq2nRcjgLlTSpIDy4-9yglPI-TXonoek',
+      },
+    })
+    var mailOptions1 = {
+      from: senderEmailAddress,
+      to: receiverEmailAddress,
+      subject: 'お問い合わせ',
+      text: req.body[0],
+    }
+    transporter.sendMail(mailOptions1, function(error, info) {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('Email sent: ' + info.response)
+      }
+    })
+    res.json('clear')
+  })
+
   writeLog = async (client, userid, key, detail) => {
     try {
       const result = await client.query(

@@ -334,6 +334,13 @@ function RenewSetting(props) {
             </a>
           </div>
           <div
+            className="manualdiv"
+            onClick={e => props.history.push('/CountGame')}
+          >
+            <span>ミニゲーム</span>
+            <p id="sharesubtitle">おたのしみ</p>
+          </div>
+          <div
             style={{ display: state.user.administer ? '' : 'none' }}
             className="administerview"
           >

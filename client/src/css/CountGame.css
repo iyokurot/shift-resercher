@@ -1,0 +1,118 @@
+body {
+  font-family: 'Nico Moji';
+}
+button {
+  font-family: 'Nico Moji';
+}
+#background {
+  background-color: bisque;
+  height: 500px;
+}
+.gametitle {
+  font-size: 36px;
+  margin: 20px;
+}
+#explain-fadein {
+  animation: fadeIn 1.5s ease 0s 1 normal;
+  -webkit-animation: fadeIn 1.5s ease 0s 1 normal;
+}
+#explain-fadein-second {
+  animation: fadeInSecond 1.5s ease-out 0s 1 normal;
+  -webkit-animation: fadeInSecond 1.5s ease-out 0s 1 normal;
+}
+.game-portrait {
+  display: block;
+}
+.game-levelbutton {
+  width: 200px;
+  margin: 5px 10px;
+  height: 40px;
+  font-size: 18px;
+  background-color: rgb(250, 245, 239);
+  border: solid 3px rgb(121, 114, 95);
+  border-radius: 10px;
+  color: rgb(121, 114, 95);
+}
+.countText {
+  font-size: 24px;
+  margin: 0px 10px;
+  padding: 0px 3px;
+}
+#count-color {
+  color: rgb(116, 208, 214);
+}
+#win-color {
+  color: rgb(230, 68, 100);
+}
+#lose-color {
+  color: rgb(80, 92, 255);
+}
+.agresivebutton {
+  border: solid 2px rgb(142, 150, 149);
+  border-radius: 10px;
+  width: 120px;
+  height: 40px;
+  margin: 5px 5px;
+  font-size: 20px;
+  color: rgb(230, 141, 125);
+}
+.negresivebutton {
+  border: solid 2px rgb(142, 150, 149);
+  border-radius: 10px;
+  width: 120px;
+  height: 40px;
+  margin: 5px 5px;
+  font-size: 20px;
+  color: rgb(80, 92, 255);
+}
+.plusbutton {
+  border: solid 2px rgb(142, 150, 149);
+  border-radius: 10px;
+  width: 120px;
+  height: 40px;
+  margin: 5px 5px;
+  font-size: 20px;
+  color: rgb(46, 196, 108);
+}
+#numText {
+  font-size: 36px;
+  margin: 20px;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeInSecond {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes fadeInSecond {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
