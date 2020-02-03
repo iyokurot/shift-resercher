@@ -1,0 +1,128 @@
+#contactmessage {
+  width: 80%;
+  height: 50px;
+  resize: none;
+  font-size: 18px;
+  font-family: 'Nico Moji';
+  transition: 0.5s;
+  position: relative;
+  display: inline-block;
+}
+#contactmessage:focus {
+  height: 300px;
+}
+#contacttitle {
+  font-size: 20px;
+  margin: 5px;
+  font-weight: bold;
+}
+#submitcontact {
+  width: 50%;
+  height: 50px;
+}
+#submitsending {
+  width: 50%;
+  height: 50px;
+}
+#submitspin {
+  display: inline-block;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 0%;
+  background-color: #b171cc;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  overflow: hidden;
+  z-index: 1;
+}
+#submitspin::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -5px;
+  width: 15px;
+  height: 15px;
+  background: white;
+  transform-origin: right 60px;
+  z-index: 2;
+}
+#submitspin::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 4px;
+  left: 4px;
+  border-radius: 50%;
+  background: white;
+  z-index: 3;
+}
+#submitsphere {
+  display: inline-block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 0%;
+  background-color: #b171cc;
+  border-radius: 50%;
+  animation: sin 1s linear infinite;
+  overflow: hidden;
+  z-index: 1;
+}
+#submiterror {
+  width: 50%;
+  height: 50px;
+  background-color: #b93892;
+  color: white;
+}
+
+#submitclear {
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  animation: spin 1s linear normal;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes sin {
+  0% {
+    left: -40%;
+  }
+  50% {
+    left: 40%;
+  }
+  100% {
+    left: -40%;
+  }
+}
+
+@-webkit-keyframes sin {
+  0% {
+    left: -40%;
+  }
+  50% {
+    left: 40%;
+  }
+  100% {
+    left: -40%;
+  }
+}

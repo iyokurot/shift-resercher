@@ -15,6 +15,7 @@ import ShiftAdministar from './ShiftAdministar'
 import SortMenber from './SortMenber'
 import Contact from './Contact'
 import CountGame from './CountGame'
+import EmperorGame from './EmperorGame'
 import './css/Tag.css'
 import './css/Class.css'
 import './css/Id.css'
@@ -38,7 +39,8 @@ const App = () => (
       <Route path="/ShiftAdministar" component={ShiftAdministar} />
       <Route path="/SortMenber" component={SortMenber} />
       <Route path="/Contact" component={Contact} />
-      <Route path="/CountGame" component={CountGame} />
+      <Route path="/Game/CountGame" component={CountGame} />
+      <Route path="/Game/EmperorGame" component={EmperorGame} />
       <Route exact path="/Callback" component={Callback}></Route>
     </div>
   </BrowserRouter>

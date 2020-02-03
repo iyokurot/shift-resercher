@@ -720,6 +720,8 @@ module.exports = function() {
 
   router.post('/sendmail', async (req, res) => {
     console.log(req.body)
+    const text =
+      'ユーザー名  [' + req.session.username + ']\n\n' + '内容\n' + req.body[0]
     var receiverEmailAddress = 'shiftresercher@gmail.com'
     var senderEmailAddress = 'shiftresercher@gmail.com'
 
@@ -742,16 +744,17 @@ module.exports = function() {
       from: senderEmailAddress,
       to: receiverEmailAddress,
       subject: 'お問い合わせ',
-      text: req.body[0],
+      text: text,
     }
     transporter.sendMail(mailOptions1, function(error, info) {
       if (error) {
         console.log(error)
+        res.json('error')
       } else {
         console.log('Email sent: ' + info.response)
+        res.json('send')
       }
     })
-    res.json('clear')
   })
 
   writeLog = async (client, userid, key, detail) => {

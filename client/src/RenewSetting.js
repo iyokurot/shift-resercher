@@ -335,7 +335,14 @@ function RenewSetting(props) {
           </div>
           <div
             className="manualdiv"
-            onClick={e => props.history.push('/CountGame')}
+            onClick={e => props.history.push('/Contact')}
+          >
+            <span>お問い合わせ</span>
+            <p id="sharesubtitle">管理者へ連絡</p>
+          </div>
+          <div
+            className="manualdiv"
+            onClick={e => props.history.push('/Game/CountGame')}
           >
             <span>ミニゲーム</span>
             <p id="sharesubtitle">おたのしみ</p>
