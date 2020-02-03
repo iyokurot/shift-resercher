@@ -21,6 +21,11 @@ const config = {
 const client = new line.Client(config)
 const TestRouter = require('./testrouter')
 
+//Gmail
+const receiverEmailAddress = 'shiftresercher@gmail.com'
+const senderEmailAddress = 'shiftresercher@gmail.com'
+const nodemailer = require('nodemailer')
+
 app.use(
   session({
     secret: 'keyboard cat',
@@ -930,6 +935,39 @@ app.post('/deleteuser', async (req, res) => {
   } else {
     res.json('')
   }
+})
+app.post('/sendmail', async (req, res) => {
+  const text =
+    'ユーザー名  [' + req.session.username + ']\n\n' + '内容\n' + req.body[0]
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // SSL
+    auth: {
+      type: 'OAuth2',
+      user: senderEmailAddress,
+      clientId:
+        '467833761077-l0epkhdmmvlq6e1pdgq0g9flupnp7q9v.apps.googleusercontent.com',
+      clientSecret: 'pwriA5eQCQEYT7TPwJcJNXVH',
+      refreshToken:
+        '1//04pDUKXzg2s1qCgYIARAAGAQSNwF-L9Ir7y2jAHs8K3Pu7KHOtGy6czTdj5RkpRig1vAMq2nRcjgLlTSpIDy4-9yglPI-TXonoek',
+    },
+  })
+  const mailOptions1 = {
+    from: senderEmailAddress,
+    to: receiverEmailAddress,
+    subject: 'お問い合わせ',
+    text: text,
+  }
+  transporter.sendMail(mailOptions1, function(error, info) {
+    if (error) {
+      console.log(error)
+      res.json('error')
+    } else {
+      console.log('Email sent: ' + info.response)
+      res.json('send')
+    }
+  })
 })
 
 ////テストルート---------------------------------------------------------------------

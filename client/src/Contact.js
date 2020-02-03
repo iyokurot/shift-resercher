@@ -40,7 +40,7 @@ export default function Contact(props) {
     }
     setIsNowSending(true)
     console.log(mailMessage)
-    fetch('test/sendmail', {
+    fetch('/sendmail', {
       method: 'POST',
       body: JSON.stringify([mailMessage]),
       headers: {
