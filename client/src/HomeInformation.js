@@ -20,9 +20,6 @@ export default class HomeInformation extends Component {
         <div id="infoFlame">
           <span id="infoTitle">おしらせ</span>
           <div>
-            <div className="infotext">
-              ＊大型アップデート＊<div>登録ボタンがなくなりました！</div>
-            </div>
             <table id="infotable">
               <tbody>
                 {this.state.informations.map(info => (

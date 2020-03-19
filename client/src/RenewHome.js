@@ -11,6 +11,8 @@ import {
   receptionText,
 } from './components/ReceptionDate'
 import { GetFormatDate } from './DateHandler'
+import './css/RegistAnimation.css'
+
 const customStyles = {
   content: {
     top: '50%',
@@ -24,6 +26,18 @@ const customStyles = {
     fontSize: '10px',
   },
 }
+const customStylesForRegist = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '70%',
+    height: '60%',
+  },
+}
 Modal.setAppElement('#root')
 function RenewHome(props) {
   const { state, dispatch } = useContext(UserContext) //userstate
@@ -35,6 +49,7 @@ function RenewHome(props) {
   const [plans, setPlans] = useState([]) //予定リスト
   const [selectTimeDate, setSelectTimeDate] = useState('') //時間指定日付Int
   const [modalIsOpen, setModalIsOpen] = useState(false) //時間指定モーダル
+  const [registModalIsOpen, setRegistModalIsOpen] = useState(false) //疑似登録完了モーダル
   const [startTime, setStartTime] = useState('09:00')
   const [endTime, setEndTime] = useState('23:45')
   const shifttimes = [
@@ -160,6 +175,12 @@ function RenewHome(props) {
       mode: 'cors',
     }).then(res => res.json())
   }
+  const openRegistModal = () => {
+    setRegistModalIsOpen(true)
+    setTimeout(() => {
+      setRegistModalIsOpen(false)
+    }, 2500)
+  }
   return (
     <div>
       <div id="personalheader">
@@ -206,6 +227,9 @@ function RenewHome(props) {
           </div>
 
           <Comment receptionDate={receptiondate} />
+          <button className="registButton" onClick={e => openRegistModal()}>
+            登録
+          </button>
         </div>
       )}
       <Modal
@@ -243,6 +267,20 @@ function RenewHome(props) {
         <button className="bluebutton" onClick={e => onSelectTime()}>
           決定
         </button>
+      </Modal>
+      <Modal
+        isOpen={registModalIsOpen}
+        onAfterOpen={function() {}}
+        onRequestClose={e => setRegistModalIsOpen(false)}
+        style={customStylesForRegist}
+        contentLabel="regist_ok_Modal"
+      >
+        <div className="circle">
+          <span className="cover1"></span>
+          <span className="cover2"></span>
+          <span className="check">✔</span>
+        </div>
+        <div className="registText">登録完了</div>
       </Modal>
     </div>
   )
