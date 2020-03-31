@@ -192,8 +192,10 @@ class Calender extends Component {
     return false
   }
   shiftstyle = str => {
-    if (str === 'x' || str === '△') {
-      return 'shiftstyle-big'
+    if (str === 'x') {
+      return 'shiftstyle-big-batu'
+    } else if (str === '△') {
+      return 'shiftstyle-big-sankaku'
     } else {
       return 'shiftstyle-default'
     }

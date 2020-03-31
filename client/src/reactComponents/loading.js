@@ -1,4 +1,5 @@
 import React from 'react'
+import '../css/Loading.css'
 
 export default function loading() {
   return (
@@ -8,6 +9,7 @@ export default function loading() {
         <div className="orbit"></div>
         <div className="orbit"></div>
         <div className="orbit"></div>
+        <div className="loadingAdnyan"></div>
       </div>
     </div>
   )

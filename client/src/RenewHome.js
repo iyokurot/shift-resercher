@@ -3,6 +3,7 @@ import { UserContext } from './components/User'
 import Information from './HomeInformation'
 import Comment from './RenewHomeComment'
 import LoadingComponent from './reactComponents/loading'
+import OfficialLine from './reactComponents/OfficialLine'
 import Calendar from './Calender'
 import Modal from 'react-modal'
 import {
@@ -126,7 +127,7 @@ function RenewHome(props) {
     if (getReceptionDate() <= value) {
       //受付中
       const dateint = GetFormatDate(value)
-      console.log(dateint)
+      //console.log(dateint)
       //空欄か
       if (null == shifts[dateint] || '' === shifts[dateint].text) {
         //Timeか
@@ -201,6 +202,7 @@ function RenewHome(props) {
         {getNowDeadline()}まで({receptionText(getReceptionDate())})
       </div>
       <Information push={() => props.history.push('/Information')} />
+      <OfficialLine />
       <div className="itemholder">
         <button className="redbutton" onClick={() => setStamp('x')}>
           ✕

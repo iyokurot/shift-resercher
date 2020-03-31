@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
 import shareIcon from './images/share.svg'
 import LoadingComponent from './reactComponents/loading'
+import OfficialLine from './reactComponents/OfficialLine'
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -347,6 +348,7 @@ function RenewSetting(props) {
             <span>ミニゲーム</span>
             <p id="sharesubtitle">おたのしみ</p>
           </div>
+          <OfficialLine />
           <div
             style={{ display: state.user.administer ? '' : 'none' }}
             className="administerview"

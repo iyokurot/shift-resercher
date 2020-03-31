@@ -6,6 +6,7 @@ import {
   getBackReceptionDate,
   receptionText,
 } from './components/ReceptionDate'
+import './css/shiftText.css'
 class Wishlist extends Component {
   constructor(props) {
     super(props)
@@ -117,7 +118,9 @@ class Wishlist extends Component {
                         <tr key={member.name}>
                           <th key={member.name}>{member.name}</th>
                           {member.shift.map(shift => (
-                            <td>{shift}</td>
+                            <td className={this.shiftTextStyle(shift)}>
+                              {shift}
+                            </td>
                           ))}
                         </tr>
                       ))}
@@ -304,6 +307,18 @@ class Wishlist extends Component {
     this.setState({
       printcommentlist: membertocomment,
     })
+  }
+  //シフトstyle判別
+  shiftTextStyle = shift => {
+    if ('/' === shift) {
+      return 'none'
+    } else if ('x' === shift) {
+      return 'batu'
+    } else if ('△' === shift) {
+      return 'sankaku'
+    } else {
+      return 'time'
+    }
   }
 }
 

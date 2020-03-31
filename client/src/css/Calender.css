@@ -115,8 +115,13 @@
   align-items: center;
   justify-content: center;
 }
-#shiftstyle-big {
+#shiftstyle-big-batu {
   font-size: 24px;
+  color: #b93892;
+}
+#shiftstyle-big-sankaku {
+  font-size: 24px;
+  color: #004918;
 }
 #shiftstyle-default {
 }

@@ -1,0 +1,29 @@
+#ofiicial-background {
+  background-color: #00b900;
+  border: solid 3px #00b900;
+  border-radius: 10px;
+  margin: 10px auto;
+  padding: 5px;
+  display: flex;
+  width: min-content;
+}
+#url-background {
+  display: flex;
+}
+#icon-image {
+  height: 50px;
+  border-radius: 50%;
+}
+#textarea {
+  width: 160px;
+}
+#official-title {
+  color: black;
+  font-size: 16px;
+  margin: 5px;
+}
+#official-detail {
+  color: white;
+  font-size: 10px;
+  margin: 3px;
+}
