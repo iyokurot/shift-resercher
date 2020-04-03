@@ -1,5 +1,5 @@
 #ofiicial-background {
-  background-color: #00b900;
+  background-color: rgba(85, 113, 156, 0.8);
   border: solid 3px #00b900;
   border-radius: 10px;
   margin: 10px auto;
@@ -9,16 +9,19 @@
 }
 #url-background {
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 #icon-image {
   height: 50px;
   border-radius: 50%;
+  border: solid 2px #6d6d6d;
 }
 #textarea {
   width: 160px;
 }
 #official-title {
-  color: black;
+  color: white;
   font-size: 16px;
   margin: 5px;
 }
@@ -26,4 +29,7 @@
   color: white;
   font-size: 10px;
   margin: 3px;
+}
+#linebutton {
+  display: block;
 }

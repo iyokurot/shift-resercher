@@ -12,6 +12,14 @@
 .login_button:active {
   background: url(../line/btn_login_press.png) left top no-repeat;
 }
+.background {
+  /*background-color: aquamarine;*/
+  height: 100vh;
+  background: center no-repeat;
+  background-size: cover;
+  overflow-y: scroll;
+}
+
 /*Home*/
 .infotext {
   font-size: 14px;

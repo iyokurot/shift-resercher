@@ -4,11 +4,13 @@ import React, { useState } from 'react'
 import { UserContext } from './components/User'
 import './css/Test.css'
 import Image from './images/adface.png'
+import sImage from './images/wakana.jpg'
 
 function TestPage(props) {
   const { state, dispatch } = React.useContext(UserContext)
   const [mailMessage, setMailMessage] = useState('')
   const [image, setImage] = useState('TestImageOne')
+  const isBool = true
   React.useEffect(() => {}, [state.user])
   const resetColor = () =>
     dispatch({
@@ -28,9 +30,15 @@ function TestPage(props) {
   return (
     <div
       id="background-test"
-      style={{
-        backgroundImage: `url(${Image})`,
-      }}
+      style={
+        isBool
+          ? {
+              backgroundImage: `url(http://localhost:5000/imagepath/wakana.jpg)`,
+            }
+          : {
+              backgroundImage: `url(${sImage})`,
+            }
+      }
     >
       <h1>TestPage</h1>
       <p>現在の情報</p>
@@ -57,6 +65,10 @@ function TestPage(props) {
         <div>test</div>
       </div>
       <div></div>
+      <img src={Image} />
+      <img src={Image} />
+      <img src={Image} />
+      <img src={Image} />
     </div>
   )
 }

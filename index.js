@@ -20,6 +20,7 @@ const config = {
 }
 const client = new line.Client(config)
 const TestRouter = require('./testrouter')
+const ImageRouter = require('./imageServer')
 
 //Gmail
 const receiverEmailAddress = 'shiftresercher@gmail.com'
@@ -58,6 +59,8 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   next()
 })
+app.use('/imagepath', express.static(path.join(__dirname, '/backgroundImages')))
+
 //LINEBot用Push（有料プラン）
 app.post('/line', function(req, res) {
   res.status(200).end()
@@ -969,6 +972,8 @@ app.post('/sendmail', async (req, res) => {
     }
   })
 })
+
+app.use('/image', ImageRouter())
 
 ////テストルート---------------------------------------------------------------------
 app.use('/test', TestRouter())

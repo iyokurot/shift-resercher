@@ -1,0 +1,24 @@
+#background-sample-two {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 30px;
+}
+.background-sample-flame {
+  border: solid 2px black;
+  height: 30vh;
+  width: 33.3333%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 20px;
+}
+#background-sample-select {
+  border: solid 2px white;
+}
+.background-sample {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}

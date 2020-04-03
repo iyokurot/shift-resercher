@@ -11,6 +11,7 @@ const initialState = {
     worktime: '',
     administer: false,
     regist: false,
+    imagepath: '',
   },
 }
 

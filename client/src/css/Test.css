@@ -11,10 +11,11 @@ body::before {
   background-size: cover;
 }
 #background-test {
-  background-color: aquamarine;
+  /*background-color: aquamarine;*/
   height: 100vh;
   background: center no-repeat;
   background-size: cover;
+  overflow-y: scroll;
 }
 
 .TestImageOne {

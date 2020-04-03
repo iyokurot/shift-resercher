@@ -63,8 +63,9 @@ module.exports = function() {
           worktime: req.session.worktime,
           administer: req.session.administer,
           regist: req.session.regist,
+          imagepath: results.results[0].imagepath,
         }
-        console.log(req.session)
+        //console.log(req.session)
 
         res.json(data)
       }

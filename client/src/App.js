@@ -16,35 +16,52 @@ import SortMenber from './SortMenber'
 import Contact from './Contact'
 import CountGame from './CountGame'
 import EmperorGame from './EmperorGame'
+import UploadImage from './UploadImage'
 import './css/Tag.css'
 import './css/Class.css'
 import './css/Id.css'
+import { UserContext } from './components/User'
 
-const App = () => (
-  <BrowserRouter>
-    <div>
-      <link
-        href="https://fonts.googleapis.com/css?family=Norican&display=swap"
-        rel="stylesheet"
-      ></link>
-      <Route exact path="/" component={Top} />
-      <Route path="/Register" component={Register} />
-      <Route path="/Home" component={RenewHome} />
-      <Route path="/Setting" component={RenewSetting} />
-      <Route path="/Wishlist" component={Wishlist} />
-      <Route path="/Information" component={Information} />
-      <Route path="/Plans" component={Plans} />
-      <Route path="/TestPage" component={Test} />
-      <Route path="/Log" component={Logs} />
-      <Route path="/ShiftAdministar" component={ShiftAdministar} />
-      <Route path="/SortMenber" component={SortMenber} />
-      <Route path="/Contact" component={Contact} />
-      <Route path="/Game/CountGame" component={CountGame} />
-      <Route path="/Game/EmperorGame" component={EmperorGame} />
-      <Route exact path="/Callback" component={Callback}></Route>
-    </div>
-  </BrowserRouter>
-)
+function App() {
+  const { state, dispatch } = React.useContext(UserContext)
+  return (
+    <BrowserRouter>
+      <div
+        className="background"
+        style={
+          state.user.userId !== ''
+            ? {
+                backgroundImage: `url(${state.user.imagepath})`,
+              }
+            : {
+                backgroundImage: `url()`,
+              }
+        }
+      >
+        <link
+          href="https://fonts.googleapis.com/css?family=Norican&display=swap"
+          rel="stylesheet"
+        ></link>
+        <Route exact path="/" component={Top} />
+        <Route path="/Register" component={Register} />
+        <Route path="/Home" component={RenewHome} />
+        <Route path="/Setting" component={RenewSetting} />
+        <Route path="/Wishlist" component={Wishlist} />
+        <Route path="/Information" component={Information} />
+        <Route path="/Plans" component={Plans} />
+        <Route path="/TestPage" component={Test} />
+        <Route path="/Log" component={Logs} />
+        <Route path="/ShiftAdministar" component={ShiftAdministar} />
+        <Route path="/SortMenber" component={SortMenber} />
+        <Route path="/Contact" component={Contact} />
+        <Route path="/UploadImage" component={UploadImage} />
+        <Route path="/Game/CountGame" component={CountGame} />
+        <Route path="/Game/EmperorGame" component={EmperorGame} />
+        <Route exact path="/Callback" component={Callback}></Route>
+      </div>
+    </BrowserRouter>
+  )
+}
 
 class Top extends Component {
   render() {
