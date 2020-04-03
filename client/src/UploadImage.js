@@ -223,7 +223,7 @@ export default function UploadImage(props) {
       }
     >
       <h1>UploadImage</h1>
-      {state.user.userId === 'sampleId' ? (
+      {state.user.userId !== '' ? (
         <div>
           <h2>collect</h2>
           <p>{consoleText}</p>
