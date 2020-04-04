@@ -348,7 +348,7 @@ export default function UploadImage(props) {
             onClick={OnClickSetDefaultImage}
             style={{ width: 100 }}
           >
-            背景を削除
+            背景なし
           </button>
         </div>
       ) : (
