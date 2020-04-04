@@ -303,7 +303,7 @@ export default function UploadImage(props) {
               id={nowSelect ? 'background-sample-select' : ''}
               onClick={() => OnSelectImage(true)}
             >
-              {'' === state.user.imagepath ? (
+              {state.user == '' || '' === state.user.imagepath ? (
                 <p>背景画像が設定されていません</p>
               ) : (
                 <img
