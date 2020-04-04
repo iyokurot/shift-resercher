@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { UserContext } from './components/User'
 import Dropzone from 'react-dropzone'
 import './css/UploadImage.css'
+import LoadingComponent from './reactComponents/loading'
 
 export default function UploadImage(props) {
   const { state, dispatch } = React.useContext(UserContext)
   const [consoleText, setConsoleText] = useState('')
+  const [nowUploading, setNowUploading] = useState(false)
   const [addImage, setAddImage] = useState('')
   const [nowSelect, setNowSelect] = useState(true)
   //const testdefaultUrl = 'http://localhost:5000/imagepath/wakana.jpg'
@@ -35,6 +37,7 @@ export default function UploadImage(props) {
 
   //uploadエリア
   const handleOnDrop = files => {
+    setNowUploading(true)
     Promise.all(files.map((file, index) => uploadImage(file, index)))
       .then(images => {
         console.log(images)
@@ -55,20 +58,40 @@ export default function UploadImage(props) {
     if (0 !== index) {
       return
     }
+    //連続アップロードhandling
+    if ('' !== addImage) {
+      //既存削除fetch
+      fetch('/image/deleteNewImage', {
+        method: 'POST',
+        body: JSON.stringify({ name: addImage.filename }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+      })
+        .then(res => res.json())
+        .then(res => {
+          if ('clear' === res) {
+            //setAddImage('')
+          } else {
+            setConsoleText('エラーが発生しました')
+          }
+        })
+    }
     //post
     const imagedata = new FormData()
     imagedata.append('imagedata', file)
     fetch('/image/uploadImage', {
       method: 'POST',
-      mode: 'cors',
       body: imagedata,
 
       mode: 'cors',
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res)
+        //console.log(res)
         setAddImage(res)
+        setNowUploading(false)
       })
 
     const name = file.name
@@ -114,12 +137,9 @@ export default function UploadImage(props) {
         if ('' !== state.user.imagepath) {
           //defが存在
           //post
-          //const paths = testdefaultUrl.split('/')
-          const paths = state.user.imagepath.split('/')
-          const filename = paths[paths.length - 1]
           fetch('/image/deleteDefaultImage', {
             method: 'POST',
-            body: JSON.stringify({ name: filename }),
+            body: JSON.stringify({ path: state.user.imagepath }),
             headers: {
               'Content-Type': 'application/json',
             },
@@ -146,11 +166,13 @@ export default function UploadImage(props) {
         if ('' !== state.user.imagepath) {
           //元画像あり
           //元画像削除＆DB更新
-          const paths = state.user.imagepath.split('/')
-          const filename = paths[paths.length - 1]
+
           fetch('/image/deleteDefaultImageToNew', {
             method: 'POST',
-            body: JSON.stringify({ name: filename, newpath: addImage.path }),
+            body: JSON.stringify({
+              path: state.user.imagepath,
+              newpath: addImage.path,
+            }),
             headers: {
               'Content-Type': 'application/json',
             },
@@ -178,6 +200,7 @@ export default function UploadImage(props) {
           //DB更新
           const paths = addImage.path.split('/')
           const filename = paths[paths.length - 1]
+          console.log(addImage.path)
           fetch('/image/setNewImage', {
             method: 'POST',
             body: JSON.stringify({ name: filename, newpath: addImage.path }),
@@ -204,8 +227,41 @@ export default function UploadImage(props) {
               }
             })
         }
-        console.log('new')
+        //console.log('new')
       }
+    }
+  }
+
+  //背景削除
+  const OnClickSetDefaultImage = () => {
+    if ('' !== state.user.imagepath) {
+      //defが存在
+      //post
+      fetch('/image/deleteDefaultImage', {
+        method: 'POST',
+        body: JSON.stringify({
+          path: state.user.imagepath,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+      })
+        .then(res => res.json())
+        .then(res => {
+          if ('clear' === res) {
+            const user = state.user
+            user.imagepath = ''
+            dispatch({
+              type: 'set-user',
+              payload: {
+                user: user,
+              },
+            })
+          } else {
+            setConsoleText('エラーが発生しました')
+          }
+        })
     }
   }
 
@@ -225,18 +281,21 @@ export default function UploadImage(props) {
       <h1>UploadImage</h1>
       {state.user.userId !== '' ? (
         <div>
-          <h2>collect</h2>
           <p>{consoleText}</p>
-          <div style={{ width: 300, margin: '20px auto' }}>
-            <Dropzone onDrop={handleOnDrop} accept="image/*">
-              {({ getRootProps, getInputProps }) => (
-                <div id="drop" {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  <div>アップロード</div>
-                </div>
-              )}
-            </Dropzone>
-            <p>test</p>
+          <div id="upload-area">
+            {nowUploading ? (
+              <div>アップロード中</div>
+            ) : (
+              <Dropzone onDrop={handleOnDrop} accept="image/*">
+                {({ getRootProps, getInputProps }) => (
+                  <div id="drop" {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <div>背景に設定したい画像を</div>
+                    <div>タップ＆アップロード</div>
+                  </div>
+                )}
+              </Dropzone>
+            )}
           </div>
           <div id="background-sample-two">
             <div
@@ -277,12 +336,23 @@ export default function UploadImage(props) {
             )}
           </div>
           <p>画像タップで背景を試すことができます</p>
-          <button className="bluebutton" onClick={OnClickSetImage}>
+          <button
+            className="bluebutton"
+            onClick={OnClickSetImage}
+            style={{ width: 100 }}
+          >
             設定する
+          </button>
+          <button
+            className="redbutton"
+            onClick={OnClickSetDefaultImage}
+            style={{ width: 100 }}
+          >
+            背景を削除
           </button>
         </div>
       ) : (
-        <div>LoadingNow</div>
+        <LoadingComponent />
       )}
     </div>
   )

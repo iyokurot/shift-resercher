@@ -2,6 +2,13 @@ const express = require('express')
 const { Pool } = require('pg')
 const multer = require('multer')
 const fs = require('fs')
+const cloudinary = require('cloudinary')
+const cloudinaryStorage = require('multer-storage-cloudinary')
+cloudinary.config({
+  cloud_name: 'hdsnadrnw',
+  api_key: '735715183341431',
+  api_secret: 'XWsVeeFT-l34APs8fDAjTpRhL8M',
+})
 //local
 /*
 const pool = new Pool({
@@ -18,46 +25,27 @@ module.exports = function() {
   const router = express.Router({ mergeParams: true })
 
   const url = 'backgroundImages'
-  var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-      // 保存したいパス
-      cb(null, url)
-    },
-    filename: function(req, file, cb) {
-      cb(null, Date.now() + file.originalname)
-    },
+  const storage = cloudinaryStorage({
+    cloudinary: cloudinary,
+    folder: 'background',
+    allowedFormats: ['jpg', 'png'],
   })
-  const upload = multer({
-    storage: storage,
-  })
+  const parser = multer({ storage: storage })
 
-  router.post('/uploadImage', upload.single('imagedata'), async (req, res) => {
+  router.post('/uploadImage', parser.single('imagedata'), async (req, res) => {
     try {
-      console.log(req.file)
-      console.log(req.protocol + '://' + req.headers.host)
-      const path =
-        req.protocol +
-        '://' +
-        req.headers.host +
-        '/imagepath/' +
-        req.file.filename
-      /*
-        const name = req.body[0]
-        const client = await poollocal.connect()
-        const result = await client.query(
-          'update user_table set name=$1 where userid=$2',
-          [name, req.session.userId],
-        )
-        */
+      //console.log(req.file.originalname)
+      //console.log(req.file.secure_url)
       const resjson = {
-        path: path,
-        filename: req.file.filename,
+        path: req.file.secure_url,
+        filename: req.file.public_id,
       }
       res.json(resjson)
+
       const client = await pool.connect()
       const result = await client.query(
         'insert into image_table (path,name) values($1,$2)',
-        [path, req.file.filename],
+        [req.file.secure_url, req.file.public_id],
       )
       client.release()
     } catch (err) {
@@ -68,10 +56,13 @@ module.exports = function() {
 
   //新規画像削除
   router.post('/deleteNewImage', async (req, res) => {
-    //
-    const path = 'backgroundImages/' + req.body.name
-    fs.unlink(path, err => {
-      if (err) throw err
+    //console.log(req.body.name)
+    cloudinary.uploader.destroy(req.body.name, { invalidate: true }, function(
+      error,
+      result,
+    ) {
+      console.log('image_delete_by_cloudinary')
+      console.log(result, error)
     })
     res.json('clear')
     try {
@@ -89,11 +80,27 @@ module.exports = function() {
 
   //元画像削除（defaultへ）
   router.post('/deleteDefaultImage', async (req, res) => {
-    //元あり
-    const path = 'backgroundImages/' + req.body.name
-    fs.unlink(path, err => {
-      if (err) throw err
-    })
+    const defpath = req.body.path
+    try {
+      const client = await pool.connect()
+      const result = await client.query(
+        'select * from image_table where path=$1',
+        [defpath],
+      )
+      const results = { results: result ? result.rows : null }
+      //元あり
+      cloudinary.uploader.destroy(
+        results.results[0].name,
+        { invalidate: true },
+        function(error, result) {
+          console.log('image_delete_by_cloudinary')
+          console.log(result, error)
+        },
+      )
+    } catch (err) {
+      console.log(err)
+    }
+
     //DB更新
     try {
       const client = await pool.connect()
@@ -102,8 +109,8 @@ module.exports = function() {
         ['', req.session.userId],
       )
       const resultSecond = await client.query(
-        'delete from image_table where name=$1',
-        [req.body.name],
+        'delete from image_table where path=$1',
+        [req.body.path],
       )
       res.json('clear')
       client.release()
@@ -116,15 +123,26 @@ module.exports = function() {
   //元画像削除（newへ）
   router.post('/deleteDefaultImageToNew', async (req, res) => {
     //元あり
-    const path = 'backgroundImages/' + req.body.name
-    fs.unlink(path, err => {
-      if (err) throw err
-    })
-    //DB更新
+    const defpath = req.body.path
     try {
-      const newpath = req.body.newpath
       const client = await pool.connect()
       const result = await client.query(
+        'select * from image_table where path=$1',
+        [defpath],
+      )
+      const results = { results: result ? result.rows : null }
+      //元あり
+      cloudinary.uploader.destroy(
+        results.results[0].name,
+        { invalidate: true },
+        function(error, result) {
+          console.log('image_delete_by_cloudinary')
+          console.log(result, error)
+        },
+      )
+      //DB
+      const newpath = req.body.newpath
+      const resultOne = await client.query(
         'update user_table set imagepath=$1 where userid=$2',
         [newpath, req.session.userId],
       )
@@ -135,7 +153,7 @@ module.exports = function() {
       res.json('clear')
       client.release()
     } catch (err) {
-      console.error(err)
+      console.log(err)
       res.send('Error ' + err)
     }
   })
@@ -145,6 +163,8 @@ module.exports = function() {
     //DB更新
     try {
       const newpath = req.body.newpath
+      console.log(newpath)
+      console.log(req.session.userId)
       const client = await pool.connect()
       const result = await client.query(
         'update user_table set imagepath=$1 where userid=$2',

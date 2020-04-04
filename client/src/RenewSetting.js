@@ -393,6 +393,14 @@ function RenewSetting(props) {
             </button>
             <br />
             <button
+              onClick={() => props.history.push('/UploadImage')}
+              className="administerbutton"
+              style={{ width: '250px' }}
+            >
+              背景画像設定テスト
+            </button>
+            <br />
+            <button
               onClick={() => setMenberModalOpen(true)}
               className="administerbutton"
             >
