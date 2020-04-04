@@ -91,6 +91,7 @@ app.get('/userdata', function(req, res) {
       worktime: req.session.worktime,
       administer: req.session.administer,
       regist: req.session.regist,
+      imagepath: req.session.imagepath,
     }
     res.json(data)
   } else {
@@ -172,6 +173,7 @@ app.get('/regists', async (req, res) => {
       req.session.username = results.results[0].name
       req.session.worktime = results.results[0].worktime
       req.session.administer = results.results[0].administer
+      req.session.imagepath = results.results[0].imagepath
       console.log('userログイン')
       console.log(req.session.username)
       writeLog(client, userId, 'ユーザーログイン', req.session.username)
