@@ -46,23 +46,13 @@
 }
 #infoFlame {
   max-width: 380px;
-  border: solid 2px #1dbea9;
+  border: solid 2px #0f4252;
   padding: 0.3em;
   margin: 5px auto;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(227, 210, 235, 0.5);
   border-radius: 10px;
 }
-#infotable {
-  table-layout: fixed;
-  width: 100%;
-}
-#infotabledate {
-  width: 100px;
-}
-#infotabletitle {
-  white-space: nowrap;
-  overflow-x: hidden;
-}
+
 #calendar {
   display: inline-block;
   background-color: black;

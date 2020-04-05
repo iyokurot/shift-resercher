@@ -10,7 +10,6 @@ export default function UploadImage(props) {
   const [nowUploading, setNowUploading] = useState(false)
   const [addImage, setAddImage] = useState('')
   const [nowSelect, setNowSelect] = useState(true)
-  //const testdefaultUrl = 'http://localhost:5000/imagepath/wakana.jpg'
   const testrouter = ''
   useEffect(() => {
     const firstLoading = user => {

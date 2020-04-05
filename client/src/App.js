@@ -17,6 +17,7 @@ import Contact from './Contact'
 import CountGame from './CountGame'
 import EmperorGame from './EmperorGame'
 import UploadImage from './UploadImage'
+import LineOfficialPage from './LineOfficialPage'
 import './css/Tag.css'
 import './css/Class.css'
 import './css/Id.css'
@@ -55,6 +56,7 @@ function App() {
         <Route path="/SortMenber" component={SortMenber} />
         <Route path="/Contact" component={Contact} />
         <Route path="/UploadImage" component={UploadImage} />
+        <Route path="/LineOfficialAcount" component={LineOfficialPage} />
         <Route path="/Game/CountGame" component={CountGame} />
         <Route path="/Game/EmperorGame" component={EmperorGame} />
         <Route exact path="/Callback" component={Callback}></Route>

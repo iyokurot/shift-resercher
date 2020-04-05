@@ -8,7 +8,6 @@ import sImage from './images/wakana.jpg'
 
 function TestPage(props) {
   const { state, dispatch } = React.useContext(UserContext)
-  const [mailMessage, setMailMessage] = useState('')
   const [image, setImage] = useState('TestImageOne')
   const isBool = true
   React.useEffect(() => {}, [state.user])
@@ -33,7 +32,7 @@ function TestPage(props) {
       style={
         isBool
           ? {
-              backgroundImage: `url(http://localhost:5000/imagepath/wakana.jpg)`,
+              backgroundImage: `url()`,
             }
           : {
               backgroundImage: `url(${sImage})`,
@@ -65,10 +64,7 @@ function TestPage(props) {
         <div>test</div>
       </div>
       <div></div>
-      <img src={Image} />
-      <img src={Image} />
-      <img src={Image} />
-      <img src={Image} />
+      <img src={Image} alt="test" />
     </div>
   )
 }

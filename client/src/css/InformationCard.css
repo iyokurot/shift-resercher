@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css?family=Sawarabi+Gothic');
+
+#infoArea {
+  display: flex;
+}
+.card_flame {
+  background-color: #80c2c2;
+
+  height: 100px;
+  width: 33.333%;
+  margin: 5px;
+  box-shadow: 0 0 8px rgb(71, 71, 71);
+  border-right: solid 2px rgb(71, 71, 71);
+  border-bottom: solid 2px rgb(71, 71, 71);
+}
+
+.card_new {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  background-color: #b93892;
+  padding: 0 2px;
+  border-radius: 40%;
+  width: 30px;
+  transform: translateY(-12px) translateX(-8px) rotate(-20deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.info-newtext {
+  font-size: 18px;
+  color: white;
+  font-weight: normal;
+  text-shadow: none;
+  font-family: 'Norican', serif;
+  transform: translateY(-2px);
+}
+
+.card_infoarea {
+  position: relative;
+  height: 80%;
+  font-family: 'Sawarabi Gothic', sans-serif;
+  color: #0f4252;
+  font-size: 14px;
+  text-shadow: 2px 2px 0 #8a878c;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card_infoarea::before,
+.card_infoarea::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  position: absolute;
+}
+.card_infoarea::before {
+  border-left: solid 2px rgb(25, 109, 134);
+  border-top: solid 2px rgb(25, 109, 134);
+  top: 0;
+  left: 0;
+  transform: translateY(10px) translateX(5px);
+}
+.card_infoarea::after {
+  border-right: solid 2px rgb(25, 109, 134);
+  border-bottom: solid 2px rgb(25, 109, 134);
+  bottom: 0;
+  right: 0;
+  transform: translateY(-10px) translateX(-5px);
+}
+
+.card_date {
+  background-color: #bf9bdb;
+  height: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.date_text {
+  font-size: 10px;
+  margin-left: auto;
+}

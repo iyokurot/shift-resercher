@@ -4,6 +4,9 @@ const multer = require('multer')
 const fs = require('fs')
 const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
+
+require('dotenv').config()
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -177,6 +180,6 @@ module.exports = function() {
       res.send('Error ' + err)
     }
   })
-  //
+
   return router
 }

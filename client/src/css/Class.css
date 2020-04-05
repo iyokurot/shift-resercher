@@ -85,8 +85,8 @@
   color: white;
 }
 .lightgreenbutton {
-  border: solid 1px #1dbea9;
-  color: #1dbea9;
+  border: solid 1px #0f4252;
+  color: #0f4252;
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0);
   margin: 3px 10px;
@@ -98,7 +98,7 @@
   margin: 0 1;
 }
 .lightgreenbutton:hover {
-  background: #1dbea9;
+  background: #0f4252;
   color: white;
 }
 
