@@ -5,8 +5,13 @@ import { UserContext } from './components/User'
 import { makeStyles } from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
 import shareIcon from './images/share.svg'
+import envelopIcon from './images/envelop.svg'
+import hipsterIcon from './images/hipster.svg'
+import imageIcon from './images/image.svg'
+import questionIcon from './images/question.svg'
 import LoadingComponent from './reactComponents/loading'
 import OfficialLine from './reactComponents/OfficialLine'
+import './css/MenuComponent.css'
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -239,6 +244,29 @@ function RenewSetting(props) {
         })
     }
   }
+  const GetDrivePage = () => {
+    // open(
+    //   'https://docs.google.com/presentation/d/1d4WBzpo-So3vK8kw5eVjB_fQ_LBcnjHPEuaHL-7Q_1g/edit?usp=sharing',
+    // )
+  }
+  //MenuComponent
+  const MenuBlock = props => {
+    return (
+      <div
+        className="menu-flame"
+        style={{ background: props.color }}
+        onClick={props.function}
+      >
+        <div className="menuBlock-iconFlame">
+          <img src={props.icon} className="menuBlock-icon" />
+        </div>
+        <div className="menuBlock-text">
+          <p className="menuBlock-title">{props.title}</p>
+          <p className="menuBlock-detail">{props.detail}</p>
+        </div>
+      </div>
+    )
+  }
   return (
     <div>
       <h1>Settings</h1>
@@ -321,33 +349,54 @@ function RenewSetting(props) {
               </button>
             </div>
           </div>
-          <div className="manualdiv">
+          <div id="menuBlock-area">
             <a
               href="https://docs.google.com/presentation/d/1d4WBzpo-So3vK8kw5eVjB_fQ_LBcnjHPEuaHL-7Q_1g/edit?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className="outlinkButton">
-                使い方
-                <img src={shareIcon} id="shareIcon" alt="使い方アイコン" />
-              </span>
-              <p id="sharesubtitle">＊外部ページが開きます</p>
+              <MenuBlock
+                icon={shareIcon}
+                title="使い方"
+                detail="外部ページです"
+                color="white"
+              />
             </a>
+            <MenuBlock
+              icon={envelopIcon}
+              title="お問い合わせ"
+              detail="管理者へ連絡"
+              color="#ea554a"
+              function={() => props.history.push('/Contact')}
+            />
+            <MenuBlock
+              icon={hipsterIcon}
+              title="ミニゲーム"
+              detail="おたのしみ"
+              color="#a4d6c3"
+              function={() => props.history.push('/Game/CountGame')}
+            />
+            <MenuBlock
+              icon={imageIcon}
+              title="背景変更"
+              detail="すきな画像へ"
+              color="#9ed6df"
+              function={() => props.history.push('/UploadImage')}
+            />
+            <MenuBlock
+              icon={questionIcon}
+              title="?"
+              detail="Coming soon"
+              color="#fff2ad"
+            />
+            <MenuBlock
+              icon={questionIcon}
+              title="?"
+              detail="Coming soon"
+              color="#fff2ad"
+            />
           </div>
-          <div
-            className="manualdiv"
-            onClick={e => props.history.push('/Contact')}
-          >
-            <span>お問い合わせ</span>
-            <p id="sharesubtitle">管理者へ連絡</p>
-          </div>
-          <div
-            className="manualdiv"
-            onClick={e => props.history.push('/Game/CountGame')}
-          >
-            <span>ミニゲーム</span>
-            <p id="sharesubtitle">おたのしみ</p>
-          </div>
+
           <OfficialLine />
           <div
             style={{ display: state.user.administer ? '' : 'none' }}

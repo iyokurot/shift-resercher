@@ -24,7 +24,7 @@ import './css/Id.css'
 import { UserContext } from './components/User'
 
 function App() {
-  const { state, dispatch } = React.useContext(UserContext)
+  const { state } = React.useContext(UserContext)
   return (
     <BrowserRouter>
       <div

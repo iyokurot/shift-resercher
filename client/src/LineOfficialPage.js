@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Advertise from './images/LINEOfficial2.gif'
 import './css/OfficialLine.css'
 
@@ -14,7 +14,7 @@ export default function LineOfficialPage(props) {
             id="linebutton-image"
           />
         </a>
-        <img src={Advertise} id="advertise" />
+        <img src={Advertise} id="advertise" alt="広告" />
       </div>
     </div>
   )

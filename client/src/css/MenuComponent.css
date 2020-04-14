@@ -1,0 +1,67 @@
+#menuBlock-area {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.menu-flame {
+  height: 100px;
+  width: 100px;
+  border-radius: 20px;
+  box-shadow: 0 0 8px rgb(71, 71, 71);
+  margin: 5px 10px;
+  color: rgb(43, 43, 43);
+}
+.menu-flame:hover {
+  animation: bull-animation 0.2s linear;
+}
+@keyframes bull-animation {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-25deg);
+  }
+  50% {
+    transform: rotate(0);
+  }
+  75% {
+    transform: rotate(25deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+.menu-flame:active {
+  box-shadow: 0 0 10px rgb(71, 71, 71) inset;
+}
+.menuBlock-iconFlame {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.menuBlock-icon {
+  width: 60px;
+  height: 60px;
+}
+.menuBlock-icon:hover {
+  animation: spin-animation 0.3s linear;
+}
+@keyframes spin-animation {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.menuBlock-text {
+}
+.menuBlock-title {
+  margin: 0;
+  font-size: 16px;
+  height: 23px;
+}
+.menuBlock-detail {
+  margin: 0;
+  font-size: 10px;
+}

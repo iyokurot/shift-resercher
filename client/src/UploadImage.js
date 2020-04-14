@@ -3,9 +3,13 @@ import { UserContext } from './components/User'
 import Dropzone from 'react-dropzone'
 import './css/UploadImage.css'
 import LoadingComponent from './reactComponents/loading'
+import ExplainImage1 from './images/setBackGround1.png'
+import ExplainImage2 from './images/setBackGround2.png'
+import InfoImage from './images/info.png'
 
 export default function UploadImage(props) {
   const { state, dispatch } = React.useContext(UserContext)
+  const [explainBool, setExplainBool] = useState(true)
   const [consoleText, setConsoleText] = useState('')
   const [nowUploading, setNowUploading] = useState(false)
   const [addImage, setAddImage] = useState('')
@@ -13,8 +17,11 @@ export default function UploadImage(props) {
   const testrouter = ''
   useEffect(() => {
     const firstLoading = user => {
-      //
-      //console.log(user)
+      if (user === '') {
+        //不正アクセス
+        alert('User Not Found')
+        props.history.push('/')
+      }
     }
     if (state.user.userId !== '') {
       firstLoading(state.user)
@@ -278,12 +285,35 @@ export default function UploadImage(props) {
       }
     >
       <h1>UploadImage</h1>
-      {state.user.userId !== '' ? (
+      {state.user !== '' && state.user.userId !== '' ? (
         <div>
+          <div id="test">
+            <img
+              src={InfoImage}
+              id="info-icon"
+              onClick={() => setExplainBool(true)}
+            />
+          </div>
+          {explainBool ? (
+            <div id="explain-tab">
+              <img src={ExplainImage1} className="explain-image" />
+              <img src={ExplainImage2} className="explain-image" />
+              <button
+                className="bluebutton"
+                id="explain-button"
+                onClick={() => setExplainBool(false)}
+              >
+                説明をとじる
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
+
           <p>{consoleText}</p>
           <div id="upload-area">
             {nowUploading ? (
-              <div>アップロード中</div>
+              <div id="uploadnow-text">アップロード中</div>
             ) : (
               <Dropzone onDrop={handleOnDrop} accept="image/*">
                 {({ getRootProps, getInputProps }) => (

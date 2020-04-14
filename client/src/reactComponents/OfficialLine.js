@@ -7,7 +7,7 @@ export default function OfficialLine() {
   return (
     <div id="ofiicial-background">
       <div id="url-background">
-        <img src={LineImage} id="icon-image" />
+        <img src={LineImage} id="icon-image" alt="LINEアイコン" />
         <div id="textarea">
           <p id="official-title">公式アカウント</p>
           <p id="official-detail">締め切り通知などを行います</p>

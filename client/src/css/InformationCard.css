@@ -3,6 +3,20 @@
 #infoArea {
   display: flex;
 }
+#info-detail {
+  margin: 5px 20px;
+
+  padding-bottom: 0;
+  font-family: 'Sawarabi Gothic', sans-serif;
+  color: #0f4252;
+  font-size: 14px;
+  border-top: solid 2px #0f4252;
+  border-bottom: solid 2px #0f4252;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+}
 .card_flame {
   background-color: #80c2c2;
 
@@ -12,6 +26,12 @@
   box-shadow: 0 0 8px rgb(71, 71, 71);
   border-right: solid 2px rgb(71, 71, 71);
   border-bottom: solid 2px rgb(71, 71, 71);
+}
+#card_flame_select {
+  box-shadow: 0 0 8px #b93892;
+}
+#card_flame_noneselect {
+  box-shadow: 0 0 8px rgb(71, 71, 71);
 }
 
 .card_new {
